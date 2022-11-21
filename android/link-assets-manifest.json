@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/constantes/fonts/LibreBaskerville-Bold.ttf",
+      "sha1": "f8081cbeceb2e69fdffca2348b2c9e0933cd52b5"
+    },
+    {
+      "path": "src/constantes/fonts/LibreBaskerville-Italic.ttf",
+      "sha1": "1c4a7eed5b5ffeed2818cc75c16825596d64ab67"
+    },
+    {
+      "path": "src/constantes/fonts/LibreBaskerville-Regular.ttf",
+      "sha1": "ed706d27473a09536d94fed8fee4809fda713759"
+    },
+    {
+      "path": "src/constantes/fonts/LibreFranklin-Italic-VariableFont_wght.ttf",
+      "sha1": "bdc4ff8e38236e69b3592ea78bc6651fc85be82a"
+    },
+    {
+      "path": "src/constantes/fonts/LibreFranklin-VariableFont_wght.ttf",
+      "sha1": "3c8539021a2166ffe6b5ff850cd14130917df59a"
+    },
+    {
+      "path": "src/constantes/fonts/RaphLanokFuture-PvDx.ttf",
+      "sha1": "b7632e1f0eaef1682abc6e8f11a36d90fef79bcd"
+    }
+  ]
+}
