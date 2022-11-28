@@ -13,7 +13,7 @@ const Tabs = () => {
       initialRouteName="Home"
       activeColor="#1c043c"
       inactiveColor="#b035f5"
-      barStyle={{backgroundColor: 'rgba(255,255,255,0.5)'}}>
+      barStyle={{backgroundColor: 'rgb(255,255,255)'}}>
       <Tab.Screen
         name="Feed"
         component={Accueil}
