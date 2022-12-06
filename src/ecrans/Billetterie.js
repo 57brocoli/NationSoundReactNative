@@ -20,6 +20,7 @@ import {STYLESMENU} from '../constantes/StyleMenu';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FakeBillets} from '../data/FakeBillet';
 //import de la Fakedata
+import auth from '@react-native-firebase/auth';
 
 const Billetterie = props => {
   //Variable pour afficher/masquer le menu
@@ -42,7 +43,6 @@ const Billetterie = props => {
   const lessCountBillets = () => {
     countBillets > 0 && setCountBillets(countBillets - 1);
   };
-  console.log(countBillets);
   //Variable du header
   const Header = () => {
     return (

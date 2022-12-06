@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "943585468959",
+    "project_id": "nation-sound-fe3fc",
+    "storage_bucket": "nation-sound-fe3fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943585468959:android:1d92b96796405b5f9bab2a",
+        "android_client_info": {
+          "package_name": "com.nationsound"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943585468959-lef1m6on8k251ks6l2iqnfte7t57rcoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcICRj40dwUtoIZD2SB2H9svzbGzi0YwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943585468959-lef1m6on8k251ks6l2iqnfte7t57rcoh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

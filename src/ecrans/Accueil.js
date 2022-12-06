@@ -10,7 +10,7 @@ import {
   Pressable,
   ImageBackground,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 //import des variables de style prédéfinis
 import {FONTS} from '../constantes/Fonts';
 import {CENTER, TEXT, TITLE} from '../constantes/Constantes';
@@ -23,6 +23,7 @@ import Card from '../conposants/Card';
 import LinearGradient from 'react-native-linear-gradient';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import auth from '@react-native-firebase/auth';
 
 const Accueil = props => {
   //Variable pour afficher/masquer le menu
@@ -75,6 +76,16 @@ const Accueil = props => {
   };
   //Variable pour le menu
   const Menu = () => {
+    // variable pour se deconnecter
+    const onSingOut = () => {
+      auth()
+        .signOut()
+        .then(() => {
+          console.log('User signed out!');
+          props.navigation.navigate('LogIn');
+        });
+    };
+
     return (
       <Animated.View
         style={{
@@ -84,7 +95,6 @@ const Accueil = props => {
           height: 623,
           top: 70,
           right: 0,
-
           transform: [{translateX: slideMenu}],
         }}>
         <LinearGradient
@@ -92,7 +102,9 @@ const Accueil = props => {
           style={{paddingHorizontal: 15, paddingVertical: 10}}>
           <View style={STYLESMENU.containerMenu}>
             {/* container de la photo de Profile */}
-            <TouchableOpacity style={STYLESMENU.containerUserIcon}>
+            <TouchableOpacity
+              style={STYLESMENU.containerUserIcon}
+              onPress={() => props.navigation.navigate('Profil')}>
               <Image
                 source={require('../asset/icons/userIcon.png')}
                 style={STYLESMENU.userIcon}
@@ -102,7 +114,9 @@ const Accueil = props => {
             {/* fin container de la photo de Profile */}
 
             {/* container du nom de l'utilisateur */}
-            <Text style={STYLESMENU.nameUser}>Kyle Perry</Text>
+            <Text style={STYLESMENU.nameUser}>
+              {auth().currentUser.displayName}
+            </Text>
             {/* fin container du nom de l'utilisateur */}
 
             {/* container des liens de navigation*/}
@@ -159,7 +173,9 @@ const Accueil = props => {
             {/* fin container des liens de navigation*/}
 
             {/*container se deconnecter*/}
-            <TouchableOpacity style={STYLESMENU.containerLinkDeconnexion}>
+            <TouchableOpacity
+              style={STYLESMENU.containerLinkDeconnexion}
+              onPress={() => onSingOut()}>
               <MaterialCommunityIcons name="logout" color={'white'} size={30} />
               <Text style={STYLESMENU.textDeconnexion}>Déconnexion</Text>
             </TouchableOpacity>
