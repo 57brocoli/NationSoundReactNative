@@ -22,6 +22,7 @@ import {STYLESMENU} from '../constantes/StyleMenu';
 import {FakeArticle} from '../data/FakeArticle';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 const Information = props => {
   //Variable pour afficher/masquer le menu
@@ -62,11 +63,7 @@ const Information = props => {
                 useNativeDriver: true,
               }).start();
             }}>
-            <MaterialCommunityIcons
-              name={showMenu ? 'close' : 'menu'}
-              color={'white'}
-              size={50}
-            />
+            <MaterialCommunityIcons name={'menu'} color={'white'} size={50} />
           </TouchableOpacity>
         </View>
       </View>
@@ -183,6 +180,7 @@ const Information = props => {
       </TouchableOpacity>
     );
   };
+
   //Variable pour filtré les articles
   const [nombreArticle, setNombreArticle] = useState(3);
   const tousAfficher = () => {
@@ -206,6 +204,37 @@ const Information = props => {
     setQuestion3(!question3);
   };
 
+  const Tab = createMaterialTopTabNavigator();
+  function MyTabs() {
+    return (
+      <Tab.Navigator initialRouteName="Home2" style={{top: 0}}>
+        <Tab.Screen name="Home2" component={Home2} />
+        <Tab.Screen name="FAQ" component={FAQ} />
+        <Tab.Screen name="Actualite" component={Actualite} />
+      </Tab.Navigator>
+    );
+  }
+  function Home2() {
+    return (
+      <View>
+        <Text>Hello1</Text>
+      </View>
+    );
+  }
+  function FAQ() {
+    return (
+      <View>
+        <Text>Hello2</Text>
+      </View>
+    );
+  }
+  function Actualite() {
+    return (
+      <View>
+        <Text>Hello3</Text>
+      </View>
+    );
+  }
   return (
     <>
       <Header />
@@ -258,7 +287,6 @@ const Information = props => {
                     />
                   </TouchableOpacity>
                 )}
-
                 {articles.slice(0, nombreArticle).map((article, id) => {
                   return <Card article={article} key={id} />;
                 })}
