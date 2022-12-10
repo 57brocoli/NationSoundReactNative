@@ -25,6 +25,7 @@ import Map from './src/ecrans/Map';
 import {Button} from 'react-native-paper';
 import {STYLESHEADER} from './src/constantes/StylesHeader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import WPTest from './src/ecrans/WPTest';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -99,6 +100,7 @@ function MaTableNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="WPTest" component={WPTest} />
 
       {/* <Stack.Screen
         name="TopBarNavigation"

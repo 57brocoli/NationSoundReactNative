@@ -58,7 +58,9 @@ const Profil = props => {
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity style={styles.touche}>
+            <TouchableOpacity
+              style={styles.touche}
+              onPress={() => props.navigation.navigate('WPTest')}>
               <MaterialCommunityIcons name="ticket" size={40} color={'white'} />
               <Text style={styles.textTouche}>Mes billets</Text>
             </TouchableOpacity>
