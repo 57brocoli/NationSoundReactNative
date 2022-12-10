@@ -99,6 +99,7 @@ function MaTableNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Map" component={Map} />
+
       {/* <Stack.Screen
         name="TopBarNavigation"
         component={TopBarNavigation}
