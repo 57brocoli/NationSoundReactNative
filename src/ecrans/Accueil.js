@@ -23,6 +23,7 @@ import Card from '../conposants/Card';
 import LinearGradient from 'react-native-linear-gradient';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+//import de Firebase
 import auth from '@react-native-firebase/auth';
 
 const Accueil = props => {
@@ -161,7 +162,9 @@ const Accueil = props => {
                 />
                 <Text style={STYLESMENU.textLink}>Information</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={STYLESMENU.lienNav}>
+              <TouchableOpacity
+                style={STYLESMENU.lienNav}
+                onPress={() => props.navigation.navigate('Map')}>
                 <MaterialCommunityIcons
                   name="map"
                   color={COLORS.mauveClaire}
@@ -302,7 +305,9 @@ const Accueil = props => {
                 source={require('../asset/img/geolocalisation.png')}
                 style={styles.geolocalisation}>
                 <View style={styles.buttonMap}>
-                  <Pressable style={styles.button}>
+                  <Pressable
+                    style={styles.button}
+                    onPress={() => props.navigation.navigate('Map')}>
                     <Text style={styles.textButton}>Ouvrir</Text>
                   </Pressable>
                 </View>

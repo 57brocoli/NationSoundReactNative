@@ -12,7 +12,7 @@ import Information from './src/ecrans/Information';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import ArtisteDetaills from './src/ecrans/ArtisteDetaills';
 import Billetterie from './src/ecrans/Billetterie';
-import {Image} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import Profil from './src/ecrans/Profil';
 import {COLORS} from './src/constantes/Couleurs';
 import Login from './src/ecrans/Login';
@@ -20,19 +20,43 @@ import SingUp from './src/ecrans/SignUp';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import NotificationDetails from './src/ecrans/NotificationDetails';
 import Notification from './src/ecrans/Notification';
+import Map from './src/ecrans/Map';
+
+import {Button} from 'react-native-paper';
+import {STYLESHEADER} from './src/constantes/StylesHeader';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Tabs = createBottomTabNavigator();
-
+const Header = () => {
+  return (
+    <View style={STYLESHEADER.header}>
+      <View style={STYLESHEADER.nav}>
+        <TouchableOpacity>
+          <Image
+            source={require('./src/asset/img/logo.jpg')}
+            style={STYLESHEADER.iconNav}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <MaterialCommunityIcons name={'menu'} color={'white'} size={50} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+//Variable pour le menu
 // Definition de toutes les routes
-function MaTableNavigation() {
+function MaTableNavigation(props) {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Accueil1"
         component={Accueil}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name="Profil"
@@ -74,6 +98,38 @@ function MaTableNavigation() {
         component={NotificationDetails}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="Map" component={Map} />
+      {/* <Stack.Screen
+        name="TopBarNavigation"
+        component={TopBarNavigation}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: COLORS.mauveClaire,
+          },
+          headerLeft: () => (
+            <Image
+              source={require('./src/asset/img/logo.jpg')}
+              style={STYLESHEADER.iconNav}
+            />
+          ),
+          headerTitleStyle: {
+            color: COLORS.mauveClaire,
+          },
+          headerRight: () => (
+            <TouchableOpacity>
+              <MaterialCommunityIcons
+                name={'menu'}
+                color={'white'}
+                size={50}
+                onPress={() => {
+                  props.navigation.navigate('Accueil');
+                }}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      /> */}
       {/* <Stack.Screen
         name="SignUp"
         component={SignUp}
@@ -197,7 +253,7 @@ function TabNavigation() {
 const MainStack = createStackNavigator();
 function MainStackScreen() {
   return (
-    <MainStack.Navigator initialRouteName={'LogIn'}>
+    <MainStack.Navigator initialRouteName={'Home'}>
       <MainStack.Screen
         name={'Home'}
         component={TabNavigation}
