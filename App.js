@@ -21,7 +21,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import NotificationDetails from './src/ecrans/NotificationDetails';
 import Notification from './src/ecrans/Notification';
 import Map from './src/ecrans/Map';
-import TopBarNavigation from './src/ecrans/TopBarNavigation';
+
 import {Button} from 'react-native-paper';
 import {STYLESHEADER} from './src/constantes/StylesHeader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -99,11 +99,11 @@ function MaTableNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Map" component={Map} />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="TopBarNavigation"
         component={TopBarNavigation}
         options={{
-          // headerShown: false,
+          headerShown: false,
           headerStyle: {
             backgroundColor: COLORS.mauveClaire,
           },
@@ -129,7 +129,7 @@ function MaTableNavigation(props) {
             </TouchableOpacity>
           ),
         }}
-      />
+      /> */}
       {/* <Stack.Screen
         name="SignUp"
         component={SignUp}
