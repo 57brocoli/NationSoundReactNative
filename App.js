@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -21,10 +21,11 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import NotificationDetails from './src/ecrans/NotificationDetails';
 import Notification from './src/ecrans/Notification';
 import Map from './src/ecrans/Map';
-
-import {Button} from 'react-native-paper';
 import {STYLESHEADER} from './src/constantes/StylesHeader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Footer from './src/conposants/Footer';
+import TestWP from './src/ecrans/TestWP';
+import Article from './src/ecrans/Article';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -64,6 +65,11 @@ function MaTableNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="Footer"
+        component={Footer}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="Programme"
         component={Programme}
         options={{headerShown: false}}
@@ -99,6 +105,12 @@ function MaTableNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="TestWP" component={TestWP} />
+      <Stack.Screen
+        name="Article"
+        component={Article}
+        options={{headerShown: false}}
+      />
 
       {/* <Stack.Screen
         name="TopBarNavigation"
@@ -254,7 +266,7 @@ function TabNavigation() {
 const MainStack = createStackNavigator();
 function MainStackScreen() {
   return (
-    <MainStack.Navigator initialRouteName={'Home'}>
+    <MainStack.Navigator initialRouteName={'LogIn'}>
       <MainStack.Screen
         name={'Home'}
         component={TabNavigation}

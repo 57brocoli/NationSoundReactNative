@@ -20,7 +20,6 @@ import {STYLESHEADER} from '../constantes/StylesHeader';
 import {STYLESMENU} from '../constantes/StyleMenu';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-//import de la Fakedata
 
 const Notification = props => {
   async function requestUserPermission() {
@@ -54,6 +53,7 @@ const Notification = props => {
           );
         }
       });
+    //lorsque l'on click sur la notification en arriere plan
     messaging().onNotificationOpenedApp(async remoteMessage => {
       console.log(
         'Notification caused app to open from background state:',
@@ -65,11 +65,7 @@ const Notification = props => {
       console.log('Message handled in the background!', remoteMessage);
       setNotificationsListe(remoteMessage.notification);
     });
-    // fonction pour ajouter la notification au tableau
-    // const modifyLevel = async remoteMessage => {
-    //   const newArr = [...notificationsListe, remoteMessage.notification];
-    //   setNotificationsListe(newArr);
-    // };
+
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       Alert.alert(
         remoteMessage.notification.title,
@@ -234,19 +230,14 @@ const Notification = props => {
         <LinearGradient
           colors={['#f1793c', '#6c24dd', '#5dd29b']}
           start={{x: 0, y: 0}}
-          end={{x: 1, y: 0.91}}>
+          end={{x: 1, y: 0.91}}
+          style={styles.containerNotification}>
           <Animated.View
             style={{
               opacity: filtre,
               transform: [{scale: scralView}],
             }}>
             <View style={styles.container}>
-              {/* <Text
-                onPress={() => {
-                  console.log(notificationsListe.android.imageUrl);
-                }}>
-                ggg
-              </Text> */}
               <View style={CENTER}>
                 <Text style={TITLE}>Notification</Text>
               </View>
@@ -284,12 +275,14 @@ const Notification = props => {
   );
 };
 const styles = StyleSheet.create({
+  containerNotification: {
+    height: 460,
+  },
   container: {
     marginTop: 70,
     paddingTop: 20,
     paddingHorizontal: 15,
   },
-
   NoNotification: {
     backgroundColor: 'rgba(255,255,255,0.4)',
     borderRadius: 10,

@@ -5,9 +5,12 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLORS} from '../constantes/Couleurs';
 import {FONTS} from '../constantes/Fonts';
 import auth from '@react-native-firebase/auth';
-import moment from 'moment';
+import {useEffect} from 'react';
 
 const Profil = props => {
+  useEffect(() => {
+    auth();
+  });
   const onSingOut = () => {
     auth()
       .signOut()
@@ -48,21 +51,13 @@ const Profil = props => {
         {/* Fin header */}
 
         {/* section notification/billets */}
-        <View style={styles.toucheContainer}>
-          <View>
-            <TouchableOpacity
-              style={styles.touche}
-              onPress={() => props.navigation.navigate('Notification')}>
-              <MaterialCommunityIcons name="bell" size={40} color={'white'} />
-              <Text style={styles.textTouche}>Notification</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <TouchableOpacity style={styles.touche}>
-              <MaterialCommunityIcons name="ticket" size={40} color={'white'} />
-              <Text style={styles.textTouche}>Mes billets</Text>
-            </TouchableOpacity>
-          </View>
+        <View>
+          <TouchableOpacity
+            style={styles.touche}
+            onPress={() => props.navigation.navigate('TestWP')}>
+            <MaterialCommunityIcons name="ticket" size={40} color={'white'} />
+            <Text style={styles.textTouche}>Mes billets</Text>
+          </TouchableOpacity>
         </View>
         {/* Fin section notification/billets */}
 
@@ -142,6 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.vert,
     padding: 20,
     marginVertical: 15,
+    marginHorizontal: 15,
     borderRadius: 10,
     alignItems: 'center',
   },

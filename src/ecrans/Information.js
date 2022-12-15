@@ -8,6 +8,8 @@ import {
   ScrollView,
   ImageBackground,
   Animated,
+  ActivityIndicator,
+  useWindowDimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 //import des composant exterieurs
@@ -18,11 +20,12 @@ import {CENTER, TEXT, TITLE} from '../constantes/Constantes';
 import {COLORS} from '../constantes/Couleurs';
 import {STYLESHEADER} from '../constantes/StylesHeader';
 import {STYLESMENU} from '../constantes/StyleMenu';
-//import de la Fakedata
-import {FakeArticle} from '../data/FakeArticle';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+//import d'axios pour recupérer les données
+import axios from 'axios';
+//import de Render pour afficher le contenu des articles
+import RenderHtml from 'react-native-render-html';
 
 const Information = props => {
   //Variable pour afficher/masquer le menu
@@ -163,28 +166,21 @@ const Information = props => {
     );
   };
 
-  //Variable pour recupérer les articles
-  const [articles, setArticles] = useState([]);
-  useEffect(() => setArticles(FakeArticle), []);
-  //Variable card qui représente un article
-  const Card = ({article, id}) => {
-    return (
-      <TouchableOpacity style={styles.article} Key={id}>
-        <Image source={article.src} style={styles.articleimg} />
-        <View style={styles.containerText}>
-          <Text style={styles.articleTitle}>{article.title}</Text>
-          <View style={styles.containerArticleText}>
-            <Text style={styles.articleText}>{article.description}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  //Fonction pour recuperer les articles
+  useEffect(() => {
+    axios
+      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed')
+      .then(res => setListeArticles(res.data));
+  }, []);
 
-  //Variable pour filtré les articles
+  //Variable de stockage des articles
+  const [listeArticles, setListeArticles] = useState();
+  const {width} = useWindowDimensions();
+
+  //Fonctions pour filtrées les articles
   const [nombreArticle, setNombreArticle] = useState(3);
   const tousAfficher = () => {
-    setNombreArticle(FakeArticle.length);
+    setNombreArticle(listeArticles.length);
   };
   const revenir = () => {
     setNombreArticle(3);
@@ -204,37 +200,6 @@ const Information = props => {
     setQuestion3(!question3);
   };
 
-  const Tab = createMaterialTopTabNavigator();
-  function MyTabs() {
-    return (
-      <Tab.Navigator initialRouteName="Home2" style={{top: 0}}>
-        <Tab.Screen name="Home2" component={Home2} />
-        <Tab.Screen name="FAQ" component={FAQ} />
-        <Tab.Screen name="Actualite" component={Actualite} />
-      </Tab.Navigator>
-    );
-  }
-  function Home2() {
-    return (
-      <View>
-        <Text>Hello1</Text>
-      </View>
-    );
-  }
-  function FAQ() {
-    return (
-      <View>
-        <Text>Hello2</Text>
-      </View>
-    );
-  }
-  function Actualite() {
-    return (
-      <View>
-        <Text>Hello3</Text>
-      </View>
-    );
-  }
   return (
     <>
       <Header />
@@ -261,10 +226,16 @@ const Information = props => {
               source={require('../asset/img/imgInfos.jpg')}
               style={styles.backgroundImg}
             />
+
+            {/* Section actualitées */}
             <View style={styles.containerInfos}>
               <View>
                 <View style={CENTER}>
-                  <Text style={TITLE}>Actualitées</Text>
+                  <Text
+                    style={TITLE}
+                    onPress={() => console.log(listeArticles.length)}>
+                    Actualitées
+                  </Text>
                 </View>
                 {nombreArticle !== 3 ? (
                   <TouchableOpacity
@@ -287,9 +258,54 @@ const Information = props => {
                     />
                   </TouchableOpacity>
                 )}
-                {articles.slice(0, nombreArticle).map((article, id) => {
-                  return <Card article={article} key={id} />;
-                })}
+                {!listeArticles ? (
+                  <View>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                  </View>
+                ) : (
+                  listeArticles
+                    .filter(article => article.categories[0] === 29) //29 est la catégorie pour les articles de l'actualité
+                    .slice(0, nombreArticle)
+                    .map((article, index) => {
+                      return (
+                        <TouchableOpacity
+                          style={styles.card}
+                          key={index}
+                          onPress={() =>
+                            props.navigation.navigate('Article', {
+                              title: article.title.rendered,
+                              text: article.content.rendered,
+                              img: article._embedded['wp:featuredmedia']['0']
+                                .source_url,
+                            })
+                          }>
+                          {/* Image à gauche */}
+                          {!listeArticles ? (
+                            <ActivityIndicator size="large" color="#00ff00" />
+                          ) : (
+                            <Image
+                              style={styles.cardImg}
+                              source={{
+                                uri: article._embedded['wp:featuredmedia']['0']
+                                  .source_url,
+                              }}
+                            />
+                          )}
+                          {/* Text à droite */}
+                          <View style={styles.cardContainerText}>
+                            <Text style={styles.cardTitle}>
+                              {article.title.rendered}
+                            </Text>
+                            <RenderHtml
+                              contentWidth={width}
+                              source={{html: article.excerpt.rendered}}
+                              tagsStyles={tagsStyles}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })
+                )}
               </View>
               <View>
                 <View style={CENTER}>
@@ -362,7 +378,7 @@ const styles = StyleSheet.create({
   },
   backgroundImg: {
     width: '105%',
-    height: 200,
+    height: 240,
     right: 15,
     marginBottom: 15,
   },
@@ -376,38 +392,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
-  },
-  article: {
-    height: 120,
-    width: 381,
-    marginVertical: 10,
-    borderRadius: 10,
-    backgroundColor: COLORS.mauveFonce,
-    flexDirection: 'row',
-  },
-  articleimg: {
-    width: 150,
-    height: 120,
-    borderRadius: 10,
-  },
-  containerText: {
-    width: 250,
-    padding: 15,
-  },
-  articleTitle: {
-    color: 'white',
-    width: 180,
-    margin: 2,
-    fontSize: 16,
-    fontFamily: FONTS.titre,
-  },
-  containerArticleText: {
-    overflow: 'hidden',
-    height: 65,
-    width: 180,
-  },
-  articleText: {
-    color: 'white',
   },
   // Style FAQ
   containerQuestion: {
@@ -441,5 +425,51 @@ const styles = StyleSheet.create({
     display: 'none',
   },
   footer: {},
+  //style header
+  header: {marginTop: 90},
+  headerImg: {
+    width: '105%',
+    height: 200,
+  },
+  headerContainerText: {
+    padding: 10,
+  },
+  headerTitle: {
+    color: COLORS.jaune,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  //style card
+  card: {
+    backgroundColor: COLORS.mauveFonce,
+    marginVertical: 10,
+
+    borderRadius: 10,
+    flexDirection: 'row',
+  },
+  cardImg: {
+    width: 120,
+    height: 130,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  cardContainerText: {
+    padding: 10,
+  },
+  cardTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
+// style du RenderHtml
+const tagsStyles = {
+  body: {
+    color: 'white',
+    overflow: 'hidden',
+    textAlign: 'justify',
+    height: 79,
+    width: 230,
+  },
+};
 export default Information;
