@@ -3,7 +3,7 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS} from '../constantes/Couleurs';
 
-const Footer = () => {
+const Footer = props => {
   return (
     <View style={styles.footer}>
       <View style={styles.logo}>
@@ -52,8 +52,12 @@ const Footer = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.footerList}>
-        <TouchableOpacity style={styles.containerLi}>
+      {/* <View style={styles.footerList}>
+        <TouchableOpacity
+          style={styles.containerLi}
+          onPress={() => {
+            props.navigation.navigate('Sponsors');
+          }}>
           <MaterialCommunityIcons
             name="account-group"
             color={COLORS.mauveFonce}
@@ -93,7 +97,7 @@ const Footer = () => {
           />
           <Text style={styles.textLi}>Mentions légales</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={styles.mentionsLegales}>
         <Text style={styles.textMentionLegales}>
           &copy; - Nation Sounds - 2022
@@ -149,6 +153,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   mentionsLegales: {
+    marginTop: 20,
     backgroundColor: '#1c043c',
     height: 50,
     flexDirection: 'row',

@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   containerBillet: {
-    marginVertical: 15,
+    marginVertical: 17,
     backgroundColor: 'grey',
     borderRadius: 10,
   },
@@ -297,7 +297,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-
   panier: {
     width: '100%',
     backgroundColor: 'rgba(255,255,255,0.6)',

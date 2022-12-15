@@ -18,7 +18,6 @@ import {STYLESHEADER} from '../constantes/StylesHeader';
 import {STYLESMENU} from '../constantes/StyleMenu';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-//import de la Fakedata
 
 const Billetterie = props => {
   //Variable pour afficher/masquer le menu

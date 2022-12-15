@@ -1,32 +1,31 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   Image,
-  StyleSheet,
   ScrollView,
   Animated,
   useWindowDimensions,
-  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 //import des composant exterieurs
 import Footer from '../conposants/Footer';
 //import des variables de style prédéfinis
 import {FONTS} from '../constantes/Fonts';
-import {TITLE, CENTER} from '../constantes/Constantes';
+import {CENTER, TEXT, TITLE} from '../constantes/Constantes';
 import {COLORS} from '../constantes/Couleurs';
 import {STYLESHEADER} from '../constantes/StylesHeader';
 import {STYLESMENU} from '../constantes/StyleMenu';
+import {STYLEBOUTTONRETOUR} from '../constantes/StyleButtonRetour';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-//import d'axios pour recupérer les données
-import axios from 'axios';
 //import de Render pour afficher le contenu des articles
 import RenderHtml from 'react-native-render-html';
+import {StyleSheet} from 'react-native';
 
-const Sponsors = props => {
+const Article = ({route, navigation}, props) => {
+  const {title, text, img} = route.params;
   //Variable pour afficher/masquer le menu
   const [showMenu, setShowMenu] = useState(false);
   //Varible d'animation lors de l'affichage/masquage de menu
@@ -39,8 +38,7 @@ const Sponsors = props => {
     return (
       <View style={STYLESHEADER.header}>
         <View style={STYLESHEADER.nav}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Accueil')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Accueil1')}>
             <Image
               source={require('../asset/img/logo.jpg')}
               style={STYLESHEADER.iconNav}
@@ -109,7 +107,7 @@ const Sponsors = props => {
           <View style={STYLESMENU.containerLink}>
             <TouchableOpacity
               style={STYLESMENU.lienNav}
-              onPress={() => props.navigation.navigate('Accueil')}>
+              onPress={() => navigation.navigate('Accueil1')}>
               <MaterialCommunityIcons
                 name="home"
                 color={COLORS.mauveClaire}
@@ -119,7 +117,7 @@ const Sponsors = props => {
             </TouchableOpacity>
             <TouchableOpacity
               style={STYLESMENU.lienNav}
-              onPress={() => props.navigation.navigate('Billetterie')}>
+              onPress={() => navigation.navigate('Billetterie')}>
               <MaterialCommunityIcons
                 name="ticket"
                 color={COLORS.mauveClaire}
@@ -129,7 +127,7 @@ const Sponsors = props => {
             </TouchableOpacity>
             <TouchableOpacity
               style={STYLESMENU.lienNav}
-              onPress={() => props.navigation.navigate('Programme')}>
+              onPress={() => navigation.navigate('Programme')}>
               <MaterialCommunityIcons
                 name="clipboard-list"
                 color={COLORS.mauveClaire}
@@ -139,7 +137,7 @@ const Sponsors = props => {
             </TouchableOpacity>
             <TouchableOpacity
               style={STYLESMENU.lienNav}
-              onPress={() => props.navigation.navigate('Information')}>
+              onPress={() => navigation.navigate('Information')}>
               <MaterialCommunityIcons
                 name="information"
                 color={COLORS.mauveClaire}
@@ -147,7 +145,9 @@ const Sponsors = props => {
               />
               <Text style={STYLESMENU.textLink}>Information</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={STYLESMENU.lienNav}>
+            <TouchableOpacity
+              style={STYLESMENU.lienNav}
+              onPress={() => navigation.navigate('Map')}>
               <MaterialCommunityIcons
                 name="map"
                 color={COLORS.mauveClaire}
@@ -168,119 +168,73 @@ const Sponsors = props => {
       </Animated.View>
     );
   };
-
-  //Fonction pour recuperer les articles
-  useEffect(() => {
-    axios
-      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed')
-      .then(res => setListeSponsors(res.data));
-  }, []);
-
-  //Variable de stockage des articles
-  const [listeSponsors, setListeSponsors] = useState();
   const {width} = useWindowDimensions();
+  //Variable de navigation Boutton retour
+  const BouttonRetour = () => {
+    return (
+      <TouchableOpacity
+        style={STYLEBOUTTONRETOUR.container}
+        onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons
+          name={'chevron-left'}
+          color={'white'}
+          size={40}
+        />
+        <Text style={STYLEBOUTTONRETOUR.text}>Retour</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <>
+    <View>
       <Header />
+      <BouttonRetour />
       <ScrollView>
         <LinearGradient
           colors={['#f1793c', '#6c24dd', '#5dd29b']}
           start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          style={styles.containerSponsors}>
+          end={{x: 1, y: 0.91}}>
           <Animated.View
-            style={{opacity: filtre, transform: [{scale: scralView}]}}>
-            <View style={styles.containerTitle}>
-              <View style={CENTER}>
-                <Text style={TITLE}>Tous nos partenaires</Text>
-              </View>
+            style={{
+              opacity: filtre,
+              transform: [{scale: scralView}],
+            }}>
+            <Image style={styles.img} source={{uri: img}} />
+            <View style={CENTER}>
+              <Text style={TITLE}>{title}</Text>
             </View>
-            {listeSponsors ? (
-              listeSponsors
-                .filter(partenaire => partenaire.categories[0] === 31)
-                .map((partenaire, index) => {
-                  return (
-                    <View key={index} style={styles.container}>
-                      <Image
-                        style={styles.img}
-                        source={{
-                          uri: partenaire._embedded['wp:featuredmedia']['0']
-                            .source_url,
-                        }}
-                      />
-                      <View style={styles.containerText}>
-                        <Text
-                          style={styles.title}
-                          onPress={() =>
-                            console.log(
-                              partenaire._embedded['wp:featuredmedia']['0']
-                                .source_url,
-                            )
-                          }>
-                          {partenaire.title.rendered}
-                        </Text>
-                        <RenderHtml
-                          contentWidth={width}
-                          source={{html: partenaire.excerpt.rendered}}
-                          tagsStyles={tagsStyles}
-                        />
-                      </View>
-                    </View>
-                  );
-                })
-            ) : (
-              <View style={styles.activityIndicator}>
-                <ActivityIndicator size="large" color="#00ff00" />
-              </View>
-            )}
+            <RenderHtml
+              contentWidth={width}
+              source={{html: text}}
+              tagsStyles={tagsStyles}
+            />
           </Animated.View>
         </LinearGradient>
         <Footer />
       </ScrollView>
       <Menu />
-    </>
+    </View>
   );
 };
 const styles = StyleSheet.create({
-  activityIndicator: {
-    height: 280,
-    justifyContent: 'center',
-  },
-  containerSponsors: {
-    paddingHorizontal: 15,
-    paddingBottom: 25,
-  },
-  containerTitle: {
-    marginTop: 90,
-    marginBottom: 15,
-  },
-  container: {
-    flexDirection: 'row',
-    marginVertical: 10,
-  },
   img: {
-    height: 150,
-    width: 150,
-    borderRadius: 10,
-  },
-  containerText: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    height: 450,
+    width: '105%',
+    marginTop: 55,
+    right: 20,
+    marginBottom: 20,
   },
   title: {
-    color: 'white',
-    fontFamily: FONTS.titre,
-    fontSize: 24,
+    color: COLORS.orange,
   },
 });
-// style du RenderHtml
 const tagsStyles = {
   body: {
     color: 'white',
-    fontSize: 18,
-    overflow: 'hidden',
-    height: 110,
-    width: 200,
+    textAlign: 'justify',
+    padding: 15,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 };
-export default Sponsors;
+export default Article;
