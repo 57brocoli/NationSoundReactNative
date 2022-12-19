@@ -12,7 +12,7 @@ import Information from './src/ecrans/Information';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import ArtisteDetaills from './src/ecrans/ArtisteDetaills';
 import Billetterie from './src/ecrans/Billetterie';
-import {Image, Text, View} from 'react-native';
+import {Image, View} from 'react-native';
 import Profil from './src/ecrans/Profil';
 import {COLORS} from './src/constantes/Couleurs';
 import Login from './src/ecrans/Login';
@@ -30,24 +30,7 @@ import Article from './src/ecrans/Article';
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Tabs = createBottomTabNavigator();
-const Header = () => {
-  return (
-    <View style={STYLESHEADER.header}>
-      <View style={STYLESHEADER.nav}>
-        <TouchableOpacity>
-          <Image
-            source={require('./src/asset/img/logo.jpg')}
-            style={STYLESHEADER.iconNav}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialCommunityIcons name={'menu'} color={'white'} size={50} />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-//Variable pour le menu
+
 // Definition de toutes les routes
 function MaTableNavigation(props) {
   return (
@@ -207,57 +190,6 @@ function TabNavigation() {
           ),
         }}
       />
-      {/* <Tab.Navigator
-        initialRouteName="Profil"
-        activeColor="#f1e469"
-        inactiveColor="white"
-        barStyle={{
-          backgroundColor: COLORS.mauveFonce,
-        }}>
-        <Tab.Screen
-          name="notification"
-          component={Notifications}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({color}) => (
-              <MaterialCommunityIcons name="bell" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Home"
-          component={MaTableNavigation}
-          options={{
-            headerShown: false,
-            tabBarIcon: () => (
-              <Image
-                source={require('./src/asset/img/logo.jpg')}
-                style={{
-                  height: 50,
-                  width: 50,
-                  borderRadius: 10,
-                  marginTop: -6,
-                }}
-              />
-            ),
-            tabBarLabel: false,
-          }}
-        />
-        <Tab.Screen
-          name="Profil"
-          component={Login}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({color}) => (
-              <MaterialCommunityIcons
-                name="account-box"
-                color={color}
-                size={26}
-              />
-            ),
-          }}
-        />
-      </Tab.Navigator> */}
     </Tabs.Navigator>
   );
 }
@@ -292,12 +224,5 @@ const App = () => {
     </NavigationContainer>
   );
 };
-// Variable pour chacher le tab en fonction de la route appeler
-const getTabBarVisibility = route => {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
-  if (routeName === 'LogIn') {
-    return 'none';
-  }
-  return 'flex';
-};
+
 export default App;

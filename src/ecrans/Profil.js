@@ -27,7 +27,7 @@ const Profil = props => {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.buttonRetour}
-            onPress={() => props.navigation.navigate('Accueil')}>
+            onPress={() => props.navigation.navigate('Accueil1')}>
             <MaterialCommunityIcons
               name="chevron-left"
               size={40}

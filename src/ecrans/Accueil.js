@@ -40,7 +40,7 @@ const Accueil = props => {
       <View style={STYLESHEADER.header}>
         <View style={STYLESHEADER.nav}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('Accueil')}>
+            onPress={() => props.navigation.navigate('Accueil1')}>
             <Image
               source={require('../asset/img/logo.jpg')}
               style={STYLESHEADER.iconNav}
@@ -124,7 +124,7 @@ const Accueil = props => {
             <View style={STYLESMENU.containerLink}>
               <TouchableOpacity
                 style={STYLESMENU.lienNav}
-                onPress={() => props.navigation.navigate('Accueil')}>
+                onPress={() => props.navigation.navigate('Accueil1')}>
                 <MaterialCommunityIcons
                   name="home"
                   color={COLORS.mauveClaire}

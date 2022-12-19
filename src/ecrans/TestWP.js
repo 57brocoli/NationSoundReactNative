@@ -17,7 +17,7 @@ const TestWP = props => {
       .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed')
       .then(res => setListeArticles(res.data));
   }, []);
-  const [listeArticles, setListeArticles] = useState([]);
+  const [listeArticles, setListeArticles] = useState();
   const {width} = useWindowDimensions();
 
   return (

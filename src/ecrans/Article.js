@@ -7,13 +7,13 @@ import {
   ScrollView,
   Animated,
   useWindowDimensions,
+  StyleSheet,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 //import des composant exterieurs
 import Footer from '../conposants/Footer';
 //import des variables de style prédéfinis
-import {FONTS} from '../constantes/Fonts';
-import {CENTER, TEXT, TITLE} from '../constantes/Constantes';
+import {CENTER, TITLE} from '../constantes/Constantes';
 import {COLORS} from '../constantes/Couleurs';
 import {STYLESHEADER} from '../constantes/StylesHeader';
 import {STYLESMENU} from '../constantes/StyleMenu';
@@ -22,9 +22,10 @@ import {STYLEBOUTTONRETOUR} from '../constantes/StyleButtonRetour';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import de Render pour afficher le contenu des articles
 import RenderHtml from 'react-native-render-html';
-import {StyleSheet} from 'react-native';
+//import de Firebase
+import auth from '@react-native-firebase/auth';
 
-const Article = ({route, navigation}, props) => {
+const Article = ({route, navigation}) => {
   const {title, text, img} = route.params;
   //Variable pour afficher/masquer le menu
   const [showMenu, setShowMenu] = useState(false);
@@ -75,6 +76,16 @@ const Article = ({route, navigation}, props) => {
   };
   //Variable pour le menu
   const Menu = () => {
+    // variable pour se deconnecter
+    const onSingOut = () => {
+      auth()
+        .signOut()
+        .then(() => {
+          console.log('User signed out!');
+          navigation.navigate('LogIn');
+        });
+    };
+
     return (
       <Animated.View
         style={{
@@ -84,87 +95,95 @@ const Article = ({route, navigation}, props) => {
           height: 623,
           top: 70,
           right: 0,
-          paddingHorizontal: 15,
-          paddingVertical: 10,
           transform: [{translateX: slideMenu}],
         }}>
-        <View style={STYLESMENU.containerMenu}>
-          {/* container de la photo de Profile */}
-          <TouchableOpacity style={STYLESMENU.containerUserIcon}>
-            <Image
-              source={require('../asset/icons/userIcon.png')}
-              style={STYLESMENU.userIcon}
-            />
-            <Text style={STYLESMENU.lienVersProfil}>Voir Profile</Text>
-          </TouchableOpacity>
-          {/* fin container de la photo de Profile */}
+        <LinearGradient
+          colors={[COLORS.mauveClaire, COLORS.mauveFonce]}
+          style={{paddingHorizontal: 15, paddingVertical: 10}}>
+          <View style={STYLESMENU.containerMenu}>
+            {/* container de la photo de Profile */}
+            <TouchableOpacity
+              style={STYLESMENU.containerUserIcon}
+              onPress={() => navigation.navigate('Profil')}>
+              <Image
+                source={require('../asset/icons/userIcon.png')}
+                style={STYLESMENU.userIcon}
+              />
+              <Text style={STYLESMENU.lienVersProfil}>Voir Profile</Text>
+            </TouchableOpacity>
+            {/* fin container de la photo de Profile */}
 
-          {/* container du nom de l'utilisateur */}
-          <Text style={STYLESMENU.nameUser}>Kyle Perry</Text>
-          {/* fin container du nom de l'utilisateur */}
+            {/* container du nom de l'utilisateur */}
+            <Text style={STYLESMENU.nameUser}>
+              {auth().currentUser.displayName}
+            </Text>
+            {/* fin container du nom de l'utilisateur */}
 
-          {/* container des liens de navigation*/}
-          <View style={STYLESMENU.containerLink}>
+            {/* container des liens de navigation*/}
+            <View style={STYLESMENU.containerLink}>
+              <TouchableOpacity
+                style={STYLESMENU.lienNav}
+                onPress={() => navigation.navigate('Accueil1')}>
+                <MaterialCommunityIcons
+                  name="home"
+                  color={COLORS.mauveClaire}
+                  size={30}
+                />
+                <Text style={STYLESMENU.textLink}>Accueil</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={STYLESMENU.lienNav}
+                onPress={() => navigation.navigate('Billetterie')}>
+                <MaterialCommunityIcons
+                  name="ticket"
+                  color={COLORS.mauveClaire}
+                  size={30}
+                />
+                <Text style={STYLESMENU.textLink}>Billetterie</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={STYLESMENU.lienNav}
+                onPress={() => navigation.navigate('Programme')}>
+                <MaterialCommunityIcons
+                  name="clipboard-list"
+                  color={COLORS.mauveClaire}
+                  size={30}
+                />
+                <Text style={STYLESMENU.textLink}>Programme</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={STYLESMENU.lienNav}
+                onPress={() => navigation.navigate('Information')}>
+                <MaterialCommunityIcons
+                  name="information"
+                  color={COLORS.mauveClaire}
+                  size={30}
+                />
+                <Text style={STYLESMENU.textLink}>Information</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={STYLESMENU.lienNav}
+                onPress={() => navigation.navigate('Map')}>
+                <MaterialCommunityIcons
+                  name="map"
+                  color={COLORS.mauveClaire}
+                  size={30}
+                />
+                <Text style={STYLESMENU.textLink}>Map</Text>
+              </TouchableOpacity>
+            </View>
+            {/* fin container des liens de navigation*/}
+
+            {/*container se deconnecter*/}
             <TouchableOpacity
-              style={STYLESMENU.lienNav}
-              onPress={() => navigation.navigate('Accueil1')}>
-              <MaterialCommunityIcons
-                name="home"
-                color={COLORS.mauveClaire}
-                size={30}
-              />
-              <Text style={STYLESMENU.textLink}>Accueil</Text>
+              style={STYLESMENU.containerLinkDeconnexion}
+              onPress={() => onSingOut()}>
+              <MaterialCommunityIcons name="logout" color={'white'} size={30} />
+              <Text style={STYLESMENU.textDeconnexion}>Déconnexion</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={STYLESMENU.lienNav}
-              onPress={() => navigation.navigate('Billetterie')}>
-              <MaterialCommunityIcons
-                name="ticket"
-                color={COLORS.mauveClaire}
-                size={30}
-              />
-              <Text style={STYLESMENU.textLink}>Billetterie</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={STYLESMENU.lienNav}
-              onPress={() => navigation.navigate('Programme')}>
-              <MaterialCommunityIcons
-                name="clipboard-list"
-                color={COLORS.mauveClaire}
-                size={30}
-              />
-              <Text style={STYLESMENU.textLink}>Programme</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={STYLESMENU.lienNav}
-              onPress={() => navigation.navigate('Information')}>
-              <MaterialCommunityIcons
-                name="information"
-                color={COLORS.mauveClaire}
-                size={30}
-              />
-              <Text style={STYLESMENU.textLink}>Information</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={STYLESMENU.lienNav}
-              onPress={() => navigation.navigate('Map')}>
-              <MaterialCommunityIcons
-                name="map"
-                color={COLORS.mauveClaire}
-                size={30}
-              />
-              <Text style={STYLESMENU.textLink}>Map</Text>
-            </TouchableOpacity>
+            {/*container se deconnecter*/}
           </View>
-          {/* fin container des liens de navigation*/}
-
-          {/*container se deconnecter*/}
-          <TouchableOpacity style={STYLESMENU.containerLinkDeconnexion}>
-            <MaterialCommunityIcons name="logout" color={'white'} size={30} />
-            <Text style={STYLESMENU.textDeconnexion}>Déconnexion</Text>
-          </TouchableOpacity>
-          {/*container se deconnecter*/}
-        </View>
+        </LinearGradient>
       </Animated.View>
     );
   };

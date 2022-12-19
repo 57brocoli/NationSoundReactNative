@@ -7,12 +7,4 @@ export const FakeBillets = [
     description:
       'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas provident repellat aut similique perferendis itaque repudiandae ex in, et quibusdam cupiditate ipsum quaerat corporis iste, dolorum expedita sunt? Impedit, veniam? Id unde, dolorum laboriosam soluta blanditiis repellendus adipisci. Assumenda vero atque aut impedit dolorem accusantium cum sit odit libero dolores!',
   },
-  {
-    id: 2,
-    name: 'Billet V.I.P',
-    prix: 'XXX €',
-    src: require('../asset/img/ticket_VIP.jpg'),
-    description:
-      'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas provident repellat aut similique perferendis itaque repudiandae ex in, et quibusdam cupiditate ipsum quaerat corporis iste, dolorum expedita sunt? Impedit, veniam? Id unde, dolorum laboriosam soluta blanditiis repellendus adipisci. Assumenda vero atque aut impedit dolorem accusantium cum sit odit libero dolores!',
-  },
 ];
