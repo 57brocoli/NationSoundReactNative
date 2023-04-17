@@ -27,6 +27,8 @@ import axios from 'axios';
 import RenderHtml from 'react-native-render-html';
 //import de Firebase
 import auth from '@react-native-firebase/auth';
+//import de la fakedate
+import {FakeSponsort} from '../data/FakeSponsort';
 
 const Sponsors = props => {
   //Variable pour afficher/masquer le menu
@@ -217,6 +219,21 @@ const Sponsors = props => {
                 <Text style={TITLE}>Tous nos partenaires</Text>
               </View>
             </View>
+            <View>
+              {FakeSponsort.map((sponsort, index) => {
+                return (
+                  <View key={index} style={styles.container}>
+                    <Image source={sponsort.source} style={styles.img} />
+                    <View style={styles.containerText}>
+                      <Text style={styles.title}>{sponsort.name}</Text>
+                      <Text style={styles.description}>
+                        {sponsort.description}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })}
+            </View>
             {listeSponsors ? (
               listeSponsors
                 .filter(partenaire => partenaire.categories[0] === 31)
@@ -292,7 +309,14 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontFamily: FONTS.titre,
-    fontSize: 24,
+    fontSize: 26,
+  },
+  description: {
+    color: 'white',
+    fontSize: 16,
+    overflow: 'hidden',
+    height: 110,
+    width: 200,
   },
 });
 // style du RenderHtml

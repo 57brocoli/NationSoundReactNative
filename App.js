@@ -12,7 +12,7 @@ import Information from './src/ecrans/Information';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import ArtisteDetaills from './src/ecrans/ArtisteDetaills';
 import Billetterie from './src/ecrans/Billetterie';
-import {Image, View} from 'react-native';
+import {Image} from 'react-native';
 import Profil from './src/ecrans/Profil';
 import {COLORS} from './src/constantes/Couleurs';
 import Login from './src/ecrans/Login';
@@ -23,6 +23,7 @@ import Map from './src/ecrans/Map';
 import Footer from './src/conposants/Footer';
 import TestWP from './src/ecrans/TestWP';
 import Article from './src/ecrans/Article';
+import MapDetails from './src/ecrans/MapDetails';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -85,54 +86,17 @@ function MaTableNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen
+        name="MapDetails"
+        component={MapDetails}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="TestWP" component={TestWP} />
       <Stack.Screen
         name="Article"
         component={Article}
         options={{headerShown: false}}
       />
-
-      {/* <Stack.Screen
-        name="TopBarNavigation"
-        component={TopBarNavigation}
-        options={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: COLORS.mauveClaire,
-          },
-          headerLeft: () => (
-            <Image
-              source={require('./src/asset/img/logo.jpg')}
-              style={STYLESHEADER.iconNav}
-            />
-          ),
-          headerTitleStyle: {
-            color: COLORS.mauveClaire,
-          },
-          headerRight: () => (
-            <TouchableOpacity>
-              <MaterialCommunityIcons
-                name={'menu'}
-                color={'white'}
-                size={50}
-                onPress={() => {
-                  props.navigation.navigate('Accueil');
-                }}
-              />
-            </TouchableOpacity>
-          ),
-        }}
-      /> */}
-      {/* <Stack.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
-        name="LogIn"
-        component={Login}
-        options={{headerShown: false}}
-      /> */}
     </Stack.Navigator>
   );
 }
@@ -168,10 +132,10 @@ function TabNavigation() {
             <Image
               source={require('./src/asset/img/logo.jpg')}
               style={{
-                height: 70,
-                width: 70,
+                height: 50,
+                width: 50,
                 borderRadius: 50,
-                marginTop: -40,
+                marginTop: 0,
               }}
             />
           ),
@@ -191,7 +155,7 @@ function TabNavigation() {
   );
 }
 
-// Definition de la navigation (ou la tab apparait ou pas)
+// Definition de la navigation (la ou la tab apparait ou pas)
 const MainStack = createStackNavigator();
 function MainStackScreen() {
   return (

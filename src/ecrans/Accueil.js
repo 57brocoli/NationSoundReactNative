@@ -10,10 +10,10 @@ import {
   Pressable,
   ImageBackground,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 //import des variables de style prédéfinis
 import {FONTS} from '../constantes/Fonts';
-import {CENTER, TEXT, TITLE} from '../constantes/Constantes';
+import {CENTER, TEXT} from '../constantes/Constantes';
 import {COLORS} from '../constantes/Couleurs';
 import {STYLESHEADER} from '../constantes/StylesHeader';
 import {STYLESMENU} from '../constantes/StyleMenu';
@@ -208,6 +208,19 @@ const Accueil = props => {
           style={styles.LinearGradient}>
           <Animated.View
             style={{opacity: filtre, transform: [{scale: scalView}]}}>
+            {/* Section billet*/}
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('Billetterie');
+              }}
+              style={styles.bouttonBillet}>
+              <View style={styles.boutton}>
+                <Text style={styles.textbouttonBillet}>
+                  Acheter votre billet ici
+                </Text>
+              </View>
+            </TouchableOpacity>
+            {/* FinSection billet*/}
             {/* Section programme */}
             <View style={styles.section}>
               <View style={CENTER}>
@@ -342,6 +355,22 @@ const styles = StyleSheet.create({
     marginTop: 70,
     marginLeft: 25,
   },
+  bouttonBillet: {
+    position: 'absolute',
+    alignItems: 'center',
+    width: '100%',
+    top: -180,
+  },
+  boutton: {
+    backgroundColor: COLORS.orange,
+    padding: 20,
+    borderRadius: 10,
+  },
+  textbouttonBillet: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'LibreBaskerville-Bold',
+  },
   title: {
     fontFamily: FONTS.titre,
     fontSize: 24,
@@ -350,7 +379,6 @@ const styles = StyleSheet.create({
   section: {
     paddingHorizontal: 15,
   },
-
   containerProgrammeImages: {
     flexDirection: 'row',
     justifyContent: 'space-around',

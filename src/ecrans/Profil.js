@@ -76,11 +76,11 @@ const Profil = props => {
         </View>
         <View style={styles.userParametre}>
           <Text>Numero de téléphone</Text>
-          <Text style={styles.userTextParametre}></Text>
+          <Text style={styles.userTextParametre}>''</Text>
         </View>
         <View style={styles.userParametre}>
           <Text>Date de naissance</Text>
-          <Text style={styles.userTextParametre}></Text>
+          <Text style={styles.userTextParametre}>''</Text>
         </View>
         <View style={styles.userParametre}>
           <TouchableOpacity

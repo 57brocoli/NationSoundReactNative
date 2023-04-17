@@ -22,32 +22,49 @@ const SignUp = props => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordSecurity, setPasswordSecurity] = useState('');
   const [date, setDate] = useState(new Date());
   const [birthDate, setBirthDate] = useState();
   const [open, setOpen] = useState(false);
 
   // fonction pour s'inscrire
   const onSingUp = () => {
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(async response => {
-        await response.user.updateProfile({
-          displayName: name,
+    if (!name) {
+      alert("Ooh! Il s'emblerait que vous avez oublier votre nom");
+    } else if (!email) {
+      alert('Adresse mail manquante');
+    } else if (!password) {
+      alert("Veuillez s'il vous plait, entrez un mot de passe");
+    } else if (!passwordSecurity) {
+      alert("Veuillez s'il vous plait confirmer votre mot de passe");
+    } else if (password !== passwordSecurity) {
+      alert("Il s'emblerait que la confirmation du mot de passe est incorect");
+    } else {
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(async response => {
+          await response.user.updateProfile({
+            displayName: name,
+          });
+          console.log('Compte creer, utilisateur connecté', phoneNumber);
+          props.navigation.navigate('Home');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            console.log('Cette adresse possède déja un compte');
+            alert('Cette adresse possède déja un compte');
+          }
+          if (error.code === 'auth/invalid-email') {
+            console.log('adresse mail non valide');
+            alert('Adresse mail invalide');
+          }
+          if (error.code === 'auth/weak-password') {
+            console.log('Mot de passe pas assez sécurisant');
+            alert('Mot de passe pas assez sécurisant');
+          }
+          console.error(error);
         });
-        console.log('User account created & signed in!', phoneNumber);
-        props.navigation.navigate('Home');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-        console.error(error);
-        alert('Erreur');
-      });
+    }
   };
   moment.locale('fr');
 
@@ -160,6 +177,7 @@ const SignUp = props => {
           <TextInput
             style={styles.input}
             placeholder={'Confirmer votre mot de passe'}
+            onChangeText={text => setPasswordSecurity(text)}
             secureTextEntry
           />
         </View>

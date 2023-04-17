@@ -4,4 +4,6 @@ export const COLORS = {
   jaune: '#f1e469',
   mauveClaire: '#6c24dd',
   mauveFonce: '#1c043c',
+  rouge: '#FF0000',
+  blue: '#0000FF',
 };

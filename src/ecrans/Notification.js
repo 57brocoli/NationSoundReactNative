@@ -171,9 +171,13 @@ const Notification = props => {
             {/* fin container de la photo de Profile */}
 
             {/* container du nom de l'utilisateur */}
-            <Text style={STYLESMENU.nameUser}>
-              {auth().currentUser.displayName}
-            </Text>
+            {auth() ? (
+              <Text style={STYLESMENU.nameUser}>
+                {auth().currentUser.displayName}
+              </Text>
+            ) : (
+              ''
+            )}
             {/* fin container du nom de l'utilisateur */}
 
             {/* container des liens de navigation*/}

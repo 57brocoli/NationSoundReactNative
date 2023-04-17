@@ -114,9 +114,13 @@ const Information = props => {
             {/* fin container de la photo de Profile */}
 
             {/* container du nom de l'utilisateur */}
-            <Text style={STYLESMENU.nameUser}>
-              {auth().currentUser.displayName}
-            </Text>
+            {auth() ? (
+              <Text style={STYLESMENU.nameUser}>
+                {auth().currentUser.displayName}
+              </Text>
+            ) : (
+              ''
+            )}
             {/* fin container du nom de l'utilisateur */}
 
             {/* container des liens de navigation*/}
@@ -263,7 +267,7 @@ const Information = props => {
                   <TouchableOpacity
                     onPress={() => revenir()}
                     style={styles.filtre}>
-                    <Text style={{color: 'black'}}>Revenir</Text>
+                    <Text style={styles.colorBlack}>Revenir</Text>
                     <MaterialCommunityIcons
                       name="chevron-up"
                       color={'black'}
@@ -274,7 +278,7 @@ const Information = props => {
                   <TouchableOpacity
                     onPress={() => tousAfficher()}
                     style={styles.filtre}>
-                    <Text style={{color: 'black'}}>Tous achicher</Text>
+                    <Text style={styles.colorBlack}>Tous achicher</Text>
                     <MaterialCommunityIcons
                       name="chevron-down"
                       color={'black'}
@@ -336,7 +340,7 @@ const Information = props => {
                   <Text style={TITLE}>Foire aux questions</Text>
                 </View>
 
-                <View style={{marginVertical: 5}}>
+                <View style={styles.marginVertical}>
                   <TouchableOpacity
                     onPress={() => showReponse1()}
                     style={styles.containerQuestion}>
@@ -352,7 +356,7 @@ const Information = props => {
                     </Text>
                   </View>
                 </View>
-                <View style={{marginVertical: 5}}>
+                <View style={styles.marginVertical}>
                   <TouchableOpacity
                     onPress={() => showReponse2()}
                     style={styles.containerQuestion}>
@@ -368,7 +372,7 @@ const Information = props => {
                     </Text>
                   </View>
                 </View>
-                <View style={{marginVertical: 5}}>
+                <View style={styles.marginVertical}>
                   <TouchableOpacity
                     onPress={() => showReponse3()}
                     style={styles.containerQuestion}>
@@ -397,6 +401,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingBottom: 25,
   },
+  colorBlack: {
+    color: 'black',
+  },
   containerTextInfos: {
     marginTop: 90,
   },
@@ -416,6 +423,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
+  },
+  marginVertical: {
+    marginVertical: 5,
   },
   // Style FAQ
   containerQuestion: {

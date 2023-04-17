@@ -19,42 +19,68 @@ const Login = props => {
 
   //   Fonction pour se connecter
   const OnLoginPress = () => {
-    console.log('login tentative');
+    console.log('Tentative de connection');
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(response => {
         const uid = response.user.uid;
         console.log(
-          'The user is connected, his ID is: ',
+          'Utilisateur connecté, son identifiant : ',
           uid,
-          'Name:',
+          'Nom:',
           auth().currentUser.displayName,
         );
         props.navigation.navigate('Home');
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          console.log('Cette adresse possède déja un compte');
+          alert('Cette adresse possède déja un compte');
         }
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          console.log('Cette adresse et/ou le mot de passe est/sont erronné/s');
+          alert('Cette adresse et/ou le mot de passe est/sont erronné/s');
+        }
+        if (error.code === 'auth/user-not-found') {
+          console.log('Cette adresse et/ou le mot de passe est/sont erronné/s');
+          alert('Cette adresse et/ou le mot de passe est/sont erronné/s');
+        }
+        if (error.code === 'auth/wrong-password') {
+          console.log('Cette adresse et/ou le mot de passe est/sont erronné/s');
+          alert('Cette adresse et/ou le mot de passe est/sont erronné/s');
         }
         console.error(error);
       });
   };
+
+  const _isUserAuthenticated = () => {
+    if (auth().currentUser) {
+      console.log('User allready connected, this id:', auth().currentUser.uid);
+      props.navigation.navigate('Home');
+    } else {
+      console.log('User is not logged');
+    }
+  };
+
+  useEffect(() => {
+    _isUserAuthenticated();
+  }, []);
+
   return (
     <SafeAreaView style={styles.root}>
-      <View style={styles.logo}>
-        <Image
-          source={require('../asset/img/logo.jpg')}
-          style={{height: 100, width: 100, borderRadius: 10}}
-        />
+      <View style={styles.logoContainer}>
+        <Image source={require('../asset/img/logo.jpg')} style={styles.logo} />
         <Text style={styles.title}>Connection</Text>
       </View>
 
       {/* zone de saisie */}
       <View style={styles.inputContainer}>
-        <Entypo name="email" size={20} color="#666" style={{marginRight: 5}} />
+        <Entypo
+          name="email"
+          size={20}
+          color="#666"
+          style={styles.marginRight}
+        />
         <TextInput
           style={styles.input}
           placeholder={'Entrer votre email'}
@@ -66,7 +92,7 @@ const Login = props => {
           name="security"
           size={20}
           color="#666"
-          style={{marginRight: 5}}
+          style={styles.marginRight}
         />
         <TextInput
           style={styles.input}
@@ -108,18 +134,10 @@ const Login = props => {
           <MaterialCommunityIcons name="linkedin" size={35} color="blue" />
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          marginVertical: 30,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{textAlign: 'center'}}>Nouveau ? </Text>
+      <View style={styles.containerAlternative}>
+        <Text style={styles.textAlign}>Nouveau ? </Text>
         <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
-          <Text style={{textAlign: 'center', color: COLORS.mauveClaire}}>
-            Crée un compte
-          </Text>
+          <Text style={styles.textAlternative}>Crée un compte</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -131,15 +149,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     backgroundColor: 'white',
   },
-  logo: {
+  logoContainer: {
     alignItems: 'center',
     marginTop: 50,
+  },
+  logo: {
+    height: 100,
+    width: 100,
+    borderRadius: 10,
   },
   title: {
     fontSize: 28,
     fontWeight: '500',
     color: '#333',
     marginBottom: 30,
+  },
+  marginRight: {
+    marginRight: 5,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -181,6 +207,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  containerAlternative: {
+    marginVertical: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textAlign: {
+    textAlign: 'center',
+  },
+  textAlternative: {
+    textAlign: 'center',
+    color: COLORS.mauveClaire,
   },
 });
 export default Login;
