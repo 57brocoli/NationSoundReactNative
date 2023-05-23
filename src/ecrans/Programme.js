@@ -198,12 +198,14 @@ const Programme = props => {
     srcArtiste,
     descriptionArtiste,
     longueDescriptionArtiste,
+    reseauSociauxArtiste,
   ) => {
     props.navigation.navigate('ArtisteDetaills', {
       nameArtiste: nameArtiste,
       srcArtiste: srcArtiste,
       descriptionArtiste: descriptionArtiste,
       longueDescriptionArtiste: longueDescriptionArtiste,
+      reseauSociauxArtiste: reseauSociauxArtiste,
     });
   };
   const Card = ({
@@ -212,6 +214,7 @@ const Programme = props => {
     onClickArtiste,
     descriptionArtiste,
     longueDescriptionArtiste,
+    reseauSociauxArtiste,
   }) => {
     return (
       <TouchableOpacity
@@ -222,6 +225,7 @@ const Programme = props => {
             srcArtiste,
             descriptionArtiste,
             longueDescriptionArtiste,
+            reseauSociauxArtiste,
           )
         }>
         <Image source={srcArtiste} style={styles.img} />
@@ -268,6 +272,7 @@ const Programme = props => {
                         srcArtiste={item.src}
                         descriptionArtiste={item.description}
                         longueDescriptionArtiste={item.longueDescription}
+                        reseauSociauxArtiste={item.lien}
                         onClickArtiste={getArtiste}
                       />
                     );
@@ -288,6 +293,7 @@ const Programme = props => {
                         srcArtiste={item.src}
                         descriptionArtiste={item.description}
                         longueDescriptionArtiste={item.longueDescription}
+                        reseauSociauxArtiste={item.lien}
                         onClickArtiste={getArtiste}
                       />
                     );
@@ -308,6 +314,7 @@ const Programme = props => {
                         srcArtiste={item.src}
                         descriptionArtiste={item.description}
                         longueDescriptionArtiste={item.longueDescription}
+                        reseauSociauxArtiste={item.lien}
                         onClickArtiste={getArtiste}
                       />
                     );

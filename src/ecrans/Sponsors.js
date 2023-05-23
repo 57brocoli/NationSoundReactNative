@@ -196,7 +196,7 @@ const Sponsors = props => {
   //Fonction pour recuperer les articles
   useEffect(() => {
     axios
-      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed')
+      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed&per_page=100')
       .then(res => setListeSponsors(res.data));
   }, []);
 
@@ -219,21 +219,6 @@ const Sponsors = props => {
                 <Text style={TITLE}>Tous nos partenaires</Text>
               </View>
             </View>
-            <View>
-              {FakeSponsort.map((sponsort, index) => {
-                return (
-                  <View key={index} style={styles.container}>
-                    <Image source={sponsort.source} style={styles.img} />
-                    <View style={styles.containerText}>
-                      <Text style={styles.title}>{sponsort.name}</Text>
-                      <Text style={styles.description}>
-                        {sponsort.description}
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })}
-            </View>
             {listeSponsors ? (
               listeSponsors
                 .filter(partenaire => partenaire.categories[0] === 31)
@@ -248,14 +233,7 @@ const Sponsors = props => {
                         }}
                       />
                       <View style={styles.containerText}>
-                        <Text
-                          style={styles.title}
-                          onPress={() =>
-                            console.log(
-                              partenaire._embedded['wp:featuredmedia']['0']
-                                .source_url,
-                            )
-                          }>
+                        <Text style={styles.title}>
                           {partenaire.title.rendered}
                         </Text>
                         <RenderHtml
@@ -300,7 +278,7 @@ const styles = StyleSheet.create({
   img: {
     height: 150,
     width: 150,
-    borderRadius: 10,
+    borderRadius: 30,
   },
   containerText: {
     paddingHorizontal: 15,

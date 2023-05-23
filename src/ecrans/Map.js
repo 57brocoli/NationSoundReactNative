@@ -82,7 +82,7 @@ const Map = props => {
   /////////////////////////////////////////////////////variable pour recupéré les donées de WordPress//////////////////////////////////
   useEffect(() => {
     axios
-      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed')
+      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed&per_page=100')
       .then(res => setListeMarker(res.data));
   }, []);
   const [listeMarker, setListeMarker] = useState();
@@ -254,17 +254,8 @@ const Map = props => {
                       source={{html: marker.content.rendered.slice(37)}}
                       tagsStyles={tagsStyles}
                     />
-                    <View
-                      style={{
-                        marginHorizontal: 10,
-                        marginBottom: 10,
-                        paddingHorizontal: 8,
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        borderColor: 'indigo',
-                        alignItems: 'center',
-                      }}>
-                      <Text style={{color: 'black'}}>
+                    <View style={styles.buttonCard}>
+                      <Text style={styles.buttonCardText}>
                         Clicker pour plus de details
                       </Text>
                     </View>
@@ -340,6 +331,18 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 16,
     marginHorizontal: 10,
+  },
+  buttonCard: {
+    marginHorizontal: 10,
+    marginBottom: 10,
+    paddingHorizontal: 8,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'indigo',
+    alignItems: 'center',
+  },
+  buttonCardText: {
+    color: 'black',
   },
 });
 // style du RenderHtml

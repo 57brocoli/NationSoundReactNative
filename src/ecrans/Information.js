@@ -195,7 +195,7 @@ const Information = props => {
   //Fonction pour recuperer les articles
   useEffect(() => {
     axios
-      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed')
+      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed&per_page=100')
       .then(res => setListeArticles(res.data));
   }, []);
 

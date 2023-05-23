@@ -7,6 +7,7 @@ export const FakeArtiste = [
     src: require('../asset/img/artiste1.jpg'),
     longueDescription:
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto iste molestiae beatae error quasi, numquam soluta iure sapiente illum incidunt, reiciendis nisi sunt ipsam reprehenderit corporis id optio et esse harum doloribus? Labore architecto blanditiis quisquam assumenda aliquid sapiente. Iusto, corrupti voluptates excepturi praesentium fugit itaque, officiis quisquam, veritatis dolorum nobis adipisci? Provident itaque a ullam veritatis velit recusandae cupiditate quam. Est accusantium vel saepe, autem, incidunt, quo voluptate doloremque corrupti quas animi voluptatibus debitis neque dicta. Veniam, totam ut odio quae cum non iste consectetur corrupti eaque modi quaerat magnam commodi! Quia voluptate aspernatur recusandae sit, temporibus expedita reprehenderit?',
+    lien: 'https://www.youtube.com/channel/UCZy0-5YHgLpzgT-biGtJgJg',
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const FakeArtiste = [
     src: require('../asset/img/artiste2.jpg'),
     longueDescription:
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto iste molestiae beatae error quasi, numquam soluta iure sapiente illum incidunt, reiciendis nisi sunt ipsam reprehenderit corporis id optio et esse harum doloribus? Labore architecto blanditiis quisquam assumenda aliquid sapiente. Iusto, corrupti voluptates excepturi praesentium fugit itaque, officiis quisquam, veritatis dolorum nobis adipisci? Provident itaque a ullam veritatis velit recusandae cupiditate quam. Est accusantium vel saepe, autem, incidunt, quo voluptate doloremque corrupti quas animi voluptatibus debitis neque dicta. Veniam, totam ut odio quae cum non iste consectetur corrupti eaque modi quaerat magnam commodi! Quia voluptate aspernatur recusandae sit, temporibus expedita reprehenderit?',
+    lien: 'https://www.youtube.com/channel/UCZy0-5YHgLpzgT-biGtJgJg',
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ export const FakeArtiste = [
     src: require('../asset/img/artiste3.jpg'),
     longueDescription:
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto iste molestiae beatae error quasi, numquam soluta iure sapiente illum incidunt, reiciendis nisi sunt ipsam reprehenderit corporis id optio et esse harum doloribus? Labore architecto blanditiis quisquam assumenda aliquid sapiente. Iusto, corrupti voluptates excepturi praesentium fugit itaque, officiis quisquam, veritatis dolorum nobis adipisci? Provident itaque a ullam veritatis velit recusandae cupiditate quam. Est accusantium vel saepe, autem, incidunt, quo voluptate doloremque corrupti quas animi voluptatibus debitis neque dicta. Veniam, totam ut odio quae cum non iste consectetur corrupti eaque modi quaerat magnam commodi! Quia voluptate aspernatur recusandae sit, temporibus expedita reprehenderit?',
+    lien: 'https://www.youtube.com/channel/UCZy0-5YHgLpzgT-biGtJgJg',
   },
   {
     id: 4,
@@ -34,6 +37,7 @@ export const FakeArtiste = [
     src: require('../asset/img/artiste2.jpg'),
     longueDescription:
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto iste molestiae beatae error quasi, numquam soluta iure sapiente illum incidunt, reiciendis nisi sunt ipsam reprehenderit corporis id optio et esse harum doloribus? Labore architecto blanditiis quisquam assumenda aliquid sapiente. Iusto, corrupti voluptates excepturi praesentium fugit itaque, officiis quisquam, veritatis dolorum nobis adipisci? Provident itaque a ullam veritatis velit recusandae cupiditate quam. Est accusantium vel saepe, autem, incidunt, quo voluptate doloremque corrupti quas animi voluptatibus debitis neque dicta. Veniam, totam ut odio quae cum non iste consectetur corrupti eaque modi quaerat magnam commodi! Quia voluptate aspernatur recusandae sit, temporibus expedita reprehenderit?',
+    lien: 'https://www.youtube.com/channel/UCZy0-5YHgLpzgT-biGtJgJg',
   },
   {
     id: 5,
@@ -43,5 +47,6 @@ export const FakeArtiste = [
     src: require('../asset/img/artiste3.jpg'),
     longueDescription:
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto iste molestiae beatae error quasi, numquam soluta iure sapiente illum incidunt, reiciendis nisi sunt ipsam reprehenderit corporis id optio et esse harum doloribus? Labore architecto blanditiis quisquam assumenda aliquid sapiente. Iusto, corrupti voluptates excepturi praesentium fugit itaque, officiis quisquam, veritatis dolorum nobis adipisci? Provident itaque a ullam veritatis velit recusandae cupiditate quam. Est accusantium vel saepe, autem, incidunt, quo voluptate doloremque corrupti quas animi voluptatibus debitis neque dicta. Veniam, totam ut odio quae cum non iste consectetur corrupti eaque modi quaerat magnam commodi! Quia voluptate aspernatur recusandae sit, temporibus expedita reprehenderit?',
+    lien: 'https://www.youtube.com/channel/UCZy0-5YHgLpzgT-biGtJgJg',
   },
 ];

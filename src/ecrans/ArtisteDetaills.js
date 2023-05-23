@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Animated,
+  Linking,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 //import des composant exterieurs
@@ -29,8 +30,10 @@ const ArtisteDetaills = props => {
     srcArtiste,
     descriptionArtiste,
     longueDescriptionArtiste,
+    reseauSociauxArtiste,
   } = props.route.params;
 
+  const reseaux = reseauSociauxArtiste;
   //Variable pour afficher/masquer le menu
   const [showMenu, setShowMenu] = useState(false);
   //Varible d'animation lors de l'affichage/masquage de menu
@@ -217,7 +220,9 @@ const ArtisteDetaills = props => {
 
             <View style={styles.headerDescription}>
               <Text style={TITLE}>{nameArtiste}</Text>
-              <TouchableOpacity style={styles.playListe}>
+              <TouchableOpacity
+                style={styles.playListe}
+                onPress={() => Linking.openURL(reseaux)}>
                 <MaterialCommunityIcons
                   name="play-circle-outline"
                   color={'white'}
