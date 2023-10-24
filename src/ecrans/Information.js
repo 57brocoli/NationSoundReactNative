@@ -195,13 +195,13 @@ const Information = props => {
   //Fonction pour recuperer les articles
   useEffect(() => {
     axios
-      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed&per_page=100')
-      .then(res => setListeArticles(res.data));
+      .get('https://pixelevent.site/api/articles')
+      .then(res => setListeArticles(res.data['hydra:member']));
   }, []);
 
   //Variable de stockage des articles
-  const [listeArticles, setListeArticles] = useState();
-  const {width} = useWindowDimensions();
+  const [listeArticles, setListeArticles] = useState([]);
+  // const {width} = useWindowDimensions();
 
   //Fonctions pour filtrées les articles
   const [nombreArticle, setNombreArticle] = useState(3);
@@ -278,7 +278,7 @@ const Information = props => {
                   <TouchableOpacity
                     onPress={() => tousAfficher()}
                     style={styles.filtre}>
-                    <Text style={styles.colorBlack}>Tous achicher</Text>
+                    <Text style={styles.colorBlack}>Tous afficher</Text>
                     <MaterialCommunityIcons
                       name="chevron-down"
                       color={'black'}
@@ -286,13 +286,8 @@ const Information = props => {
                     />
                   </TouchableOpacity>
                 )}
-                {!listeArticles ? (
-                  <View>
-                    <ActivityIndicator size="large" color="#00ff00" />
-                  </View>
-                ) : (
+                {listeArticles ? (
                   listeArticles
-                    .filter(article => article.categories[0] === 29) //29 est la catégorie pour les articles de l'actualité
                     .slice(0, nombreArticle)
                     .map((article, index) => {
                       return (
@@ -301,10 +296,12 @@ const Information = props => {
                           key={index}
                           onPress={() =>
                             props.navigation.navigate('Article', {
-                              title: article.title.rendered,
-                              text: article.content.rendered,
-                              img: article._embedded['wp:featuredmedia']['0']
-                                .source_url,
+                              id: article.id,
+                              title: article.title,
+                              intro: article.introduction,
+                              content: article.content,
+                              featuredImage: article.featuredImage,
+                              images: article.images,
                             })
                           }>
                           {/* Image à gauche */}
@@ -314,25 +311,31 @@ const Information = props => {
                             <Image
                               style={styles.cardImg}
                               source={{
-                                uri: article._embedded['wp:featuredmedia']['0']
-                                  .source_url,
+                                uri: `https://pixelevent.site/assets/uploads/articles/${article.featuredImage}`,
                               }}
                             />
                           )}
                           {/* Text à droite */}
                           <View style={styles.cardContainerText}>
                             <Text style={styles.cardTitle}>
-                              {article.title.rendered}
+                              {article.title}
                             </Text>
-                            <RenderHtml
+                            <Text style={styles.into}>
+                              {article.introduction}
+                            </Text>
+                            {/* <RenderHtml
                               contentWidth={width}
                               source={{html: article.excerpt.rendered}}
                               tagsStyles={tagsStyles}
-                            />
+                            /> */}
                           </View>
                         </TouchableOpacity>
                       );
                     })
+                ) : (
+                  <View>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                  </View>
                 )}
               </View>
               <View>
@@ -495,15 +498,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-});
-// style du RenderHtml
-const tagsStyles = {
-  body: {
+  into: {
     color: 'white',
     overflow: 'hidden',
     textAlign: 'justify',
-    height: 79,
+    height: 85,
     width: 230,
   },
-};
+});
+// style du RenderHtml
+// const tagsStyles = {
+//   body: {
+//     color: 'white',
+//     overflow: 'hidden',
+//     textAlign: 'justify',
+//     height: 79,
+//     width: 230,
+//   },
+// };
 export default Information;

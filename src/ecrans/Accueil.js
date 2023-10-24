@@ -10,7 +10,7 @@ import {
   Pressable,
   ImageBackground,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 //import des variables de style prédéfinis
 import {FONTS} from '../constantes/Fonts';
 import {CENTER, TEXT} from '../constantes/Constantes';

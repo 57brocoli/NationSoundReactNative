@@ -145,6 +145,7 @@ const Login = props => {
 };
 const styles = StyleSheet.create({
   root: {
+    flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 25,
     backgroundColor: 'white',
