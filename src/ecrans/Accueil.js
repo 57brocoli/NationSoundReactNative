@@ -9,335 +9,252 @@ import {
   Animated,
   Pressable,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 //import des variables de style prédéfinis
-import {FONTS} from '../constantes/Fonts';
-import {CENTER, TEXT} from '../constantes/Constantes';
-import {COLORS} from '../constantes/Couleurs';
-import {STYLESHEADER} from '../constantes/StylesHeader';
-import {STYLESMENU} from '../constantes/StyleMenu';
-import {FakeData} from '../data/FakeHotelRestau';
-import Footer from '../conposants/Footer';
-import Card from '../conposants/Card';
+import {FONTS} from '../asset/constantes/Fonts';
+import {CENTER, TEXT} from '../asset/constantes/Constantes';
+import {COLORS} from '../asset/constantes/Couleurs';
+import Footer from '../Conposants/Footer';
+import Card from '../Conposants/SousComposants/Card';
 import LinearGradient from 'react-native-linear-gradient';
-//import des icons
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-//import de Firebase
-import auth from '@react-native-firebase/auth';
+import axios from 'axios';
+import Loader from '../Conposants/SousComposants/Loader';
+import NavBar from '../Conposants/NavBar';
 
 const Accueil = props => {
-  //Variable pour afficher/masquer le menu
-  const [showMenu, setShowMenu] = useState(false);
   //Varible d'animation lors de l'affichage/masquage de menu
-  const slideMenu = useRef(new Animated.Value(260)).current;
   const scalView = useRef(new Animated.Value(1)).current;
   const filtre = useRef(new Animated.Value(1)).current;
 
-  //Variable du header
-  const Header = () => {
-    return (
-      <View style={STYLESHEADER.header}>
-        <View style={STYLESHEADER.nav}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Accueil1')}>
-            <Image
-              source={require('../asset/img/logo.jpg')}
-              style={STYLESHEADER.iconNav}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setShowMenu(!showMenu);
-              Animated.timing(slideMenu, {
-                toValue: showMenu ? 260 : 0,
-                duration: 300,
-                useNativeDriver: true,
-              }).start();
-              Animated.timing(scalView, {
-                toValue: showMenu ? 1 : 0.95,
-                duration: 300,
-                useNativeDriver: true,
-              }).start();
-              Animated.timing(filtre, {
-                toValue: showMenu ? 1 : 0.5,
-                duration: 300,
-                useNativeDriver: true,
-              }).start();
-            }}>
-            <MaterialCommunityIcons
-              name={showMenu ? 'close' : 'menu'}
-              color={'white'}
-              size={50}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+  //variable pour stocker la page
+  const [views, setViews] = useState([]);
+  useEffect(() => {
+    //on recupère le contenu de la page
+    axios
+      .get('https://pixelevent.site/api/views')
+      .then(res => setViews(res.data['hydra:member']));
+    axios
+      .get('https://pixelevent.site/api/lieus')
+      .then(res => setHotels(res.data['hydra:member']));
+  }, []);
+
+  const image = {
+    uri: 'https://pixelevent.site/assets/uploads/figure/',
   };
-  //Variable pour le menu
-  const Menu = () => {
-    // variable pour se deconnecter
-    const onSingOut = () => {
-      auth()
-        .signOut()
-        .then(() => {
-          console.log('User signed out!');
-          props.navigation.navigate('LogIn');
-        });
-    };
-
-    return (
-      <Animated.View
-        style={{
-          flexGrow: 1,
-          backgroundColor: COLORS.mauveClaire,
-          position: 'absolute',
-          height: 623,
-          top: 70,
-          right: 0,
-          transform: [{translateX: slideMenu}],
-        }}>
-        <LinearGradient
-          colors={[COLORS.mauveClaire, COLORS.mauveFonce]}
-          style={{paddingHorizontal: 15, paddingVertical: 10}}>
-          <View style={STYLESMENU.containerMenu}>
-            {/* container de la photo de Profile */}
-            <TouchableOpacity
-              style={STYLESMENU.containerUserIcon}
-              onPress={() => props.navigation.navigate('Profil')}>
-              <Image
-                source={require('../asset/icons/userIcon.png')}
-                style={STYLESMENU.userIcon}
-              />
-              <Text style={STYLESMENU.lienVersProfil}>Voir Profile</Text>
-            </TouchableOpacity>
-            {/* fin container de la photo de Profile */}
-
-            {/* container du nom de l'utilisateur */}
-            <Text style={STYLESMENU.nameUser}>
-              {auth().currentUser.displayName}
-            </Text>
-            {/* fin container du nom de l'utilisateur */}
-
-            {/* container des liens de navigation*/}
-            <View style={STYLESMENU.containerLink}>
-              <TouchableOpacity
-                style={STYLESMENU.lienNav}
-                onPress={() => props.navigation.navigate('Accueil1')}>
-                <MaterialCommunityIcons
-                  name="home"
-                  color={COLORS.mauveClaire}
-                  size={30}
-                />
-                <Text style={STYLESMENU.textLink}>Accueil</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={STYLESMENU.lienNav}
-                onPress={() => props.navigation.navigate('Billetterie')}>
-                <MaterialCommunityIcons
-                  name="ticket"
-                  color={COLORS.mauveClaire}
-                  size={30}
-                />
-                <Text style={STYLESMENU.textLink}>Billetterie</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={STYLESMENU.lienNav}
-                onPress={() => props.navigation.navigate('Programme')}>
-                <MaterialCommunityIcons
-                  name="clipboard-list"
-                  color={COLORS.mauveClaire}
-                  size={30}
-                />
-                <Text style={STYLESMENU.textLink}>Programme</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={STYLESMENU.lienNav}
-                onPress={() => props.navigation.navigate('Information')}>
-                <MaterialCommunityIcons
-                  name="information"
-                  color={COLORS.mauveClaire}
-                  size={30}
-                />
-                <Text style={STYLESMENU.textLink}>Information</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={STYLESMENU.lienNav}
-                onPress={() => props.navigation.navigate('Map')}>
-                <MaterialCommunityIcons
-                  name="map"
-                  color={COLORS.mauveClaire}
-                  size={30}
-                />
-                <Text style={STYLESMENU.textLink}>Map</Text>
-              </TouchableOpacity>
-            </View>
-            {/* fin container des liens de navigation*/}
-
-            {/*container se deconnecter*/}
-            <TouchableOpacity
-              style={STYLESMENU.containerLinkDeconnexion}
-              onPress={() => onSingOut()}>
-              <MaterialCommunityIcons name="logout" color={'white'} size={30} />
-              <Text style={STYLESMENU.textDeconnexion}>Déconnexion</Text>
-            </TouchableOpacity>
-            {/*container se deconnecter*/}
-          </View>
-        </LinearGradient>
-      </Animated.View>
-    );
-  };
-
+  //Variable pour stocker les hotel
+  const [hotels, setHotels] = useState([]);
   return (
     <>
-      <Header />
-      <ScrollView>
-        <Animated.View
-          style={{opacity: filtre, transform: [{scale: scalView}]}}>
-          <ImageBackground
-            source={require('../asset/img/paris6.jpg')}
-            style={styles.background}>
-            <Text style={styles.logo}>Nation Sound</Text>
-          </ImageBackground>
-        </Animated.View>
-        <LinearGradient
-          colors={['#f1793c', '#6c24dd', '#5dd29b']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          style={styles.LinearGradient}>
-          <Animated.View
-            style={{opacity: filtre, transform: [{scale: scalView}]}}>
-            {/* Section billet*/}
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('Billetterie');
-              }}
-              style={styles.bouttonBillet}>
-              <View style={styles.boutton}>
-                <Text style={styles.textbouttonBillet}>
-                  Acheter votre billet ici
-                </Text>
-              </View>
-            </TouchableOpacity>
-            {/* FinSection billet*/}
-            {/* Section programme */}
-            <View style={styles.section}>
-              <View style={CENTER}>
-                <Text style={styles.title}>Le programme</Text>
-              </View>
-              <View>
-                <Text style={TEXT}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-                  eveniet quas, quo obcaecati a quaerat quasi ducimus cum
-                  adipisci inventore amet molestiae, quibusdam repellat
-                  doloribus iure libero numquam, consectetur quidem dolore
-                  aliquam odio! Rerum ab perferendis voluptatibus voluptatem
-                  ullam molestias doloribus ut alias explicabo? Beatae quas
-                  dignissimos sequi. Sint, corporis.
-                </Text>
-                <View style={styles.containerProgrammeImages}>
-                  <Image
-                    source={require('../asset/img/artiste1.jpg')}
-                    style={styles.Programmeimages}
-                  />
-                  <Image
-                    source={require('../asset/img/artiste2.jpg')}
-                    style={styles.Programmeimages}
-                  />
-                  <Image
-                    source={require('../asset/img/artiste3.jpg')}
-                    style={styles.Programmeimages}
-                  />
-                </View>
-                <View style={CENTER}>
-                  <Pressable
-                    style={styles.button}
-                    onPress={() => props.navigation.navigate('Programme')}>
-                    <Text style={styles.textButton}>Programme</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </View>
-            {/* Fin section programme */}
-            {/* Section Remerciments */}
-            <View style={styles.section}>
-              <View style={CENTER}>
-                <Text style={styles.title}>Nos remerciments</Text>
-              </View>
-              <Text style={TEXT}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptas beatae nisi veniam reiciendis autem ipsa accusantium
-                eius sed tenetur commodi?
-              </Text>
-              <Image
-                source={require('../asset/img/remerciment.jpg')}
-                style={styles.Remercimentimages}
-              />
-              <View style={CENTER}>
-                <Pressable
-                  style={styles.button}
-                  onPress={() => props.navigation.navigate('Sponsors')}>
-                  <Text style={styles.textButton}>Sponsors</Text>
-                </Pressable>
-              </View>
-            </View>
-            {/* Fin section Remerciments */}
-            {/* Section hotels/restaurants */}
-            <View style={styles.section}>
-              <View style={CENTER}>
-                <Text style={styles.title}>Hotel et Restaurants</Text>
-              </View>
-              <Text style={TEXT}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptas beatae nisi veniam reiciendis autem ipsa accusantium
-                eius sed tenetur commodi?
-              </Text>
-            </View>
-            <FlatList
-              horizontal={true}
-              data={FakeData}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => {
-                return <Card item={item} />;
-              }}
-            />
+      <NavBar props={props} />
+      {!views ? (
+        <Loader />
+      ) : (
+        views
+          .filter(view => view.name === 'accueil')
+          .map((view, index) => {
+            return (
+              <View key={index}>
+                <ScrollView>
+                  <Animated.View
+                    style={{opacity: filtre, transform: [{scale: scalView}]}}>
+                    <ImageBackground
+                      source={{uri: `${image.uri}${view.headerImage.name}`}}
+                      style={styles.background}>
+                      <Text style={styles.logo}>Nation Sound</Text>
+                    </ImageBackground>
+                  </Animated.View>
+                  <LinearGradient
+                    colors={['#f1793c', '#6c24dd', '#5dd29b']}
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 1}}
+                    style={styles.LinearGradient}>
+                    <Animated.View
+                      style={{opacity: filtre, transform: [{scale: scalView}]}}>
+                      {/* Section billet*/}
+                      <TouchableOpacity
+                        onPress={() => {
+                          props.navigation.navigate('Page1', {
+                            pageBilletterie: 'ok',
+                          });
+                        }}
+                        style={styles.bouttonBillet}>
+                        <View style={styles.boutton}>
+                          <Text style={styles.textbouttonBillet}>
+                            Acheter votre billet ici
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                      {/* FinSection billet*/}
+                      {/* Section programme */}
+                      {view.pageSections[0] ? (
+                        <View style={styles.section}>
+                          <View style={CENTER}>
+                            <Text style={styles.title}>
+                              {view.pageSections[0].title}
+                            </Text>
+                          </View>
+                          <View>
+                            <Text style={TEXT}>
+                              {view.pageSections[0].content}
+                            </Text>
+                            <View style={styles.containerProgrammeImages}>
+                              {view.pageSections[0].images.map((img, index) => {
+                                return (
+                                  <Image
+                                    key={index}
+                                    source={{
+                                      uri: `${image.uri}${img.name}`,
+                                    }}
+                                    style={styles.Programmeimages}
+                                  />
+                                );
+                              })}
+                            </View>
+                            <View style={CENTER}>
+                              <Pressable
+                                style={styles.button}
+                                onPress={() =>
+                                  props.navigation.navigate('Page1', {
+                                    pageProgramme: 'ok',
+                                  })
+                                }>
+                                <Text style={styles.textButton}>Programme</Text>
+                              </Pressable>
+                            </View>
+                          </View>
+                        </View>
+                      ) : (
+                        ''
+                      )}
+                      {/* Fin section programme */}
+                      {/* section sponsor */}
+                      {view.pageSections[1] ? (
+                        <View style={styles.section}>
+                          <View style={CENTER}>
+                            <Text style={styles.title}>
+                              {view.pageSections[1].title}
+                            </Text>
+                          </View>
+                          <View>
+                            <Text style={TEXT}>
+                              {view.pageSections[1].content}
+                            </Text>
+                            <FlatList
+                              horizontal={true}
+                              data={view.pageSections[1].images}
+                              keyExtractor={item => item.id}
+                              renderItem={({item}) => {
+                                return (
+                                  <Image
+                                    source={{
+                                      uri: `${image.uri}${item.name}`,
+                                    }}
+                                    style={styles.Remercimentimages}
+                                  />
+                                );
+                              }}
+                            />
+                            <View style={CENTER}>
+                              <Pressable
+                                style={styles.button}
+                                onPress={() =>
+                                  props.navigation.navigate('Page1', {
+                                    pageSponsor: 'ok',
+                                  })
+                                }>
+                                <Text style={styles.textButton}>Sponsor</Text>
+                              </Pressable>
+                            </View>
+                          </View>
+                        </View>
+                      ) : (
+                        ''
+                      )}
+                      {/* Fin section sponsor */}
 
-            {/* Fin section hotels/restaurants */}
-            {/* Section map */}
-            <View style={styles.section}>
-              <View style={CENTER}>
-                <Text style={styles.title}>Explorez le site</Text>
-              </View>
-              <Text style={TEXT}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptas beatae nisi veniam reiciendis autem ipsa accusantium
-                eius sed tenetur commodi?
-              </Text>
-              <ImageBackground
-                source={require('../asset/img/geolocalisation.png')}
-                style={styles.geolocalisation}>
-                <View style={styles.buttonMap}>
-                  <Pressable
-                    style={styles.button}
-                    onPress={() => props.navigation.navigate('Map')}>
-                    <Text style={styles.textButton}>Ouvrir</Text>
-                  </Pressable>
-                </View>
-              </ImageBackground>
-            </View>
-            {/* Fin section map */}
+                      {/* Section hotels/restaurants */}
+                      {view.pageSections[2] ? (
+                        <View style={styles.section}>
+                          <View style={CENTER}>
+                            <Text style={styles.title}>
+                              {view.pageSections[2].title}
+                            </Text>
+                          </View>
+                          <Text style={TEXT}>
+                            {view.pageSections[2].content}
+                          </Text>
+                        </View>
+                      ) : (
+                        <Text style={styles.title}>Hotel</Text>
+                      )}
+                      {hotels ? (
+                        <FlatList
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={true}
+                          data={hotels.filter(
+                            hotel => hotel.category === 'Hotel',
+                          )}
+                          keyExtractor={item => item.id}
+                          renderItem={({item}) => {
+                            return <Card props={props} hotel={item} />;
+                          }}
+                        />
+                      ) : (
+                        ''
+                      )}
 
-            {/* Fin section */}
-          </Animated.View>
-        </LinearGradient>
-        <Footer />
-      </ScrollView>
-      <Menu />
+                      {/* Fin section hotels/restaurants */}
+                      {/* Section map */}
+                      {view.pageSections[3] ? (
+                        <View style={styles.section}>
+                          <View style={CENTER}>
+                            <Text style={styles.title}>
+                              {view.pageSections[3].title}
+                            </Text>
+                          </View>
+                          <Text style={TEXT}>
+                            {view.pageSections[3].content}
+                          </Text>
+                          <ImageBackground
+                            source={
+                              view.pageSections[3].images[0]
+                                ? {
+                                    uri: `${image.uri}${view.pageSections[3].images[0].name}`,
+                                  }
+                                : ''
+                            }
+                            style={styles.geolocalisation}>
+                            <View style={styles.buttonMap}>
+                              <Pressable
+                                style={styles.button}
+                                onPress={() =>
+                                  props.navigation.navigate('Map')
+                                }>
+                                <Text style={styles.textButton}>Ouvrir</Text>
+                              </Pressable>
+                            </View>
+                          </ImageBackground>
+                        </View>
+                      ) : (
+                        ''
+                      )}
+                      {/* Fin section map */}
+
+                      {/* Fin section */}
+                    </Animated.View>
+                  </LinearGradient>
+                  <Footer props={props} />
+                </ScrollView>
+              </View>
+            );
+          })
+      )}
     </>
   );
 };
-
+const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   background: {
     zIndex: 1,
@@ -352,7 +269,7 @@ const styles = StyleSheet.create({
     fontFamily: 'RaphLanokFuture-PvDx',
     fontSize: 70,
     color: 'white',
-    marginTop: 70,
+    marginTop: 40,
     marginLeft: 25,
   },
   bouttonBillet: {
@@ -405,7 +322,7 @@ const styles = StyleSheet.create({
   },
   Remercimentimages: {
     marginTop: 10,
-    width: 'auto',
+    width: widthScreen - 30,
     height: 200,
     borderRadius: 10,
   },

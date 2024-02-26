@@ -12,12 +12,12 @@ import React, {useRef, useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import messaging from '@react-native-firebase/messaging';
 //import des composant exterieurs
-import Footer from '../conposants/Footer';
+import Footer from '../Conposants/Footer';
 //import des variables de style prédéfinis
-import {CENTER, TITLE} from '../constantes/Constantes';
-import {COLORS} from '../constantes/Couleurs';
-import {STYLESHEADER} from '../constantes/StylesHeader';
-import {STYLESMENU} from '../constantes/StyleMenu';
+import {CENTER, TITLE} from '../asset/constantes/Constantes';
+import {COLORS} from '../asset/constantes/Couleurs';
+import {STYLESHEADER} from '../asset/constantes/StylesHeader';
+import {STYLESMENU} from '../asset/constantes/StyleMenu';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import de Firebase

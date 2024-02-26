@@ -11,32 +11,29 @@ import {
 import React, {useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/MaterialCommunityIcons';
-import {COLORS} from '../constantes/Couleurs';
-import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
+import {COLORS} from '../asset/constantes/Couleurs';
 import auth from '@react-native-firebase/auth';
+import bcrypt from 'bcryptjs';
 
 const SignUp = props => {
   // variable des données de l'utilisateur
   const [name, setName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordSecurity, setPasswordSecurity] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [birthDate, setBirthDate] = useState();
-  const [open, setOpen] = useState(false);
+  const date = new Date();
 
-  // fonction pour s'inscrire
+  // fonction pour s'inscrire sur fairebase
   const onSingUp = () => {
     if (!name) {
       alert("Ooh! Il s'emblerait que vous avez oublier votre nom");
     } else if (!email) {
       alert('Adresse mail manquante');
     } else if (!password) {
-      alert("Veuillez s'il vous plait, entrez un mot de passe");
+      alert('Veuillez entrez un mot de passe');
     } else if (!passwordSecurity) {
-      alert("Veuillez s'il vous plait confirmer votre mot de passe");
+      alert('Veuillez confirmer votre mot de passe');
     } else if (password !== passwordSecurity) {
       alert("Il s'emblerait que la confirmation du mot de passe est incorect");
     } else {
@@ -46,35 +43,49 @@ const SignUp = props => {
           await response.user.updateProfile({
             displayName: name,
           });
-          console.log('Compte creer, utilisateur connecté', phoneNumber);
-          props.navigation.navigate('Home');
+          props.navigation.navigate('Home', {id: 1});
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
-            console.log('Cette adresse possède déja un compte');
             alert('Cette adresse possède déja un compte');
           }
           if (error.code === 'auth/invalid-email') {
-            console.log('adresse mail non valide');
             alert('Adresse mail invalide');
           }
           if (error.code === 'auth/weak-password') {
-            console.log('Mot de passe pas assez sécurisant');
             alert('Mot de passe pas assez sécurisant');
           }
           console.error(error);
         });
+
+      const hashedPassword = bcrypt.hashSync(
+        password,
+        '$2a$10$CwTycUXWue0Thq9StjUM0u',
+      );
+
+      fetch('https://pixelevent.site/api/mobile_users', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: hashedPassword,
+          phone: parseInt(phoneNumber),
+          createdAt: date,
+        }),
+      });
     }
   };
-  moment.locale('fr');
 
   return (
     <ScrollView>
       <SafeAreaView style={styles.root}>
-        <View style={styles.logo}>
+        <View style={styles.logoContainer}>
           <Image
             source={require('../asset/img/logo.jpg')}
-            style={{height: 100, width: 100, borderRadius: 10}}
+            style={styles.logo}
           />
           <Text style={styles.title}>Inscrition</Text>
         </View>
@@ -85,7 +96,7 @@ const SignUp = props => {
             name="account"
             size={20}
             color="#666"
-            style={{marginRight: 5}}
+            style={styles.marginRight}
           />
           <TextInput
             style={styles.input}
@@ -98,54 +109,22 @@ const SignUp = props => {
             name="phone"
             size={20}
             color="#666"
-            style={{marginRight: 5}}
+            style={styles.marginRight}
           />
           <TextInput
             style={styles.input}
+            keyboardType="numeric"
             placeholder={'Entrer votre numero de téléphone'}
             onChangeText={text => setPhoneNumber(text)}
           />
         </View>
-        <View style={styles.inputContainer}>
-          <Entypo
-            name="calendar"
-            size={20}
-            color="#666"
-            style={{marginRight: 5}}
-          />
-          <TouchableOpacity
-            style={{flex: 1, paddingVertical: 15}}
-            onPress={() => setOpen(true)}>
-            <Text>
-              {birthDate === undefined
-                ? 'Entrer votre date de naissance'
-                : moment(birthDate).format('DD-MM-YYYY')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <DatePicker
-          modal
-          open={open}
-          date={date}
-          mode={'date'}
-          locale={'fr'}
-          title={'Date de naissance'}
-          onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-            setBirthDate(date.toDateString());
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
 
         <View style={styles.inputContainer}>
           <Entypo
             name="email"
             size={20}
             color="#666"
-            style={{marginRight: 5}}
+            style={styles.marginRight}
           />
           <TextInput
             style={styles.input}
@@ -158,7 +137,7 @@ const SignUp = props => {
             name="lock"
             size={20}
             color="#666"
-            style={{marginRight: 5}}
+            style={styles.marginRight}
           />
           <TextInput
             style={styles.input}
@@ -172,7 +151,7 @@ const SignUp = props => {
             name="lock"
             size={20}
             color="#666"
-            style={{marginRight: 5}}
+            style={styles.marginRight}
           />
           <TextInput
             style={styles.input}
@@ -216,18 +195,10 @@ const SignUp = props => {
             <MaterialCommunityIcons name="linkedin" size={35} color="blue" />
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            marginVertical: 30,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{textAlign: 'center'}}>Déja un compte ? </Text>
+        <View style={styles.box}>
+          <Text style={styles.textAlign}>Déja un compte ? </Text>
           <TouchableOpacity onPress={() => props.navigation.navigate('LogIn')}>
-            <Text style={{textAlign: 'center', color: COLORS.mauveClaire}}>
-              Me connecter
-            </Text>
+            <Text style={styles.textAlign2}>Me connecter</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -241,6 +212,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   logo: {
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+  },
+  logoContainer: {
     alignItems: 'center',
     marginTop: 50,
   },
@@ -290,6 +266,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  marginRight: {
+    marginRight: 5,
+  },
+  box: {
+    marginVertical: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textAlign1: {
+    textAlign: 'center',
+  },
+  textAlign2: {
+    textAlign: 'center',
+    color: COLORS.mauveClaire,
   },
 });
 export default SignUp;

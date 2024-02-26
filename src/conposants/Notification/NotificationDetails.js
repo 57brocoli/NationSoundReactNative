@@ -1,49 +1,38 @@
-import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  SafeAreaView,
   Image,
+  StyleSheet,
+  TouchableOpacity,
   ScrollView,
   Animated,
-  StyleSheet,
 } from 'react-native';
+import React, {useState, useRef} from 'react';
+import {COLORS} from '../../asset/constantes/Couleurs';
+import {FONTS} from '../../asset/constantes/Fonts';
+import {CENTER} from '../../asset/constantes/Constantes';
 import LinearGradient from 'react-native-linear-gradient';
 //import des composant exterieurs
-import Footer from '../conposants/Footer';
+import Footer from '../Footer';
 //import des variables de style prédéfinis
-import {CENTER, TITLE} from '../constantes/Constantes';
-import {COLORS} from '../constantes/Couleurs';
-import {STYLESHEADER} from '../constantes/StylesHeader';
-import {STYLESMENU} from '../constantes/StyleMenu';
+import {STYLESHEADER} from '../../asset/constantes/StylesHeader';
+import {STYLESMENU} from '../../asset/constantes/StyleMenu';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {FakeBillets} from '../data/FakeBillet';
-//import de la Fakedata
 //import de Firebase
 import auth from '@react-native-firebase/auth';
 
-const Billetterie = props => {
+const NotificationDetails = props => {
+  const {notificationTitle, notificationBody, notificationImg} =
+    props.route.params;
+
   //Variable pour afficher/masquer le menu
   const [showMenu, setShowMenu] = useState(false);
-
   //Varible d'animation lors de l'affichage/masquage de menu
   const slideMenu = useRef(new Animated.Value(260)).current;
   const scralView = useRef(new Animated.Value(1)).current;
   const filtre = useRef(new Animated.Value(1)).current;
-
-  //Variable pour recupérer l'API des billets
-  const [billets, setBillets] = useState([]);
-  useEffect(() => setBillets(FakeBillets), []);
-
-  //Varible pour le compteur de billet simple
-  const [countBillets, setCountBillets] = useState(0);
-  const upCountBillets = () => {
-    setCountBillets(countBillets + 1);
-  };
-  const lessCountBillets = () => {
-    countBillets > 0 && setCountBillets(countBillets - 1);
-  };
   //Variable du header
   const Header = () => {
     return (
@@ -52,12 +41,13 @@ const Billetterie = props => {
           <TouchableOpacity
             onPress={() => props.navigation.navigate('Accueil1')}>
             <Image
-              source={require('../asset/img/logo.jpg')}
+              source={require('../../asset/img/logo.jpg')}
               style={STYLESHEADER.iconNav}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              setShowMenu(!showMenu);
               Animated.timing(slideMenu, {
                 toValue: showMenu ? 260 : 0,
                 duration: 300,
@@ -73,13 +63,8 @@ const Billetterie = props => {
                 duration: 300,
                 useNativeDriver: true,
               }).start();
-              setShowMenu(!showMenu);
             }}>
-            <MaterialCommunityIcons
-              name={showMenu ? 'close' : 'menu'}
-              color={'white'}
-              size={50}
-            />
+            <MaterialCommunityIcons name={'menu'} color={'white'} size={50} />
           </TouchableOpacity>
         </View>
       </View>
@@ -117,7 +102,7 @@ const Billetterie = props => {
               style={STYLESMENU.containerUserIcon}
               onPress={() => props.navigation.navigate('Profil')}>
               <Image
-                source={require('../asset/icons/userIcon.png')}
+                source={require('../../asset/icons/userIcon.png')}
                 style={STYLESMENU.userIcon}
               />
               <Text style={STYLESMENU.lienVersProfil}>Voir Profile</Text>
@@ -202,161 +187,92 @@ const Billetterie = props => {
       </Animated.View>
     );
   };
-
   return (
-    <View>
+    <SafeAreaView>
       <Header />
       <ScrollView>
         <LinearGradient
           colors={['#f1793c', '#6c24dd', '#5dd29b']}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0.91}}>
+          <TouchableOpacity
+            style={styles.buttonRetour}
+            onPress={() => props.navigation.goBack()}>
+            <MaterialCommunityIcons
+              name="chevron-left"
+              size={40}
+              color={'white'}
+            />
+            <Text style={styles.textButtonRetour}>Retour</Text>
+          </TouchableOpacity>
           <Animated.View
             style={{
               opacity: filtre,
               transform: [{scale: scralView}],
             }}>
-            <View style={styles.containerView}>
+            {/* Header */}
+            <Image source={{uri: notificationImg}} style={styles.header} />
+            {/* Fin header */}
+
+            {/* Contenu de la notification */}
+            <View style={styles.container}>
               <View style={CENTER}>
-                <Text style={TITLE}>Billeterie</Text>
+                <Text style={styles.notificationTitle}>
+                  {notificationTitle}
+                </Text>
               </View>
-              {billets.map((billet, index) => {
-                return (
-                  <View key={index} style={styles.containerBillet}>
-                    <Image source={billet.src} style={styles.billetImg} />
-                    <View style={styles.containerBilletsinfos}>
-                      <TouchableOpacity>
-                        <Text style={styles.billetText}>{billet.name}</Text>
-                        <Text style={styles.billetText}>{billet.prix}</Text>
-                      </TouchableOpacity>
-                      <View style={styles.containterCount}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            lessCountBillets();
-                          }}>
-                          <Text style={styles.billetCount}>-</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.billetCount}>{countBillets}</Text>
-                        <TouchableOpacity
-                          onPress={() => {
-                            upCountBillets();
-                          }}>
-                          <Text style={styles.billetCount}>+</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                );
-              })}
-              {countBillets > 0 ? (
-                <View style={styles.panier}>
-                  <Text style={styles.countPanier}>
-                    {countBillets} billets{' '}
-                    {countBillets > 1 ? 'selectionnées' : 'selectionné'}
-                  </Text>
-                  <View style={styles.containerTotal}>
-                    <Text style={styles.totalPanier}>Total:</Text>
-                    <Text style={styles.totalPanier}>XXX €</Text>
-                  </View>
-                  <TouchableOpacity
-                    style={styles.buttonPanier}
-                    onPress={() => {
-                      alert(
-                        "Votre paiment a bien été effectué, vous recevré bientôt votre billet dans votre espace perso précédé d'une notification",
-                      );
-                    }}>
-                    <Text style={styles.textButtonPanier}>
-                      Passer à la caisse
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                ''
-              )}
+              <View>
+                <Text style={styles.notificationBody}>{notificationBody}</Text>
+              </View>
             </View>
+            {/* Fin contenu de la notification */}
           </Animated.View>
         </LinearGradient>
         <Footer />
       </ScrollView>
       <Menu />
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
-  containerView: {
-    paddingTop: 90,
-    paddingHorizontal: 15,
-    height: 453,
-  },
-  containerBillet: {
-    marginVertical: 17,
-    backgroundColor: 'grey',
-    borderRadius: 10,
-  },
-  billetImg: {
-    width: '100%',
-    height: 120,
+  header: {
+    marginTop: 55,
+    height: 210,
+    width: '105%',
     opacity: 0.8,
-    borderRadius: 10,
+    right: 15,
   },
-  containerBilletsinfos: {
+  buttonRetour: {
     position: 'absolute',
-    marginTop: 10,
-    marginHorizontal: 20,
+    top: 70,
+    zIndex: 1,
+    borderBottomRightRadius: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 340,
-  },
-  billetText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  containterCount: {
-    flexDirection: 'row',
-    marginVertical: 30,
-  },
-  billetCount: {
-    marginHorizontal: 15,
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  panier: {
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,0.6)',
-    borderRadius: 10,
-    marginTop: 10,
-    padding: 15,
-  },
-  countPanier: {
-    color: 'black',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  containerTotal: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-  },
-  totalPanier: {
-    color: COLORS.orange,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  buttonPanier: {
-    backgroundColor: COLORS.mauveClaire,
-    borderRadius: 10,
-    height: 50,
-    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
+    height: 50,
+    backgroundColor: COLORS.mauveClaire,
+    width: 120,
   },
-  textButtonPanier: {
+  textButtonRetour: {
     color: 'white',
     fontSize: 18,
+  },
+  container: {
+    paddingHorizontal: 15,
+    marginTop: 20,
+  },
+  notificationTitle: {
+    fontSize: 26,
+    fontFamily: FONTS.titre,
+    color: COLORS.jaune,
+  },
+  notificationBody: {
+    color: 'white',
+    fontSize: 16,
     fontWeight: 'bold',
+    paddingTop: 15,
+    marginBottom: 30,
   },
 });
-export default Billetterie;
+
+export default NotificationDetails;

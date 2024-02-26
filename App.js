@@ -4,26 +4,17 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Programme from './src/ecrans/Programme';
-import Sponsors from './src/ecrans/Sponsors';
+import Page1 from './src/ecrans/Page1';
+import Page2 from './src/ecrans/Page2';
 import Accueil from './src/ecrans/Accueil';
 import Notifications from './src/ecrans/Notification';
-import Information from './src/ecrans/Information';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import ArtisteDetaills from './src/ecrans/ArtisteDetaills';
-import Billetterie from './src/ecrans/Billetterie';
 import {Image} from 'react-native';
 import Profil from './src/ecrans/Profil';
-import {COLORS} from './src/constantes/Couleurs';
+import {COLORS} from './src/asset/constantes/Couleurs';
 import Login from './src/ecrans/Login';
 import SingUp from './src/ecrans/SignUp';
-import NotificationDetails from './src/ecrans/NotificationDetails';
-import Notification from './src/ecrans/Notification';
 import Map from './src/ecrans/Map';
-import Footer from './src/conposants/Footer';
-import TestWP from './src/ecrans/TestWP';
-import Article from './src/ecrans/Article';
-import MapDetails from './src/ecrans/MapDetails';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -40,42 +31,22 @@ function MaTableNavigation(props) {
           headerShown: false,
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Profil"
         component={Profil}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
-        name="Footer"
-        component={Footer}
+        name="Page1"
+        component={Page1}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Programme"
-        component={Programme}
+        name="Page2"
+        component={Page2}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="Information"
-        component={Information}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Sponsors"
-        component={Sponsors}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="ArtisteDetaills"
-        component={ArtisteDetaills}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Billetterie"
-        component={Billetterie}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Notification"
         component={Notification}
         options={{headerShown: false}}
@@ -84,19 +55,8 @@ function MaTableNavigation(props) {
         name="NotificationDetails"
         component={NotificationDetails}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen name="Map" component={Map} />
-      <Stack.Screen
-        name="MapDetails"
-        component={MapDetails}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen name="TestWP" component={TestWP} />
-      <Stack.Screen
-        name="Article"
-        component={Article}
-        options={{headerShown: false}}
-      />
     </Stack.Navigator>
   );
 }

@@ -9,24 +9,25 @@ export const STYLESMENU = {
   },
   containerUserIcon: {
     flexDirection: 'row',
-    alignItems: 'baseline',
   },
+  contenair: {},
   userIcon: {
     width: 60,
     height: 60,
-  },
-  lienVersProfil: {
-    color: 'white',
-    marginLeft: 15,
   },
   nameUser: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginTop: 10,
+    marginLeft: 15,
+  },
+  lienVersProfil: {
+    color: 'white',
+    marginLeft: 15,
   },
   containerLink: {
-    marginTop: 15,
+    marginTop: 10,
   },
   lienNav: {
     flexDirection: 'row',
@@ -48,7 +49,7 @@ export const STYLESMENU = {
     flexDirection: 'row',
     alignItems: 'center',
     left: 80,
-    marginTop: 60,
+    marginTop: 30,
   },
   textDeconnexion: {
     color: 'white',

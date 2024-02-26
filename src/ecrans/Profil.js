@@ -1,16 +1,15 @@
 import {View, Text, SafeAreaView, Image, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {COLORS} from '../constantes/Couleurs';
-import {FONTS} from '../constantes/Fonts';
+import {COLORS} from '../asset/constantes/Couleurs';
+import {FONTS} from '../asset/constantes/Fonts';
 import auth from '@react-native-firebase/auth';
 import {useEffect} from 'react';
+import axios from 'axios';
+import moment from 'moment';
 
 const Profil = props => {
-  useEffect(() => {
-    auth();
-  });
   const onSingOut = () => {
     auth()
       .signOut()
@@ -19,6 +18,15 @@ const Profil = props => {
         props.navigation.navigate('LogIn');
       });
   };
+
+  const mail = auth().currentUser.email;
+  const [user, setUser] = useState();
+  useEffect(() => {
+    auth();
+    axios
+      .get(`https://pixelevent.site/api/users/by-email/${mail}`)
+      .then(res => setUser(res.data));
+  }, [mail]);
 
   return (
     <SafeAreaView>
@@ -33,9 +41,7 @@ const Profil = props => {
               size={40}
               color={'white'}
             />
-            <Text style={styles.textButtonRetour}>Retour</Text>
           </TouchableOpacity>
-
           <View style={styles.imgContainer}>
             <Image
               source={require('../asset/icons/userIcon.png')}
@@ -54,14 +60,14 @@ const Profil = props => {
         <View>
           <TouchableOpacity
             style={styles.touche}
-            onPress={() => props.navigation.navigate('TestWP')}>
+            onPress={() => props.navigation.navigate('Accueil')}>
             <MaterialCommunityIcons name="ticket" size={40} color={'white'} />
             <Text style={styles.textTouche}>Mes billets</Text>
           </TouchableOpacity>
         </View>
         {/* Fin section notification/billets */}
 
-        {/* section user parametres */}
+        {/* section user data */}
         <View style={styles.userParametre}>
           <Text>Nom</Text>
           <Text style={styles.userTextParametre}>
@@ -76,11 +82,19 @@ const Profil = props => {
         </View>
         <View style={styles.userParametre}>
           <Text>Numero de téléphone</Text>
-          <Text style={styles.userTextParametre}>''</Text>
+          <Text style={styles.userTextParametre}>
+            {user ? <Text>0{user.phone}</Text> : <Text>''</Text>}
+          </Text>
         </View>
         <View style={styles.userParametre}>
-          <Text>Date de naissance</Text>
-          <Text style={styles.userTextParametre}>''</Text>
+          <Text>Date de d'inscription</Text>
+          <Text style={styles.userTextParametre}>
+            {user ? (
+              <Text>{moment(user.createdAt).format('D MMMM YYYY')}</Text>
+            ) : (
+              <Text>''</Text>
+            )}
+          </Text>
         </View>
         <View style={styles.userParametre}>
           <TouchableOpacity

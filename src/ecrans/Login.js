@@ -10,7 +10,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/MaterialCommunityIcons';
-import {COLORS} from '../constantes/Couleurs';
+import {COLORS} from '../asset/constantes/Couleurs';
 import auth from '@react-native-firebase/auth';
 
 const Login = props => {
@@ -56,7 +56,7 @@ const Login = props => {
   const _isUserAuthenticated = () => {
     if (auth().currentUser) {
       console.log('User allready connected, this id:', auth().currentUser.uid);
-      props.navigation.navigate('Home');
+      props.navigation.navigate('Home', {id: 1});
     } else {
       console.log('User is not logged');
     }

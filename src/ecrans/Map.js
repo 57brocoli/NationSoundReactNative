@@ -14,13 +14,10 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import des styles
-import {COLORS} from '../constantes/Couleurs';
+import {COLORS} from '../asset/constantes/Couleurs';
 //import de la geolocalisation
 import Geolocation from '@react-native-community/geolocation';
-// import {FakeMarker} from '../data/FakeMarker';
 import axios from 'axios';
-import RenderHtml from 'react-native-render-html';
-import {useWindowDimensions} from 'react-native';
 
 /* AIzaSyCW7M2mUdB93GuXGPgJcKZyvvaTggIcqcg */
 
@@ -29,7 +26,7 @@ const Map = props => {
   const entrer = {latitude: 43.63156, longitude: 3.84155};
 
   // var pour les input de type radio
-  const [selectedRadio, setSelectedRadio] = useState('0');
+  const [selectedRadio, setSelectedRadio] = useState();
   // var pour les label des input de type radio
   const radios = [
     {id: 1, title: 'Entrer', icon: 'door'},
@@ -37,6 +34,7 @@ const Map = props => {
     {id: 3, title: 'Toilette', icon: 'toilet'},
     {id: 4, title: 'Bars', icon: 'beer'},
     {id: 5, title: 'Poste de secours', icon: 'mortar-pestle-plus'},
+    {id: 6, title: 'Hotel', icon: 'bed'},
   ];
 
   //variable de la position de l'utilisateur
@@ -79,14 +77,17 @@ const Map = props => {
     });
   }, []);
 
-  /////////////////////////////////////////////////////variable pour recupéré les donées de WordPress//////////////////////////////////
+  /////////////////////////////////////////////////////variable pour recupéré les donées de l'api//////////////////////////////////
   useEffect(() => {
     axios
-      .get('https://nationsounds.fr/wp-json/wp/v2/posts?_embed&per_page=100')
-      .then(res => setListeMarker(res.data));
+      .get('https://pixelevent.site/api/lieus')
+      .then(res => setListeMarker(res.data['hydra:member']));
   }, []);
   const [listeMarker, setListeMarker] = useState();
-  const {width} = useWindowDimensions();
+  // const {width} = useWindowDimensions();
+  const image = {
+    uri: 'https://pixelevent.site/assets/uploads/lieu/',
+  };
 
   return (
     <View style={styles.flex}>
@@ -100,56 +101,30 @@ const Map = props => {
           latitudeDelta: 0.09,
           longitudeDelta: 0.04,
         }}>
-        {/******************************* Variable pour afficher les points prevenant de wordPress *************************************/}
+        {/******************************* Variable pour afficher les points prevenant de l'api *************************************/}
+
         {listeMarker
           ? listeMarker
-              // filtre uniquement les acticles avec la catégories32
-              .filter(marker => marker.categories[0] === 32)
               // filtre uniquement marqueur en fonction du filtre choisit
-              .filter(marker =>
-                marker.content.rendered.slice(32, 33).includes(selectedRadio),
-              )
+              .filter(marker => marker.category.includes(selectedRadio))
               .map((marker, index) => {
                 return (
                   <Marker
                     key={index}
                     coordinate={{
-                      latitude: JSON.parse(
-                        marker.content.rendered.slice(4, 12),
-                      ),
-                      longitude: JSON.parse(
-                        marker.content.rendered.slice(13, 20),
-                      ),
+                      latitude: parseFloat(marker.GPSPtLat),
+                      longitude: parseFloat(marker.GPSPtLng),
                     }}
-                    title={marker.title.rendered}>
+                    title={marker.name}
+                    onPress={() => console.log(selectedRadio)}>
                     <Image
-                      source={{
-                        uri: marker._embedded['wp:featuredmedia']['0']
-                          .source_url,
-                      }}
+                      source={{uri: `${image.uri}${marker.featuredImage}`}}
                       style={styles.imageMarker}
                     />
                   </Marker>
                 );
               })
           : ''}
-
-        {/*************************************** Varible pour afficher les points provenent de la fakedata *********************************/}
-        {/* {FakeMarker.filter(marker =>
-          marker.categories.includes(selectedRadio),
-        ).map((marker, index) => (
-          <Marker
-            key={index}
-            coordinate={marker.coordinate}
-            title={marker.title}
-            description={marker.description}>
-            <MaterialCommunityIcons
-              name={marker.icon}
-              color={marker.colors}
-              size={30}
-            />
-          </Marker>
-        ))} */}
         {/*************************************** Varible pour afficher l'entrer du festival' *********************************/}
         <Marker
           title={'Nation sound'}
@@ -192,7 +167,7 @@ const Map = props => {
                 <TouchableOpacity
                   style={styles.radio}
                   onPress={() => {
-                    setSelectedRadio(item.id);
+                    setSelectedRadio(item.title);
                   }}>
                   <MaterialCommunityIcons
                     name={item.icon}
@@ -205,10 +180,10 @@ const Map = props => {
             );
           }}
         />
-        {selectedRadio > 0 && (
+        {selectedRadio && (
           <TouchableOpacity
             style={styles.radioRéinitialiser}
-            onPress={() => setSelectedRadio('0')}>
+            onPress={() => setSelectedRadio()}>
             <MaterialCommunityIcons name="reload" color={'indigo'} size={20} />
             <Text style={styles.radioText}>Réinitialiser</Text>
           </TouchableOpacity>
@@ -224,36 +199,22 @@ const Map = props => {
         style={styles.cardsView}>
         {listeMarker
           ? listeMarker
-              .filter(marker => marker.categories[0] === 32)
-              .filter(marker =>
-                marker.content.rendered.slice(32, 33).includes(selectedRadio),
-              )
+              .filter(marker => marker.category.includes(selectedRadio))
               .map((marker, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
                     style={styles.cards}
                     onPress={() => {
-                      props.navigation.navigate('MapDetails', {
-                        titre: marker.title.rendered,
-                        image:
-                          marker._embedded['wp:featuredmedia']['0'].source_url,
-                        description: marker.content.rendered,
+                      props.navigation.navigate('Page2', {
+                        marker: marker,
                       });
                     }}>
                     <Image
                       style={styles.imageCards}
-                      source={{
-                        uri: marker._embedded['wp:featuredmedia']['0']
-                          .source_url,
-                      }}
+                      source={{uri: `${image.uri}${marker.featuredImage}`}}
                     />
-                    <Text style={styles.content}>{marker.title.rendered}</Text>
-                    <RenderHtml
-                      contentWidth={width}
-                      source={{html: marker.content.rendered.slice(37)}}
-                      tagsStyles={tagsStyles}
-                    />
+                    <Text style={styles.content}>{marker.name}</Text>
                     <View style={styles.buttonCard}>
                       <Text style={styles.buttonCardText}>
                         Clicker pour plus de details
@@ -310,18 +271,18 @@ const styles = StyleSheet.create({
   },
   cardsView: {
     position: 'absolute',
-    top: '60%',
+    top: '65%',
   },
   cards: {
     elevation: 5,
     backgroundColor: '#fff',
     borderRadius: 10,
     marginHorizontal: 10,
-    width: 300,
+    width: 250,
   },
   imageCards: {
     width: '100%',
-    height: 115,
+    height: 105,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -345,16 +306,5 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 });
-// style du RenderHtml
-const tagsStyles = {
-  body: {
-    color: 'black',
-    fontSize: 14,
-    marginVertical: -12,
-    marginHorizontal: 10,
-    width: 280,
-    height: 48,
-  },
-};
 
 export default Map;

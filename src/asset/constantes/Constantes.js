@@ -12,8 +12,15 @@ export const TEXT = {
   textAlign: 'center',
   fontWeight: 'bold',
 };
+export const PARAGRAPH = {
+  fontFamily: FONTS.text,
+  color: 'white',
+  textAlign: 'justify',
+  fontWeight: 'bold',
+};
 export const TITLE = {
   fontFamily: FONTS.titre,
   color: COLORS.jaune,
   fontSize: 30,
+  textTransform: 'capitalize',
 };

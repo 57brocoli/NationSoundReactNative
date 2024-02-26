@@ -1,9 +1,9 @@
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
+import {COLORS} from '../asset/constantes/Couleurs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {COLORS} from '../constantes/Couleurs';
 
-const Footer = props => {
+const Footer = ({props}) => {
   return (
     <View style={styles.footer}>
       <View style={styles.logo}>
@@ -52,32 +52,19 @@ const Footer = props => {
         </TouchableOpacity>
       </View>
 
-      {/* <View style={styles.footerList}>
+      <View style={styles.footerList}>
         <TouchableOpacity
           style={styles.containerLi}
-          onPress={() => {
-            props.navigation.navigate('Sponsors');
-          }}>
-          <MaterialCommunityIcons
-            name="account-group"
-            color={COLORS.mauveFonce}
-            size={40}
-          />
-          <Text style={styles.textLi}>Partenaires</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.containerLi}>
-          <MaterialCommunityIcons
-            name="ticket-confirmation-outline"
-            color={COLORS.mauveFonce}
-            size={40}
-          />
-          <Text style={styles.textLi}>Billeterie</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.containerLi}>
+          onPress={() =>
+            // props.navigation.navigate('Page1', {
+            //   pageApropos: 'ok',
+            // })
+            window.scroll(0, 50)
+          }>
           <MaterialCommunityIcons
             name="contacts"
             color={COLORS.mauveFonce}
-            size={40}
+            size={20}
           />
           <Text style={styles.textLi}>Contact</Text>
         </TouchableOpacity>
@@ -85,7 +72,7 @@ const Footer = props => {
           <MaterialCommunityIcons
             name="information"
             color={COLORS.mauveFonce}
-            size={40}
+            size={20}
           />
           <Text style={styles.textLi}>Infos pratiques</Text>
         </TouchableOpacity>
@@ -93,11 +80,12 @@ const Footer = props => {
           <MaterialCommunityIcons
             name="file-document-outline"
             color={COLORS.mauveFonce}
-            size={40}
+            size={20}
           />
           <Text style={styles.textLi}>Mentions légales</Text>
         </TouchableOpacity>
-      </View> */}
+      </View>
+
       <View style={styles.mentionsLegales}>
         <Text style={styles.textMentionLegales}>
           &copy; - Nation Sounds - 2022
@@ -139,18 +127,21 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginHorizontal: 8,
   },
-  footerList: {},
+  footerList: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   containerLi: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+    paddingHorizontal: 10,
+    paddingTop: 15,
   },
   textLi: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: 'bold',
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
   mentionsLegales: {
     marginTop: 20,
