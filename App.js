@@ -9,7 +9,7 @@ import Page2 from './src/ecrans/Page2';
 import Accueil from './src/ecrans/Accueil';
 import Notifications from './src/ecrans/Notification';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import Profil from './src/ecrans/Profil';
 import {COLORS} from './src/asset/constantes/Couleurs';
 import Login from './src/ecrans/Login';
@@ -95,12 +95,7 @@ function TabNavigation() {
                     tabBarIcon: () => (
                         <Image
                             source={require('./src/asset/img/logo.jpg')}
-                            style={{
-                                height: 50,
-                                width: 50,
-                                borderRadius: 50,
-                                marginTop: 0,
-                            }}
+                            style={styles.img}
                         />
                     ),
                 }}
@@ -153,5 +148,13 @@ const App = () => {
         </NavigationContainer>
     );
 };
+const styles = StyleSheet.create({
+    img: {
+        height: 50,
+        width: 50,
+        borderRadius: 50,
+        marginTop: 0,
+    },
+});
 
 export default App;
