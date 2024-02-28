@@ -10,6 +10,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 const Profil = props => {
+    //Fonction pour se déconnecter
     const onSingOut = () => {
         auth()
             .signOut()
@@ -18,9 +19,12 @@ const Profil = props => {
                 props.navigation.navigate('LogIn');
             });
     };
-
+    //constante qui recupère l'email de l'utilisateur connecté
     const mail = auth().currentUser.email;
+
+    //constante qui stocke l'utilisateur
     const [user, setUser] = useState();
+    //fonction pour récupéré l'adresse mail dans la base de donnée liveEvent par l'intermediaire d'une route préconfiguré.
     useEffect(() => {
         auth();
         axios

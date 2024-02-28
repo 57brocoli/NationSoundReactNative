@@ -1,8 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
 import {View, Text, Image, Animated} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {STYLESHEADER} from '../asset/constantes/StylesHeader';
 import {TouchableOpacity} from 'react-native';
-import {useRef} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {STYLESMENU} from '../asset/constantes/StyleMenu';
 import {COLORS} from '../asset/constantes/Couleurs';
