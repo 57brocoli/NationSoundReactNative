@@ -40,7 +40,7 @@ const RequesteForm = () => {
             if (!lastname) {
                 setCheckLastname(false);
             } else {
-                setCheckEmail(true);
+                setCheckLastname(true);
             }
             if (!email) {
                 setCheckEmail(false);
@@ -59,7 +59,7 @@ const RequesteForm = () => {
             }
             Alert.alert(
                 'Erreur',
-                "Oups, il s'emblerait q'ou plusieurs champs sont vide",
+                "Oups, il s'emblerait qu'un ou plusieurs champs sont vide",
                 [
                     {
                         text: 'OK',
@@ -123,7 +123,7 @@ const RequesteForm = () => {
         setContent('');
         Alert.alert(
             'Message envoyé',
-            'Votre message a bien été envoyée, elle serat traiter dans les plus bref delais. Vous recevrez une réponse dans le mail comuniquer dans le message',
+            'Votre message a été envoyée, elle serat traiter dans les plus bref delais. Vous recevrez une réponse dans le mail comuniquer dans le message',
             [
                 {
                     text: 'OK',

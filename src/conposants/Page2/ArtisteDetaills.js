@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    StyleSheet,
-    Linking,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Image, StyleSheet, Linking} from 'react-native';
 //import des variables de style prédéfinis
 import {TITLE} from '../../asset/constantes/Constantes';
 import {COLORS} from '../../asset/constantes/Couleurs';
@@ -14,7 +7,13 @@ import {COLORS} from '../../asset/constantes/Couleurs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Moment from 'moment';
 
-const ArtisteDetaills = ({props, artiste, day, episode, lieu}) => {
+const ArtisteDetaills = ({artisteDetaills, lieu}) => {
+    if (artisteDetaills) {
+        var artiste = artisteDetaills.artiste;
+        var day = artisteDetaills.day;
+        var episode = artisteDetaills.episode;
+    }
+
     return (
         <>
             <Image
@@ -26,42 +25,22 @@ const ArtisteDetaills = ({props, artiste, day, episode, lieu}) => {
 
             <View style={styles.headerDescription}>
                 <Text style={TITLE}>{artiste.name}</Text>
-                <TouchableOpacity
-                    style={styles.playListe}
-                    onPress={() => Linking.openURL(artiste.link)}>
-                    <MaterialCommunityIcons
-                        name="play-circle-outline"
-                        color={'white'}
-                        size={30}
-                    />
+                <TouchableOpacity style={styles.playListe} onPress={() => Linking.openURL(artiste.link)}>
+                    <MaterialCommunityIcons name="play-circle-outline" color={'white'} size={30} />
                     <Text style={styles.playListeText}>Ecouter un morceau</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.detailConcert}>
-                <MaterialCommunityIcons
-                    name="calendar-text"
-                    color={'white'}
-                    size={30}
-                />
+                <MaterialCommunityIcons name="calendar-text" color={'white'} size={30} />
 
-                <Text style={styles.playListeText}>
-                    {Moment(day.date).format('D MMMM')}
-                </Text>
-                <Text style={styles.playListeText}>
-                    {Moment(episode.hour).format('H:mm')}
-                </Text>
+                <Text style={styles.playListeText}>{Moment(day.date).format('D MMMM')}</Text>
+                <Text style={styles.playListeText}>{Moment(episode.hour).format('H:mm')}</Text>
             </View>
             <View style={styles.separateur} />
             <View style={styles.detailConcert}>
-                <MaterialCommunityIcons
-                    name="map-marker-outline"
-                    color={'white'}
-                    size={30}
-                />
+                <MaterialCommunityIcons name="map-marker-outline" color={'white'} size={30} />
                 {episode.lieu && episode.lieu.name ? (
-                    <Text style={styles.playListeText}>
-                        {episode.lieu.name}
-                    </Text>
+                    <Text style={styles.playListeText}>{episode.lieu.name}</Text>
                 ) : (
                     <Text style={styles.playListeText}>{lieu}</Text>
                 )}

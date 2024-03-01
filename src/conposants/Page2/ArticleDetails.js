@@ -222,6 +222,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.mauveClaire,
         width: 70,
         padding: 10,
+        borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
     },

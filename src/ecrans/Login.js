@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-alert */
 import {
     View,
     Text,
@@ -65,6 +67,7 @@ const Login = props => {
             });
     };
 
+    //fonction pour verifié si un utilisateur est deja connecter
     const _isUserAuthenticated = () => {
         if (auth().currentUser) {
             console.log(
@@ -79,7 +82,6 @@ const Login = props => {
 
     useEffect(() => {
         _isUserAuthenticated();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

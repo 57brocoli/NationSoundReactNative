@@ -10,16 +10,15 @@ import ArticleDetails from '../Conposants/Page2/ArticleDetails';
 import BilletDetails from '../Conposants/Page2/BilletDetails';
 
 const Page2 = props => {
-    const {billet, artiste, day, episode, lieu, marker, article} =
-        props.route.params;
+    const {billet, artiste, day, episode, lieu, marker, article} = props.route.params;
 
     const billetDetails = {
         billet: billet,
     };
     const artisteDetaills = {
-        artiste: artiste,
-        day: day,
-        episode: episode,
+        artiste,
+        day,
+        episode,
     };
     const mapDetails = {
         marker: marker,
@@ -33,28 +32,11 @@ const Page2 = props => {
             <NavBar props={props} />
             <BouttonRetour props={props} />
             <ScrollView style={styles.container}>
-                <LinearGradient
-                    colors={['#f1793c', '#6c24dd', '#5dd29b']}
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 0.91}}>
-                    {billetDetails.billet && (
-                        <BilletDetails props={props} billet={billet} />
-                    )}
-                    {artisteDetaills.artiste && (
-                        <ArtisteDetaills
-                            props={props}
-                            episode={episode}
-                            artiste={artiste}
-                            day={day}
-                            lieu={lieu}
-                        />
-                    )}
-                    {mapDetails.marker && (
-                        <MapDetails props={props} marker={marker} />
-                    )}
-                    {articleDetails.article && (
-                        <ArticleDetails props={props} article={article} />
-                    )}
+                <LinearGradient colors={['#f1793c', '#6c24dd', '#5dd29b']} start={{x: 0, y: 0}} end={{x: 1, y: 0.91}}>
+                    {billetDetails.billet && <BilletDetails props={props} billet={billet} />}
+                    {artisteDetaills && <ArtisteDetaills artisteDetaills={artisteDetaills} lieu={lieu} />}
+                    {mapDetails.marker && <MapDetails props={props} marker={marker} />}
+                    {articleDetails.article && <ArticleDetails props={props} article={article} />}
                 </LinearGradient>
                 <Footer />
             </ScrollView>

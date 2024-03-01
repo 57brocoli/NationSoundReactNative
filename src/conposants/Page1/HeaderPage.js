@@ -4,16 +4,14 @@ import {COLORS} from '../../asset/constantes/Couleurs';
 import Loader from '../SousComposants/Loader';
 import {TEXT} from '../../asset/constantes/Constantes';
 
-const Header = ({folder, file, data}) => {
+const Header = ({folder, data}) => {
     return (
         <View>
-            {!file || !folder || !data ? (
+            {!folder || !data ? (
                 <Loader />
             ) : (
                 <View>
-                    <ImageBackground
-                        source={{uri: `${folder}${file}`}}
-                        style={styles.background}>
+                    <ImageBackground source={{uri: `${folder}${data.headerImage.name}`}} style={styles.background}>
                         <View>
                             <Text style={styles.logo}>{data.name}</Text>
                         </View>
@@ -34,16 +32,14 @@ const styles = StyleSheet.create({
     background: {
         zIndex: 1,
         flex: 1,
-        marginTop: 52,
+        marginTop: 70,
         height: 170,
-        width: '103%',
-        right: 20,
     },
     logo: {
         fontFamily: 'RaphLanokFuture-PvDx',
         fontSize: 70,
         color: COLORS.jaune,
-        marginTop: 30,
+        marginTop: 20,
         marginLeft: 20,
         textAlign: 'center',
     },

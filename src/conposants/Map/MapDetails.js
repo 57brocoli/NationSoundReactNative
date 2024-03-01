@@ -29,7 +29,6 @@ const MapDetails = ({props, marker}) => {
             .then(res => setDays(res.data['hydra:member']));
     }, []);
     const [days, setDays] = useState([]);
-    console.log(marker.name);
 
     return (
         <>

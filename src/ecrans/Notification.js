@@ -87,7 +87,7 @@ const Notification = props => {
     //Variable pour afficher/masquer le menu
     const [showMenu, setShowMenu] = useState(false);
     //Varible d'animation lors de l'affichage/masquage de menu
-    const slideMenu = useRef(new Animated.Value(260)).current;
+    const slideMenu = useRef(new Animated.Value(0)).current;
     const scralView = useRef(new Animated.Value(1)).current;
     const filtre = useRef(new Animated.Value(1)).current;
 

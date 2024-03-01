@@ -17,38 +17,20 @@ import Sponsor from '../Conposants/Page1/Sponsor';
 
 const Page1 = props => {
     //Variable pour recupéré les props passer dans la route
-    const {
-        pageBilletterie,
-        pageProgramme,
-        pageInformation,
-        pageSponsor,
-        pageApropos,
-    } = props.route.params;
+    const {pageBilletterie, pageProgramme, pageInformation, pageSponsor, pageApropos} = props.route.params;
 
     useEffect(() => {
-        axios
-            .get('https://pixelevent.site/api/views')
-            .then(res => setAllsView(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/views').then(res => setAllsView(res.data['hydra:member']));
 
-        axios
-            .get('https://pixelevent.site/api/billets')
-            .then(res => setBillets(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/billets').then(res => setBillets(res.data['hydra:member']));
 
-        axios
-            .get('https://pixelevent.site/api/days')
-            .then(res => setProgramme(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/articles').then(res => setArticles(res.data['hydra:member']));
 
-        axios
-            .get('https://pixelevent.site/api/articles')
-            .then(res => setArticles(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/days').then(res => setProgramme(res.data['hydra:member']));
 
-        axios
-            .get('https://pixelevent.site/api/f_a_qs')
-            .then(res => setFaqs(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/f_a_qs').then(res => setFaqs(res.data['hydra:member']));
 
-        axios
-            .get('https://pixelevent.site/api/sponsors')
-            .then(res => setSponsors(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/sponsors').then(res => setSponsors(res.data['hydra:member']));
     }, []);
 
     //variable pour stocker les billets
@@ -67,12 +49,30 @@ const Page1 = props => {
     const [sponsors, setSponsors] = useState([]);
 
     //Variables de stockage du contenu de la page et des articles provenant de l'api
-    const [Allsview, setAllsView] = useState();
+    const [Allsview, setAllsView] = useState([]);
 
     //Chemin d'acces au dossier des images des view
     const imgView = {
         uri: 'https://pixelevent.site/assets/uploads/figure/',
     };
+
+    // Variable pour récupéré le header de chaque pages
+    if (Allsview) {
+        var pageBilletExtract = Allsview.filter(x => x.name === 'billetterie');
+        var billet = pageBilletExtract[0];
+
+        var pageProgrammetExtract = Allsview.filter(x => x.name === 'programme');
+        var prog = pageProgrammetExtract[0];
+
+        var pageInfoExtract = Allsview.filter(x => x.name === 'actualite');
+        var info = pageInfoExtract[0];
+
+        var pageSponsorExtract = Allsview.filter(x => x.name === 'sponsor');
+        var spons = pageSponsorExtract[0];
+
+        var pageAproposExtract = Allsview.filter(x => x.name === 'a-propos');
+        var apropos = pageAproposExtract[0];
+    }
 
     return (
         <>
@@ -88,65 +88,32 @@ const Page1 = props => {
                             <View>
                                 {pageBilletterie && (
                                     <View>
-                                        <HeaderPage
-                                            data={Allsview[1]}
-                                            folder={imgView.uri}
-                                            file={Allsview[1].headerImage.name}
-                                        />
-                                        <Billetterie
-                                            billets={billets}
-                                            props={props}
-                                        />
+                                        <HeaderPage data={billet} folder={imgView.uri} />
+                                        <Billetterie billets={billets} props={props} />
                                     </View>
                                 )}
                                 {pageProgramme && (
                                     <View>
-                                        <HeaderPage
-                                            data={Allsview[2]}
-                                            folder={imgView.uri}
-                                            file={Allsview[2].headerImage.name}
-                                        />
-                                        <Programme
-                                            programme={programme}
-                                            props={props}
-                                        />
+                                        <HeaderPage data={prog} folder={imgView.uri} />
+                                        <Programme programme={programme} props={props} />
                                     </View>
                                 )}
                                 {pageInformation && (
                                     <View>
-                                        <HeaderPage
-                                            data={Allsview[3]}
-                                            folder={imgView.uri}
-                                            file={Allsview[3].headerImage.name}
-                                        />
-                                        <Information
-                                            articles={articles}
-                                            faqs={faqs}
-                                            props={props}
-                                        />
+                                        <HeaderPage data={info} folder={imgView.uri} />
+                                        <Information articles={articles} faqs={faqs} props={props} />
                                     </View>
                                 )}
                                 {pageSponsor && (
                                     <View>
-                                        <HeaderPage
-                                            data={Allsview[4]}
-                                            folder={imgView.uri}
-                                            file={Allsview[4].headerImage.name}
-                                        />
+                                        <HeaderPage data={spons} folder={imgView.uri} />
                                         <Sponsor sponsors={sponsors} />
                                     </View>
                                 )}
                                 {pageApropos && (
                                     <View>
-                                        <HeaderPage
-                                            data={Allsview[5]}
-                                            folder={imgView.uri}
-                                            file={Allsview[5].headerImage.name}
-                                        />
-                                        <Apropos
-                                            views={Allsview}
-                                            props={props}
-                                        />
+                                        <HeaderPage data={apropos} folder={imgView.uri} />
+                                        <Apropos views={Allsview} props={props} />
                                     </View>
                                 )}
                             </View>

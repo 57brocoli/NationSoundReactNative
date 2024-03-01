@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
     View,
     Text,
@@ -45,10 +45,6 @@ const Information = ({articles, faqs, props}) => {
     const [question4, setQuestion4] = useState(false);
     const showReponse4 = () => {
         setQuestion4(!question4);
-    };
-
-    const showReponse = responseId => {
-        setQuestion1(!question1);
     };
 
     const image = {

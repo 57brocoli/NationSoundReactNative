@@ -11,17 +11,11 @@ function Programme({programme, props}) {
     const [scenes, setScenes] = useState([]);
     const [artistes, setArtistes] = useState([]);
     useEffect(() => {
-        axios
-            .get('https://pixelevent.site/api/lieus')
-            .then(res => setScenes(res.data['hydra:member']));
-        axios
-            .get('https://pixelevent.site/api/artistes')
-            .then(res => setArtistes(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/lieus').then(res => setScenes(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/artistes').then(res => setArtistes(res.data['hydra:member']));
     }, []);
     //Variable qui filtre et trie pour récupéré les nom des scene
-    const allMapScenes = scenes
-        .filter(scene => scene.category === 'Scene')
-        .map(x => x.name);
+    const allMapScenes = scenes.filter(scene => scene.category === 'Scene').map(x => x.name);
     //Variable qui contient uniquement les nom des artistes
     const artisteNames = artistes.map(x => x.name);
 
@@ -34,13 +28,11 @@ function Programme({programme, props}) {
     return (
         <View>
             {programme && (
-                <View>
+                <>
                     <View>
                         <Text style={styles.title}>NationSound</Text>
                         <View style={styles.filtreBox}>
-                            <TouchableOpacity
-                                style={styles.filtre}
-                                onPress={() => setDayFilter(null)}>
+                            <TouchableOpacity style={styles.filtre} onPress={() => setDayFilter(null)}>
                                 <Text style={styles.textWhite}>Voir tous</Text>
                             </TouchableOpacity>
                             {programme.map((day, index) => {
@@ -49,9 +41,7 @@ function Programme({programme, props}) {
                                         key={index}
                                         style={styles.filtre}
                                         onPress={() => setDayFilter(day.name)}>
-                                        <Text style={styles.textWhite}>
-                                            {day.name}
-                                        </Text>
+                                        <Text style={styles.textWhite}>{day.name}</Text>
                                     </TouchableOpacity>
                                 );
                             })}
@@ -61,46 +51,29 @@ function Programme({programme, props}) {
                         ? programme.map((day, index) => {
                               return (
                                   <View key={index} style={styles.marginTop}>
+                                      {/* Entête de la section journée */}
                                       <View style={styles.headerDay}>
-                                          <Text style={styles.day}>
-                                              {day.name}
-                                          </Text>
-                                          <Text style={styles.dates}>
-                                              {Moment(day.date).format(
-                                                  'D MMMM YYYY',
-                                              )}
-                                          </Text>
+                                          <Text style={styles.day}>{day.name}</Text>
+                                          <Text style={styles.dates}>{Moment(day.date).format('D MMMM YYYY')}</Text>
                                           <ProgrammeFiltre
                                               allMapScenes={allMapScenes}
                                               sceneFilter={sceneFilter}
                                               setSceneFilter={setSceneFilter}
                                               artisteNames={artisteNames}
                                               artisteFiltre={artisteFiltre}
-                                              setArtisteFiltre={
-                                                  setArtisteFiltre
-                                              }
+                                              setArtisteFiltre={setArtisteFiltre}
                                           />
                                       </View>
                                       <View style={styles.hr} />
                                       {allMapScenes && sceneFilter
                                           ? allMapScenes
-                                                .filter(
-                                                    scene =>
-                                                        scene === sceneFilter,
-                                                )
+                                                .filter(scene => scene === sceneFilter)
                                                 .map(scene => {
                                                     return (
                                                         <View key={scene.id}>
-                                                            <Text
-                                                                style={
-                                                                    styles.dates
-                                                                }>
-                                                                {scene}
-                                                            </Text>
+                                                            <Text style={styles.dates}>{scene}</Text>
                                                             <ProgrammeListeArtiste
-                                                                artisteFiltre={
-                                                                    artisteFiltre
-                                                                }
+                                                                artisteFiltre={artisteFiltre}
                                                                 props={props}
                                                                 day={day}
                                                                 scene={scene}
@@ -111,16 +84,9 @@ function Programme({programme, props}) {
                                           : allMapScenes.map(scene => {
                                                 return (
                                                     <View key={scene.id}>
-                                                        <Text
-                                                            style={
-                                                                styles.dates
-                                                            }>
-                                                            {scene}
-                                                        </Text>
+                                                        <Text style={styles.dates}>{scene}</Text>
                                                         <ProgrammeListeArtiste
-                                                            artisteFiltre={
-                                                                artisteFiltre
-                                                            }
+                                                            artisteFiltre={artisteFiltre}
                                                             props={props}
                                                             day={day}
                                                             scene={scene}
@@ -135,60 +101,32 @@ function Programme({programme, props}) {
                               .filter(day => day.name === dayFilter)
                               .map((day, index) => {
                                   return (
-                                      <View
-                                          key={index}
-                                          style={styles.marginTop}>
+                                      <View key={index} style={styles.marginTop}>
                                           <View style={styles.headerDay}>
-                                              <Text style={styles.dates}>
-                                                  {day.name}
-                                              </Text>
-                                              <Text style={styles.dates}>
-                                                  {Moment(day.date).format(
-                                                      'D MMMM YYYY',
-                                                  )}
-                                              </Text>
+                                              <Text style={styles.dates}>{day.name}</Text>
+                                              <Text style={styles.dates}>{Moment(day.date).format('D MMMM YYYY')}</Text>
                                               <ProgrammeFiltre
                                                   allMapScenes={allMapScenes}
                                                   sceneFilter={sceneFilter}
-                                                  setSceneFilter={
-                                                      setSceneFilter
-                                                  }
+                                                  setSceneFilter={setSceneFilter}
                                                   artisteNames={artisteNames}
                                                   artisteFiltre={artisteFiltre}
-                                                  setArtisteFiltre={
-                                                      setArtisteFiltre
-                                                  }
+                                                  setArtisteFiltre={setArtisteFiltre}
                                               />
                                           </View>
                                           <View style={styles.hr} />
                                           {allMapScenes && sceneFilter
                                               ? allMapScenes
-                                                    .filter(
-                                                        scene =>
-                                                            scene ===
-                                                            sceneFilter,
-                                                    )
+                                                    .filter(scene => scene === sceneFilter)
                                                     .map(scene => {
                                                         return (
-                                                            <View
-                                                                key={scene.id}>
-                                                                <Text
-                                                                    style={
-                                                                        styles.dates
-                                                                    }>
-                                                                    {scene}
-                                                                </Text>
+                                                            <View key={scene.id}>
+                                                                <Text style={styles.dates}>{scene}</Text>
                                                                 <ProgrammeListeArtiste
-                                                                    artisteFiltre={
-                                                                        artisteFiltre
-                                                                    }
-                                                                    props={
-                                                                        props
-                                                                    }
+                                                                    artisteFiltre={artisteFiltre}
+                                                                    props={props}
                                                                     day={day}
-                                                                    scene={
-                                                                        scene
-                                                                    }
+                                                                    scene={scene}
                                                                 />
                                                             </View>
                                                         );
@@ -196,16 +134,9 @@ function Programme({programme, props}) {
                                               : allMapScenes.map(scene => {
                                                     return (
                                                         <View key={scene.id}>
-                                                            <Text
-                                                                style={
-                                                                    styles.dates
-                                                                }>
-                                                                {scene}
-                                                            </Text>
+                                                            <Text style={styles.dates}>{scene}</Text>
                                                             <ProgrammeListeArtiste
-                                                                artisteFiltre={
-                                                                    artisteFiltre
-                                                                }
+                                                                artisteFiltre={artisteFiltre}
                                                                 props={props}
                                                                 day={day}
                                                                 scene={scene}
@@ -216,7 +147,7 @@ function Programme({programme, props}) {
                                       </View>
                                   );
                               })}
-                </View>
+                </>
             )}
         </View>
     );
