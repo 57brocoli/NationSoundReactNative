@@ -71,9 +71,9 @@ const Accueil = props => {
                             start={{x: 0, y: 0}}
                             end={{x: 1, y: 1}}
                             style={styles.LinearGradient}>
-                            {data.pageSections.map((section, index) => {
+                            {data.pageSections.map(section => {
                                 return (
-                                    <View key={index}>
+                                    <View key={section.id}>
                                         {section.display === 'style1' && (
                                             <View style={styles.section}>
                                                 <View style={CENTER}>

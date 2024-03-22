@@ -1,26 +1,10 @@
-import {View, Text, Button} from 'react-native';
-import React, {useRef} from 'react';
-import RNGoogleRecaptcha from 'react-native-google-recaptcha';
+import {View, Text} from 'react-native';
+import React from 'react';
 
 const Test = props => {
-    const recaptchaRef = useRef(null);
-
-    const handleOpenRecaptcha = () => {
-        recaptchaRef.current.open();
-    };
-
     return (
         <View>
-            <Text>Test</Text>
-            <Button title="Verification" onPress={handleOpenRecaptcha} />
-            <RNGoogleRecaptcha
-                ref={recaptchaRef}
-                siteKey={'6LcHJqApAAAAAJM--M7PlMe663YUMk_f-uXFs7s5'}
-                baseUrl={'https://pixelevent.site'}
-                lang="fr"
-                onVerify={() => props.navigation.navigate('Accueil1')}
-            />
-            <Text>mklj</Text>
+            <Text>Liste des billets de l'utilisateur</Text>
         </View>
     );
 };

@@ -27,12 +27,8 @@ const NavBar = ({props}) => {
     return (
         <View style={STYLESHEADER.header}>
             <View style={STYLESHEADER.nav}>
-                <TouchableOpacity
-                    onPress={() => props.navigation.navigate('Accueil1')}>
-                    <Image
-                        source={require('../asset/img/logo.jpg')}
-                        style={STYLESHEADER.iconNav}
-                    />
+                <TouchableOpacity onPress={() => props.navigation.navigate('Accueil1')}>
+                    <Image source={require('../asset/img/logo.jpg')} style={STYLESHEADER.iconNav} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
@@ -53,11 +49,7 @@ const NavBar = ({props}) => {
                             useNativeDriver: true,
                         }).start();
                     }}>
-                    <MaterialCommunityIcons
-                        name={showMenu ? 'close' : 'menu'}
-                        color={'white'}
-                        size={50}
-                    />
+                    <MaterialCommunityIcons name={showMenu ? 'close' : 'menu'} color={'white'} size={50} />
                 </TouchableOpacity>
             </View>
             <Animated.View
@@ -78,40 +70,18 @@ const NavBar = ({props}) => {
                         <TouchableOpacity
                             style={STYLESMENU.containerUserIcon}
                             onPress={() => props.navigation.navigate('Profil')}>
-                            <Image
-                                source={require('../asset/img/userIcon.png')}
-                                style={STYLESMENU.userIcon}
-                            />
+                            <Image source={require('../asset/img/userIcon.png')} style={STYLESMENU.userIcon} />
                             <View style={STYLESMENU.contenair}>
                                 {/* container du nom de l'utilisateur */}
-                                <Text style={STYLESMENU.nameUser}>
-                                    {auth().currentUser.displayName}
-                                </Text>
-                                <Text style={STYLESMENU.lienVersProfil}>
-                                    Voir Profile
-                                </Text>
+                                <Text style={STYLESMENU.nameUser}>{auth().currentUser.displayName}</Text>
+                                <Text style={STYLESMENU.lienVersProfil}>Voir Profile</Text>
                             </View>
                         </TouchableOpacity>
-                        {/* fin container de la photo de Profile */}
-
-                        {/* container du nom de l'utilisateur */}
-                        {/* <Text style={STYLESMENU.nameUser}>
-              {auth().currentUser.displayName}
-            </Text> */}
-                        {/* fin container du nom de l'utilisateur */}
-
-                        {/* container des liens de navigation*/}
                         <View style={STYLESMENU.containerLink}>
                             <TouchableOpacity
                                 style={STYLESMENU.lienNav}
-                                onPress={() =>
-                                    props.navigation.navigate('Accueil1')
-                                }>
-                                <MaterialCommunityIcons
-                                    name="home"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
+                                onPress={() => props.navigation.navigate('Accueil1')}>
+                                <MaterialCommunityIcons name="home" color={COLORS.mauveClaire} size={30} />
                                 <Text style={STYLESMENU.textLink}>Accueil</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -121,14 +91,8 @@ const NavBar = ({props}) => {
                                         pageBilletterie: 'ok',
                                     })
                                 }>
-                                <MaterialCommunityIcons
-                                    name="ticket"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>
-                                    Billetterie
-                                </Text>
+                                <MaterialCommunityIcons name="ticket" color={COLORS.mauveClaire} size={30} />
+                                <Text style={STYLESMENU.textLink}>Billetterie</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={STYLESMENU.lienNav}
@@ -137,14 +101,8 @@ const NavBar = ({props}) => {
                                         pageProgramme: 'ok',
                                     })
                                 }>
-                                <MaterialCommunityIcons
-                                    name="clipboard-list"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>
-                                    Programme
-                                </Text>
+                                <MaterialCommunityIcons name="clipboard-list" color={COLORS.mauveClaire} size={30} />
+                                <Text style={STYLESMENU.textLink}>Programme</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={STYLESMENU.lienNav}
@@ -153,14 +111,8 @@ const NavBar = ({props}) => {
                                         pageInformation: 'ok',
                                     })
                                 }>
-                                <MaterialCommunityIcons
-                                    name="information"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>
-                                    Information
-                                </Text>
+                                <MaterialCommunityIcons name="information" color={COLORS.mauveClaire} size={30} />
+                                <Text style={STYLESMENU.textLink}>Information</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={STYLESMENU.lienNav}
@@ -169,42 +121,22 @@ const NavBar = ({props}) => {
                                         pageApropos: 'ok',
                                     })
                                 }>
-                                <MaterialCommunityIcons
-                                    name="balloon"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>
-                                    A propos
-                                </Text>
+                                <MaterialCommunityIcons name="balloon" color={COLORS.mauveClaire} size={30} />
+                                <Text style={STYLESMENU.textLink}>A propos</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={STYLESMENU.lienNav}
-                                onPress={() =>
-                                    props.navigation.navigate('Map')
-                                }>
-                                <MaterialCommunityIcons
-                                    name="map"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
+                                onPress={() => props.navigation.navigate('Map')}>
+                                <MaterialCommunityIcons name="map" color={COLORS.mauveClaire} size={30} />
                                 <Text style={STYLESMENU.textLink}>Map</Text>
                             </TouchableOpacity>
                         </View>
                         {/* fin container des liens de navigation*/}
 
                         {/*container se deconnecter*/}
-                        <TouchableOpacity
-                            style={STYLESMENU.containerLinkDeconnexion}
-                            onPress={() => onSingOut()}>
-                            <MaterialCommunityIcons
-                                name="logout"
-                                color={'white'}
-                                size={30}
-                            />
-                            <Text style={STYLESMENU.textDeconnexion}>
-                                Déconnexion
-                            </Text>
+                        <TouchableOpacity style={STYLESMENU.containerLinkDeconnexion} onPress={() => onSingOut()}>
+                            <MaterialCommunityIcons name="logout" color={'white'} size={30} />
+                            <Text style={STYLESMENU.textDeconnexion}>Déconnexion</Text>
                         </TouchableOpacity>
                         {/*container se deconnecter*/}
                     </View>

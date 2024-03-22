@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList, ImageBackground} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 //import de moment pour formater la date
 import Moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -25,6 +25,11 @@ function Programme({programme, props}) {
 
     const [artisteFiltre, setArtisteFiltre] = useState(null);
 
+    // if (programme) {
+    //     var test = programme;
+    // }
+
+    // console.log(test[0].episode[1].lieu.id);
     return (
         <View>
             {programme && (
@@ -35,10 +40,10 @@ function Programme({programme, props}) {
                             <TouchableOpacity style={styles.filtre} onPress={() => setDayFilter(null)}>
                                 <Text style={styles.textWhite}>Voir tous</Text>
                             </TouchableOpacity>
-                            {programme.map((day, index) => {
+                            {programme.map(day => {
                                 return (
                                     <TouchableOpacity
-                                        key={index}
+                                        key={day.id}
                                         style={styles.filtre}
                                         onPress={() => setDayFilter(day.name)}>
                                         <Text style={styles.textWhite}>{day.name}</Text>
@@ -48,10 +53,9 @@ function Programme({programme, props}) {
                         </View>
                     </View>
                     {programme && dayFilter === null
-                        ? programme.map((day, index) => {
+                        ? programme.map(day => {
                               return (
-                                  <View key={index} style={styles.marginTop}>
-                                      {/* Entête de la section journée */}
+                                  <View key={day.id} style={styles.marginTop}>
                                       <View style={styles.headerDay}>
                                           <Text style={styles.day}>{day.name}</Text>
                                           <Text style={styles.dates}>{Moment(day.date).format('D MMMM YYYY')}</Text>
@@ -68,9 +72,9 @@ function Programme({programme, props}) {
                                       {allMapScenes && sceneFilter
                                           ? allMapScenes
                                                 .filter(scene => scene === sceneFilter)
-                                                .map(scene => {
+                                                .map((scene, index) => {
                                                     return (
-                                                        <View key={scene.id}>
+                                                        <View key={index}>
                                                             <Text style={styles.dates}>{scene}</Text>
                                                             <ProgrammeListeArtiste
                                                                 artisteFiltre={artisteFiltre}
@@ -81,9 +85,9 @@ function Programme({programme, props}) {
                                                         </View>
                                                     );
                                                 })
-                                          : allMapScenes.map(scene => {
+                                          : allMapScenes.map((scene, index) => {
                                                 return (
-                                                    <View key={scene.id}>
+                                                    <View key={index}>
                                                         <Text style={styles.dates}>{scene}</Text>
                                                         <ProgrammeListeArtiste
                                                             artisteFiltre={artisteFiltre}
@@ -99,9 +103,9 @@ function Programme({programme, props}) {
                           })
                         : programme
                               .filter(day => day.name === dayFilter)
-                              .map((day, index) => {
+                              .map(day => {
                                   return (
-                                      <View key={index} style={styles.marginTop}>
+                                      <View key={day.id} style={styles.marginTop}>
                                           <View style={styles.headerDay}>
                                               <Text style={styles.dates}>{day.name}</Text>
                                               <Text style={styles.dates}>{Moment(day.date).format('D MMMM YYYY')}</Text>
@@ -118,9 +122,9 @@ function Programme({programme, props}) {
                                           {allMapScenes && sceneFilter
                                               ? allMapScenes
                                                     .filter(scene => scene === sceneFilter)
-                                                    .map(scene => {
+                                                    .map((scene, index) => {
                                                         return (
-                                                            <View key={scene.id}>
+                                                            <View key={index}>
                                                                 <Text style={styles.dates}>{scene}</Text>
                                                                 <ProgrammeListeArtiste
                                                                     artisteFiltre={artisteFiltre}
@@ -131,9 +135,9 @@ function Programme({programme, props}) {
                                                             </View>
                                                         );
                                                     })
-                                              : allMapScenes.map(scene => {
+                                              : allMapScenes.map((scene, index) => {
                                                     return (
-                                                        <View key={scene.id}>
+                                                        <View key={index}>
                                                             <Text style={styles.dates}>{scene}</Text>
                                                             <ProgrammeListeArtiste
                                                                 artisteFiltre={artisteFiltre}

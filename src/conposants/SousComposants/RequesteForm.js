@@ -56,6 +56,7 @@ const RequesteForm = () => {
             ]);
         }
     };
+    const recaptchaRef = useRef(null);
     const formIsValide = () => {
         if (firstname && lastname && email && motif && content) {
             if (firstname) {
@@ -118,12 +119,6 @@ const RequesteForm = () => {
                 },
             ],
         );
-    };
-
-    const recaptchaRef = useRef(null);
-
-    const handleOpenRecaptcha = () => {
-        recaptchaRef.current.open();
     };
 
     return (
