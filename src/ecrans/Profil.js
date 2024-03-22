@@ -27,9 +27,7 @@ const Profil = props => {
     //fonction pour récupéré l'adresse mail dans la base de donnée liveEvent par l'intermediaire d'une route préconfiguré.
     useEffect(() => {
         auth();
-        axios
-            .get(`https://pixelevent.site/api/users/by-email/${mail}`)
-            .then(res => setUser(res.data));
+        axios.get(`https://pixelevent.site/api/users/by-email/${mail}`).then(res => setUser(res.data));
     }, [mail]);
 
     return (
@@ -37,24 +35,13 @@ const Profil = props => {
             <ScrollView>
                 {/* Header */}
                 <View style={styles.header}>
-                    <TouchableOpacity
-                        style={styles.buttonRetour}
-                        onPress={() => props.navigation.navigate('Accueil1')}>
-                        <MaterialCommunityIcons
-                            name="chevron-left"
-                            size={40}
-                            color={'white'}
-                        />
+                    <TouchableOpacity style={styles.buttonRetour} onPress={() => props.navigation.navigate('Accueil1')}>
+                        <MaterialCommunityIcons name="chevron-left" size={40} color={'white'} />
                     </TouchableOpacity>
                     <View style={styles.imgContainer}>
-                        <Image
-                            source={require('../asset/img/userIcon.png')}
-                            style={styles.imgUser}
-                        />
+                        <Image source={require('../asset/img/userIcon.png')} style={styles.imgUser} />
                         <View>
-                            <Text style={styles.textImg}>
-                                {auth().currentUser.displayName}
-                            </Text>
+                            <Text style={styles.textImg}>{auth().currentUser.displayName}</Text>
                         </View>
                     </View>
                 </View>
@@ -62,14 +49,8 @@ const Profil = props => {
 
                 {/* section notification/billets */}
                 <View>
-                    <TouchableOpacity
-                        style={styles.touche}
-                        onPress={() => props.navigation.navigate('Accueil')}>
-                        <MaterialCommunityIcons
-                            name="ticket"
-                            size={40}
-                            color={'white'}
-                        />
+                    <TouchableOpacity style={styles.touche} onPress={() => props.navigation.navigate('Test')}>
+                        <MaterialCommunityIcons name="ticket" size={40} color={'white'} />
                         <Text style={styles.textTouche}>Mes billets</Text>
                     </TouchableOpacity>
                 </View>
@@ -78,43 +59,25 @@ const Profil = props => {
                 {/* section user data */}
                 <View style={styles.userParametre}>
                     <Text>Nom</Text>
-                    <Text style={styles.userTextParametre}>
-                        {auth().currentUser.displayName}
-                    </Text>
+                    <Text style={styles.userTextParametre}>{auth().currentUser.displayName}</Text>
                 </View>
                 <View style={styles.userParametre}>
                     <Text>Adresse mail</Text>
-                    <Text style={styles.userTextParametre}>
-                        {auth().currentUser.email}
-                    </Text>
+                    <Text style={styles.userTextParametre}>{auth().currentUser.email}</Text>
                 </View>
                 <View style={styles.userParametre}>
                     <Text>Numero de téléphone</Text>
-                    <Text style={styles.userTextParametre}>
-                        {user ? <Text>0{user.phone}</Text> : <Text>''</Text>}
-                    </Text>
+                    <Text style={styles.userTextParametre}>{user ? <Text>0{user.phone}</Text> : <Text>''</Text>}</Text>
                 </View>
                 <View style={styles.userParametre}>
                     <Text>Date de d'inscription</Text>
                     <Text style={styles.userTextParametre}>
-                        {user ? (
-                            <Text>
-                                {moment(user.createdAt).format('D MMMM YYYY')}
-                            </Text>
-                        ) : (
-                            <Text>''</Text>
-                        )}
+                        {user ? <Text>{moment(user.createdAt).format('D MMMM YYYY')}</Text> : <Text>''</Text>}
                     </Text>
                 </View>
                 <View style={styles.userParametre}>
-                    <TouchableOpacity
-                        style={styles.buttonLogout}
-                        onPress={() => onSingOut()}>
-                        <MaterialCommunityIcons
-                            name="logout"
-                            color={'black'}
-                            size={30}
-                        />
+                    <TouchableOpacity style={styles.buttonLogout} onPress={() => onSingOut()}>
+                        <MaterialCommunityIcons name="logout" color={'black'} size={30} />
                         <Text>Se déconnecter</Text>
                     </TouchableOpacity>
                 </View>

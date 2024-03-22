@@ -34,7 +34,7 @@ const Page2 = props => {
             <ScrollView style={styles.container}>
                 <LinearGradient colors={['#f1793c', '#6c24dd', '#5dd29b']} start={{x: 0, y: 0}} end={{x: 1, y: 0.91}}>
                     {billetDetails.billet && <BilletDetails props={props} billet={billet} />}
-                    {artisteDetaills && <ArtisteDetaills artisteDetaills={artisteDetaills} lieu={lieu} />}
+                    {artisteDetaills.artiste && <ArtisteDetaills artisteDetaills={artisteDetaills} lieu={lieu} />}
                     {mapDetails.marker && <MapDetails props={props} marker={marker} />}
                     {articleDetails.article && <ArticleDetails props={props} article={article} />}
                 </LinearGradient>

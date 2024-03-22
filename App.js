@@ -15,6 +15,7 @@ import {COLORS} from './src/asset/constantes/Couleurs';
 import Login from './src/ecrans/Login';
 import SingUp from './src/ecrans/SignUp';
 import Map from './src/ecrans/Map';
+import Test from './src/ecrans/Test';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -36,16 +37,9 @@ function MaTableNavigation(props) {
                 component={Profil}
                 options={{headerShown: false}}
             /> */}
-            <Stack.Screen
-                name="Page1"
-                component={Page1}
-                options={{headerShown: false}}
-            />
-            <Stack.Screen
-                name="Page2"
-                component={Page2}
-                options={{headerShown: false}}
-            />
+            <Stack.Screen name="Page1" component={Page1} options={{headerShown: false}} />
+            <Stack.Screen name="Page2" component={Page2} options={{headerShown: false}} />
+            <Stack.Screen name="Test" component={Test} options={{headerShown: false}} />
             {/* <Stack.Screen
                 name="Notification"
                 component={Notification}
@@ -78,13 +72,7 @@ function TabNavigation() {
                 component={Notifications}
                 options={{
                     headerShown: false,
-                    tabBarIcon: ({color}) => (
-                        <MaterialCommunityIcons
-                            name="bell"
-                            color={color}
-                            size={26}
-                        />
-                    ),
+                    tabBarIcon: ({color}) => <MaterialCommunityIcons name="bell" color={color} size={26} />,
                 }}
             />
             <Tabs.Screen
@@ -92,12 +80,7 @@ function TabNavigation() {
                 component={MaTableNavigation}
                 options={{
                     headerShown: false,
-                    tabBarIcon: () => (
-                        <Image
-                            source={require('./src/asset/img/logo.jpg')}
-                            style={styles.img}
-                        />
-                    ),
+                    tabBarIcon: () => <Image source={require('./src/asset/img/logo.jpg')} style={styles.img} />,
                 }}
             />
             <Tabs.Screen
@@ -105,13 +88,7 @@ function TabNavigation() {
                 component={Profil}
                 options={{
                     headerShown: false,
-                    tabBarIcon: ({color}) => (
-                        <MaterialCommunityIcons
-                            name="account"
-                            color={color}
-                            size={34}
-                        />
-                    ),
+                    tabBarIcon: ({color}) => <MaterialCommunityIcons name="account" color={color} size={34} />,
                 }}
             />
         </Tabs.Navigator>
@@ -123,21 +100,9 @@ const MainStack = createStackNavigator();
 function MainStackScreen() {
     return (
         <MainStack.Navigator initialRouteName={'LogIn'}>
-            <MainStack.Screen
-                name={'Home'}
-                component={TabNavigation}
-                options={{headerShown: false}}
-            />
-            <MainStack.Screen
-                name={'LogIn'}
-                component={Login}
-                options={{headerShown: false}}
-            />
-            <MainStack.Screen
-                name={'SignUp'}
-                component={SingUp}
-                options={{headerShown: false}}
-            />
+            <MainStack.Screen name={'Home'} component={TabNavigation} options={{headerShown: false}} />
+            <MainStack.Screen name={'LogIn'} component={Login} options={{headerShown: false}} />
+            <MainStack.Screen name={'SignUp'} component={SingUp} options={{headerShown: false}} />
         </MainStack.Navigator>
     );
 }

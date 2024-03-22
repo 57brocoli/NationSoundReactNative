@@ -1,21 +1,13 @@
 /* eslint-disable radix */
 /* eslint-disable no-alert */
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    SafeAreaView,
-    TextInput,
-    TouchableOpacity,
-    ScrollView,
-} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useRef, useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS} from '../asset/constantes/Couleurs';
 import auth from '@react-native-firebase/auth';
 import bcrypt from 'bcryptjs';
+import RNGoogleRecaptcha from 'react-native-google-recaptcha';
 
 const SignUp = props => {
     // variable des données de l'utilisateur
@@ -26,8 +18,9 @@ const SignUp = props => {
     const [passwordSecurity, setPasswordSecurity] = useState('');
     const date = new Date();
 
-    // fonction pour s'inscrire sur firebase et envoyer les données dans la database liveevent
-    const onSingUp = () => {
+    // fonction pour lancer le captchat
+    const recaptchaRef = useRef(null);
+    const verify = () => {
         if (!name) {
             alert("Ooh! Il s'emblerait que vous avez oublier votre nom");
         } else if (!email) {
@@ -37,71 +30,63 @@ const SignUp = props => {
         } else if (!passwordSecurity) {
             alert('Veuillez confirmer votre mot de passe');
         } else if (password !== passwordSecurity) {
-            alert(
-                "Il s'emblerait que la confirmation du mot de passe est incorect",
-            );
+            alert("Il s'emblerait que la confirmation du mot de passe est incorect");
         } else {
-            auth()
-                .createUserWithEmailAndPassword(email, password)
-                .then(async response => {
-                    await response.user.updateProfile({
-                        displayName: name,
-                    });
-                    props.navigation.navigate('Home', {id: 1});
-                })
-                .catch(error => {
-                    if (error.code === 'auth/email-already-in-use') {
-                        alert('Cette adresse possède déja un compte');
-                    }
-                    if (error.code === 'auth/invalid-email') {
-                        alert('Adresse mail invalide');
-                    }
-                    if (error.code === 'auth/weak-password') {
-                        alert('Mot de passe pas assez sécurisant');
-                    }
-                    console.error(error);
-                });
-
-            const hashedPassword = bcrypt.hashSync(
-                password,
-                '$2a$10$CwTycUXWue0Thq9StjUM0u',
-            );
-
-            fetch('https://pixelevent.site/api/mobile_users', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    password: hashedPassword,
-                    phone: parseInt(phoneNumber),
-                    createdAt: date,
-                }),
-            });
+            recaptchaRef.current.open();
         }
+    };
+
+    // fonction pour s'inscrire sur firebase et envoyer les données dans la database liveevent
+    const onSingUp = () => {
+        auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(async response => {
+                await response.user.updateProfile({
+                    displayName: name,
+                });
+                props.navigation.navigate('Home', {id: 1});
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    alert('Cette adresse possède déja un compte');
+                }
+                if (error.code === 'auth/invalid-email') {
+                    alert('Adresse mail invalide');
+                }
+                if (error.code === 'auth/weak-password') {
+                    alert('Mot de passe pas assez sécurisant');
+                }
+                console.error(error);
+            });
+
+        const hashedPassword = bcrypt.hashSync(password, '$2a$10$CwTycUXWue0Thq9StjUM0u');
+
+        fetch('https://pixelevent.site/api/mobile_users', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: hashedPassword,
+                phone: parseInt(phoneNumber),
+                createdAt: date,
+            }),
+        });
     };
 
     return (
         <ScrollView>
             <SafeAreaView style={styles.root}>
                 <View style={styles.logoContainer}>
-                    <Image
-                        source={require('../asset/img/logo.jpg')}
-                        style={styles.logo}
-                    />
+                    <Image source={require('../asset/img/logo.jpg')} style={styles.logo} />
                     <Text style={styles.title}>Inscrition</Text>
                 </View>
 
                 {/* zone de saisie */}
                 <View style={styles.inputContainer}>
-                    <Entypo
-                        name="account"
-                        size={20}
-                        color="#666"
-                        style={styles.marginRight}
-                    />
+                    <Entypo name="account" size={20} color="#666" style={styles.marginRight} />
                     <TextInput
                         style={styles.input}
                         placeholder={'Entrer votre Nom'}
@@ -109,12 +94,7 @@ const SignUp = props => {
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <Entypo
-                        name="phone"
-                        size={20}
-                        color="#666"
-                        style={styles.marginRight}
-                    />
+                    <Entypo name="phone" size={20} color="#666" style={styles.marginRight} />
                     <TextInput
                         style={styles.input}
                         keyboardType="numeric"
@@ -124,12 +104,7 @@ const SignUp = props => {
                 </View>
 
                 <View style={styles.inputContainer}>
-                    <Entypo
-                        name="email"
-                        size={20}
-                        color="#666"
-                        style={styles.marginRight}
-                    />
+                    <Entypo name="email" size={20} color="#666" style={styles.marginRight} />
                     <TextInput
                         style={styles.input}
                         placeholder={'Entrer votre email'}
@@ -137,12 +112,7 @@ const SignUp = props => {
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <MaterialCommunityIcons
-                        name="lock"
-                        size={20}
-                        color="#666"
-                        style={styles.marginRight}
-                    />
+                    <MaterialCommunityIcons name="lock" size={20} color="#666" style={styles.marginRight} />
                     <TextInput
                         style={styles.input}
                         placeholder={'Entrer votre mot de passe'}
@@ -151,12 +121,7 @@ const SignUp = props => {
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <MaterialCommunityIcons
-                        name="lock"
-                        size={20}
-                        color="#666"
-                        style={styles.marginRight}
-                    />
+                    <MaterialCommunityIcons name="lock" size={20} color="#666" style={styles.marginRight} />
                     <TextInput
                         style={styles.input}
                         placeholder={'Confirmer votre mot de passe'}
@@ -166,63 +131,44 @@ const SignUp = props => {
                 </View>
 
                 {/* Button Action */}
-                <TouchableOpacity
-                    style={styles.touchablebutton}
-                    onPress={() => onSingUp()}>
+                <TouchableOpacity style={styles.touchablebutton} onPress={verify}>
                     <Text style={styles.touchableText}>S'inscrire</Text>
                 </TouchableOpacity>
 
-                <View>
+                <RNGoogleRecaptcha
+                    ref={recaptchaRef}
+                    siteKey={'6LcHJqApAAAAAJM--M7PlMe663YUMk_f-uXFs7s5'}
+                    baseUrl={'https://pixelevent.site'}
+                    lang="fr"
+                    onVerify={onSingUp}
+                />
+
+                {/* <View>
                     <Text style={styles.textCenter}>Me connecter avec</Text>
                 </View>
                 <View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons
-                            name="facebook"
-                            size={35}
-                            color="blue"
-                        />
+                        <MaterialCommunityIcons name="facebook" size={35} color="blue" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons
-                            name="instagram"
-                            size={35}
-                            color="#E829DE"
-                        />
+                        <MaterialCommunityIcons name="instagram" size={35} color="#E829DE" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons
-                            name="youtube"
-                            size={35}
-                            color="red"
-                        />
+                        <MaterialCommunityIcons name="youtube" size={35} color="red" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons
-                            name="snapchat"
-                            size={35}
-                            color="yellow"
-                        />
+                        <MaterialCommunityIcons name="snapchat" size={35} color="yellow" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons
-                            name="twitter"
-                            size={35}
-                            color="#1e90ff"
-                        />
+                        <MaterialCommunityIcons name="twitter" size={35} color="#1e90ff" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons
-                            name="linkedin"
-                            size={35}
-                            color="blue"
-                        />
+                        <MaterialCommunityIcons name="linkedin" size={35} color="blue" />
                     </TouchableOpacity>
-                </View>
+                </View> */}
                 <View style={styles.box}>
                     <Text style={styles.textAlign}>Déja un compte ? </Text>
-                    <TouchableOpacity
-                        onPress={() => props.navigation.navigate('LogIn')}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('LogIn')}>
                         <Text style={styles.textAlign2}>Me connecter</Text>
                     </TouchableOpacity>
                 </View>

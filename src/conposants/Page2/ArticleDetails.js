@@ -1,14 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    ActivityIndicator,
-    TextInput,
-    Pressable,
-    Dimensions,
-} from 'react-native';
+import {View, Text, Image, StyleSheet, ActivityIndicator, TextInput, Pressable, Dimensions} from 'react-native';
 //import des variables de style prédéfinis
 import {CENTER, TITLE} from '../../asset/constantes/Constantes';
 import {COLORS} from '../../asset/constantes/Couleurs';
@@ -19,9 +10,7 @@ import auth from '@react-native-firebase/auth';
 const ArticleDetails = ({props, article}) => {
     //Variable pour recupérer les commentaires
     useEffect(() => {
-        axios
-            .get('https://pixelevent.site/api/comments')
-            .then(res => setComments(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/comments').then(res => setComments(res.data['hydra:member']));
     }, []);
     const [comments, setComments] = useState([]);
 
@@ -47,9 +36,7 @@ const ArticleDetails = ({props, article}) => {
             }),
         });
         setCommentaire('');
-        axios
-            .get('https://pixelevent.site/api/comments')
-            .then(res => setComments(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/comments').then(res => setComments(res.data['hydra:member']));
     };
 
     return (
@@ -101,30 +88,16 @@ const ArticleDetails = ({props, article}) => {
                                     {comment.author === undefined ? (
                                         ''
                                     ) : (
-                                        <Text
-                                            style={
-                                                styles.sectionCommentairesAuthor
-                                            }>
-                                            {comment.author.firstname}{' '}
-                                            {comment.author.lastname}
+                                        <Text style={styles.sectionCommentairesAuthor}>
+                                            {comment.author.firstname} {comment.author.lastname}
                                         </Text>
                                     )}
                                     {comment.authorMobile === undefined ? (
                                         ''
                                     ) : (
-                                        <Text
-                                            style={
-                                                styles.sectionCommentairesAuthor
-                                            }>
-                                            {comment.authorMobile}
-                                        </Text>
+                                        <Text style={styles.sectionCommentairesAuthor}>{comment.authorMobile}</Text>
                                     )}
-                                    <Text
-                                        style={
-                                            styles.sectionCommentairesContent
-                                        }>
-                                        {comment.content}
-                                    </Text>
+                                    <Text style={styles.sectionCommentairesContent}>{comment.content}</Text>
                                 </View>
                             );
                         })
