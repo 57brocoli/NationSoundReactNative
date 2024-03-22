@@ -1,15 +1,7 @@
-import {
-    View,
-    Text,
-    Alert,
-    SafeAreaView,
-    Dimensions,
-    StyleSheet,
-    Button,
-    TextInput,
-} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text, Alert, SafeAreaView, Dimensions, StyleSheet, Button, TextInput} from 'react-native';
+import React, {useRef, useState} from 'react';
 import {PARAGRAPH} from '../../asset/constantes/Constantes';
+import RNGoogleRecaptcha from 'react-native-google-recaptcha';
 
 const RequesteForm = () => {
     //Variable du formulaire de requete
@@ -57,15 +49,11 @@ const RequesteForm = () => {
             } else {
                 setCheckContent(true);
             }
-            Alert.alert(
-                'Erreur',
-                "Oups, il s'emblerait qu'un ou plusieurs champs sont vide",
-                [
-                    {
-                        text: 'OK',
-                    },
-                ],
-            );
+            Alert.alert('Erreur', "Oups, il s'emblerait qu'un ou plusieurs champs sont vide", [
+                {
+                    text: 'OK',
+                },
+            ]);
         }
     };
     const formIsValide = () => {
@@ -88,7 +76,7 @@ const RequesteForm = () => {
             const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if (reg.test(email)) {
                 setCheckValidEmail(false);
-                send();
+                recaptchaRef.current.open();
             } else {
                 setCheckValidEmail(true);
                 Alert.alert('Erreur', "L'adresse mail n'est pas valide", [
@@ -131,6 +119,13 @@ const RequesteForm = () => {
             ],
         );
     };
+
+    const recaptchaRef = useRef(null);
+
+    const handleOpenRecaptcha = () => {
+        recaptchaRef.current.open();
+    };
+
     return (
         <View>
             <Text style={PARAGRAPH}>Envoyer nous un mail :</Text>
@@ -143,13 +138,7 @@ const RequesteForm = () => {
                             value={firstname}
                             placeholder="Nom"
                         />
-                        {!checkFirstname ? (
-                            <Text style={styles.errorInput}>
-                                Chant manquant
-                            </Text>
-                        ) : (
-                            ''
-                        )}
+                        {!checkFirstname ? <Text style={styles.errorInput}>Chant manquant</Text> : ''}
                     </View>
                     <View>
                         <TextInput
@@ -158,13 +147,7 @@ const RequesteForm = () => {
                             value={lastname}
                             placeholder="Prenom"
                         />
-                        {!checkLastname ? (
-                            <Text style={styles.errorInput}>
-                                Chant manquant
-                            </Text>
-                        ) : (
-                            ''
-                        )}
+                        {!checkLastname ? <Text style={styles.errorInput}>Chant manquant</Text> : ''}
                     </View>
                 </View>
 
@@ -176,18 +159,8 @@ const RequesteForm = () => {
                     keyboardType="email-address"
                     placeholder="Email"
                 />
-                {!checkEmail ? (
-                    <Text style={styles.errorInput}>Chant manquant</Text>
-                ) : (
-                    ''
-                )}
-                {checkValidEmail ? (
-                    <Text style={styles.errorInput}>
-                        L'email n'est pas valide
-                    </Text>
-                ) : (
-                    ''
-                )}
+                {!checkEmail ? <Text style={styles.errorInput}>Chant manquant</Text> : ''}
+                {checkValidEmail ? <Text style={styles.errorInput}>L'email n'est pas valide</Text> : ''}
                 <TextInput
                     style={styles.input}
                     onChangeText={setMotif}
@@ -195,25 +168,24 @@ const RequesteForm = () => {
                     maxLength={255}
                     placeholder="Motif"
                 />
-                {!checkMotif ? (
-                    <Text style={styles.errorInput}>Chant manquant</Text>
-                ) : (
-                    ''
-                )}
+                {!checkMotif ? <Text style={styles.errorInput}>Chant manquant</Text> : ''}
                 <TextInput
                     style={styles.inputTextArea}
                     onChangeText={setContent}
                     value={content}
                     placeholder="Requête"
                 />
-                {!checkContent ? (
-                    <Text style={styles.errorInput}>Chant manquant</Text>
-                ) : (
-                    ''
-                )}
+                {!checkContent ? <Text style={styles.errorInput}>Chant manquant</Text> : ''}
                 <View style={styles.submit}>
-                    <Button title="Submit" onPress={() => sendRequete()} />
+                    <Button title="Envoyer" onPress={() => sendRequete()} />
                 </View>
+                <RNGoogleRecaptcha
+                    ref={recaptchaRef}
+                    siteKey={'6LcHJqApAAAAAJM--M7PlMe663YUMk_f-uXFs7s5'}
+                    baseUrl={'https://pixelevent.site'}
+                    lang="fr"
+                    onVerify={send}
+                />
             </SafeAreaView>
         </View>
     );
