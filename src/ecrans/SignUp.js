@@ -1,41 +1,91 @@
 /* eslint-disable radix */
 /* eslint-disable no-alert */
-import {View, Text, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import React, {useRef, useState} from 'react';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS} from '../asset/constantes/Couleurs';
 import auth from '@react-native-firebase/auth';
 import bcrypt from 'bcryptjs';
 import RNGoogleRecaptcha from 'react-native-google-recaptcha';
+import {
+    ChampEmail,
+    ChampName,
+    ChampPassword,
+    ChampPasswordSecurity,
+    ChampPhone,
+} from '../Conposants/SousComposants/FormInscrption';
 
 const SignUp = props => {
     // variable des données de l'utilisateur
     const [name, setName] = useState('');
+    const [nameEmpty, setNameEmpty] = useState('');
+
     const [phoneNumber, setPhoneNumber] = useState();
+
     const [email, setEmail] = useState('');
+    const [emailEmpty, setEmailEmpty] = useState('');
+    const [emailValide, setEmailValide] = useState('');
+
     const [password, setPassword] = useState('');
+    const [passwordEmpty, setPasswordEmpty] = useState('');
+    const [passwordValide, setPasswordValide] = useState('');
+
     const [passwordSecurity, setPasswordSecurity] = useState('');
+    const [passwordSecurityEmpty, setPasswordSecurityEmpty] = useState('');
+
     const date = new Date();
+
+    const showAlertEmpty = () => {
+        Alert.alert('Attention', 'Certains champs sont vides', [{text: 'OK'}], {cancelable: true});
+    };
+    const showAlertEmailNotValide = () => {
+        Alert.alert('Attention', 'Email incorect', [{text: 'OK'}], {cancelable: true});
+    };
+    const showAlertPasswordInvalide = () => {
+        Alert.alert('Attention', 'Mot de passe invalide', [{text: 'OK'}], {cancelable: true});
+    };
+    const showAlertPasswordNotSame = () => {
+        Alert.alert('Attention', 'La confirmation du mot de passe est incorrect', [{text: 'OK'}], {cancelable: true});
+    };
 
     // fonction pour lancer le captchat
     const recaptchaRef = useRef(null);
     const verify = () => {
-        if (!name) {
-            alert("Ooh! Il s'emblerait que vous avez oublier votre nom");
-        } else if (!email) {
-            alert('Adresse mail manquante');
-        } else if (!password) {
-            alert('Veuillez entrez un mot de passe');
-        } else if (!passwordSecurity) {
-            alert('Veuillez confirmer votre mot de passe');
-        } else if (password !== passwordSecurity) {
-            alert("Il s'emblerait que la confirmation du mot de passe est incorect");
-        } else {
-            recaptchaRef.current.open();
+        name ? setNameEmpty(true) : setNameEmpty(false);
+        email ? setEmailEmpty(true) : setEmailEmpty(false);
+        password ? setPasswordEmpty(true) : setPasswordEmpty(false);
+        passwordSecurity ? setPasswordSecurityEmpty(true) : setPasswordSecurityEmpty(false);
+        if (!name || !email || !password || !passwordSecurity) {
+            showAlertEmpty();
+        } else if (name && email && password && passwordSecurity) {
+            validity();
         }
     };
-
+    const validity = () => {
+        setEmailEmpty(false);
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(email)) {
+            setEmailValide(true);
+            const regP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.&])[A-Za-z\d@$!%*?.&]{8,}$/;
+            if (regP.test(password)) {
+                setPasswordValide(true);
+                if (password !== passwordSecurity) {
+                    setPasswordSecurityEmpty(true);
+                    // setPasswordSame(false);
+                    showAlertPasswordNotSame();
+                } else {
+                    // setPasswordSame(true);
+                    alert('cest bon');
+                    // recaptchaRef.current.open();
+                }
+            } else {
+                showAlertPasswordInvalide();
+                setPasswordValide(false);
+            }
+        } else {
+            setEmailValide(false);
+            showAlertEmailNotValide();
+        }
+    };
     // fonction pour s'inscrire sur firebase et envoyer les données dans la database liveevent
     const onSingUp = () => {
         auth()
@@ -81,54 +131,53 @@ const SignUp = props => {
             <SafeAreaView style={styles.root}>
                 <View style={styles.logoContainer}>
                     <Image source={require('../asset/img/logo.jpg')} style={styles.logo} />
-                    <Text style={styles.title}>Inscrition</Text>
+                    <Text style={styles.title}>Inscription</Text>
                 </View>
 
-                {/* zone de saisie */}
-                <View style={styles.inputContainer}>
-                    <Entypo name="account" size={20} color="#666" style={styles.marginRight} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder={'Entrer votre Nom'}
-                        onChangeText={text => setName(text)}
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Entypo name="phone" size={20} color="#666" style={styles.marginRight} />
-                    <TextInput
-                        style={styles.input}
-                        keyboardType="numeric"
-                        placeholder={'Entrer votre numero de téléphone'}
-                        onChangeText={text => setPhoneNumber(text)}
-                    />
-                </View>
+                {nameEmpty ? (
+                    <ChampName name={name} setName={setName} />
+                ) : (
+                    <ChampName name={name} setName={setName} nameEmpty={nameEmpty} />
+                )}
+                <ChampPhone phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} />
 
-                <View style={styles.inputContainer}>
-                    <Entypo name="email" size={20} color="#666" style={styles.marginRight} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder={'Entrer votre email'}
-                        onChangeText={text => setEmail(text)}
+                {emailValide ? (
+                    <ChampEmail email={email} setEmail={setEmail} emailEmpty={emailEmpty} emailValide={emailValide} />
+                ) : emailEmpty ? (
+                    <ChampEmail email={email} setEmail={setEmail} emailEmpty={emailEmpty} emailValide={emailValide} />
+                ) : (
+                    <ChampEmail email={email} setEmail={setEmail} emailEmpty={emailEmpty} emailValide={emailValide} />
+                )}
+
+                {passwordValide ? (
+                    <ChampPassword setPassword={setPassword} password={password} passwordValide={passwordValide} />
+                ) : passwordEmpty ? (
+                    <ChampPassword setPassword={setPassword} password={password} passwordValide={passwordValide} />
+                ) : (
+                    <ChampPassword
+                        setPassword={setPassword}
+                        password={password}
+                        passwordEmpty={passwordEmpty}
+                        passwordValide={passwordValide}
                     />
-                </View>
-                <View style={styles.inputContainer}>
-                    <MaterialCommunityIcons name="lock" size={20} color="#666" style={styles.marginRight} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder={'Entrer votre mot de passe'}
-                        onChangeText={text => setPassword(text)}
-                        secureTextEntry
+                )}
+
+                {passwordSecurityEmpty ? (
+                    <ChampPasswordSecurity
+                        passwordSecurity={passwordSecurity}
+                        setPasswordSecurity={setPasswordSecurity}
+                        password={password}
                     />
-                </View>
-                <View style={styles.inputContainer}>
-                    <MaterialCommunityIcons name="lock" size={20} color="#666" style={styles.marginRight} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder={'Confirmer votre mot de passe'}
-                        onChangeText={text => setPasswordSecurity(text)}
-                        secureTextEntry
+                ) : (
+                    <ChampPasswordSecurity
+                        passwordSecurity={passwordSecurity}
+                        setPasswordSecurity={setPasswordSecurity}
+                        password={password}
+                        passwordSecurityEmpty={passwordSecurityEmpty}
                     />
-                </View>
+                )}
+
+                <Text style={styles.oblig}>* champ obligatoire</Text>
 
                 {/* Button Action */}
                 <TouchableOpacity style={styles.touchablebutton} onPress={verify}>
@@ -142,32 +191,8 @@ const SignUp = props => {
                     lang="fr"
                     onVerify={onSingUp}
                 />
-
-                {/* <View>
-                    <Text style={styles.textCenter}>Me connecter avec</Text>
-                </View>
-                <View style={styles.iconsContainer}>
-                    <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons name="facebook" size={35} color="blue" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons name="instagram" size={35} color="#E829DE" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons name="youtube" size={35} color="red" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons name="snapchat" size={35} color="yellow" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons name="twitter" size={35} color="#1e90ff" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.icon}>
-                        <MaterialCommunityIcons name="linkedin" size={35} color="blue" />
-                    </TouchableOpacity>
-                </View> */}
                 <View style={styles.box}>
-                    <Text style={styles.textAlign}>Déja un compte ? </Text>
+                    <Text>Déja un compte ? </Text>
                     <TouchableOpacity onPress={() => props.navigation.navigate('LogIn')}>
                         <Text style={styles.textAlign2}>Me connecter</Text>
                     </TouchableOpacity>
@@ -197,19 +222,13 @@ const styles = StyleSheet.create({
         color: '#333',
         marginBottom: 30,
     },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingHorizontal: 8,
-        marginBottom: 25,
-    },
-    input: {
-        flex: 1,
+
+    oblig: {
+        marginBottom: 20,
+        marginTop: -15,
     },
     touchablebutton: {
-        marginBottom: 30,
+        marginBottom: 25,
         borderRadius: 5,
         padding: 20,
         backgroundColor: COLORS.mauveClaire,
@@ -220,35 +239,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
     },
-    textCenter: {
-        textAlign: 'center',
-        fontWeight: '700',
-        fontSize: 16,
-    },
-    iconsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    icon: {
-        borderColor: '#ddd',
-        borderWidth: 2,
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-    },
-    marginRight: {
-        marginRight: 5,
-    },
     box: {
-        marginVertical: 30,
+        marginBottom: 20,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    textAlign1: {
-        textAlign: 'center',
     },
     textAlign2: {
         textAlign: 'center',

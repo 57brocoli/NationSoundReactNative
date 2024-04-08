@@ -83,6 +83,7 @@ const Login = props => {
     };
 
     useEffect(() => {
+        setPassword('');
         _isUserAuthenticated();
     }, []);
 
@@ -90,7 +91,7 @@ const Login = props => {
         <SafeAreaView style={styles.root}>
             <View style={styles.logoContainer}>
                 <Image source={require('../asset/img/logo.jpg')} style={styles.logo} />
-                <Text style={styles.title}>Connection</Text>
+                <Text style={styles.title}>Connexion</Text>
             </View>
 
             {/* zone de saisie */}
@@ -99,6 +100,8 @@ const Login = props => {
                 <TextInput
                     style={styles.input}
                     placeholder={'Entrer votre email'}
+                    keyboardType="email-address"
+                    inputMode={email}
                     onChangeText={text => setEmail(text)}
                 />
                 {checkValidEmail ? <Text style={styles.errorInput}>L'email n'est pas valide</Text> : ''}
@@ -118,7 +121,7 @@ const Login = props => {
 
             {/* Button Action */}
             <TouchableOpacity style={styles.touchablebutton} onPress={verify}>
-                <Text style={styles.touchableText}>Se Connecter</Text>
+                <Text style={styles.touchableText}>Se connecter</Text>
             </TouchableOpacity>
             <RNGoogleRecaptcha
                 ref={recaptchaRef}

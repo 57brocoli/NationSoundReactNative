@@ -1,12 +1,5 @@
-import {
-    View,
-    Text,
-    StyleSheet,
-    FlatList,
-    Image,
-    Dimensions,
-} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, FlatList, Image, Dimensions, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useRef} from 'react';
 import {PARAGRAPH, TITLE} from '../../asset/constantes/Constantes';
 import RequesteForm from '../../Conposants/SousComposants/RequesteForm';
 
@@ -17,62 +10,49 @@ const Apropos = ({views}) => {
     };
 
     return (
-        <View>
-            {views
-                ? views
-                      .filter(view => view.name === 'a-propos')
-                      .map((view, index) => {
-                          return (
-                              <View key={index}>
-                                  {view
-                                      ? view.pageSections.map((section, id) => {
-                                            return (
-                                                <View
-                                                    key={id}
-                                                    style={styles.container}>
-                                                    <Text style={TITLE}>
-                                                        {section.title}
-                                                    </Text>
-                                                    {section.title ===
-                                                    'Nous contacter' ? (
-                                                        <RequesteForm />
-                                                    ) : (
-                                                        ''
-                                                    )}
-                                                    <Text
-                                                        style={PARAGRAPH}
-                                                        id="contact">
-                                                        {section.content}
-                                                    </Text>
-                                                    <FlatList
-                                                        horizontal={true}
-                                                        data={section.images}
-                                                        keyExtractor={item =>
-                                                            item.id
-                                                        }
-                                                        renderItem={({
-                                                            item,
-                                                        }) => {
-                                                            return (
-                                                                <Image
-                                                                    source={{
-                                                                        uri: `${image.uri}${item.name}`,
-                                                                    }}
-                                                                    style={
-                                                                        styles.Remercimentimages
-                                                                    }
-                                                                />
-                                                            );
-                                                        }}
-                                                    />
-                                                </View>
-                                            );
-                                        })
-                                      : ''}
-                              </View>
-                          );
-                      })
-                : ''}
+        <View style={{flex: 1}}>
+            <ScrollView>
+                {views
+                    ? views
+                          .filter(view => view.name === 'a-propos')
+                          .map((view, index) => {
+                              return (
+                                  <View key={index}>
+                                      {view
+                                          ? view.pageSections.map((section, id) => {
+                                                return (
+                                                    <View key={id} style={styles.container}>
+                                                        <Text style={TITLE}>{section.title}</Text>
+
+                                                        {section.title === 'Nous contacter' ? <RequesteForm /> : ''}
+
+                                                        <Text style={PARAGRAPH} id="contact">
+                                                            {section.content}
+                                                        </Text>
+                                                        <FlatList
+                                                            horizontal={true}
+                                                            data={section.images}
+                                                            keyExtractor={item => item.id}
+                                                            renderItem={({item}) => {
+                                                                return (
+                                                                    <Image
+                                                                        source={{
+                                                                            uri: `${image.uri}${item.name}`,
+                                                                        }}
+                                                                        style={styles.Remercimentimages}
+                                                                    />
+                                                                );
+                                                            }}
+                                                        />
+                                                    </View>
+                                                );
+                                            })
+                                          : ''}
+                                  </View>
+                              );
+                          })
+                    : ''}
+            </ScrollView>
         </View>
     );
 };
