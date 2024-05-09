@@ -19,11 +19,18 @@ const Page1 = props => {
     //Variable pour recupéré les props passer dans la route
     const {pageBilletterie, pageProgramme, pageInformation, pageSponsor, pageApropos} = props.route.params;
 
-    //Variables de stockage du contenu des articles provenant de l'api
-    const [articles, setArticles] = useState([]);
-
     useEffect(() => {
+        axios.get('https://pixelevent.site/api/views').then(res => setAllsView(res.data['hydra:member']));
+
+        axios.get('https://pixelevent.site/api/billets').then(res => setBillets(res.data['hydra:member']));
+
         axios.get('https://pixelevent.site/api/articles').then(res => setArticles(res.data['hydra:member']));
+
+        axios.get('https://pixelevent.site/api/days').then(res => setProgramme(res.data['hydra:member']));
+
+        axios.get('https://pixelevent.site/api/f_a_qs').then(res => setFaqs(res.data['hydra:member']));
+
+        axios.get('https://pixelevent.site/api/sponsors').then(res => setSponsors(res.data['hydra:member']));
     }, []);
 
     //variable pour stocker les billets
@@ -31,6 +38,9 @@ const Page1 = props => {
 
     //variable pour stocker le programme
     const [programme, setProgramme] = useState([]);
+
+    //Variables de stockage du contenu des articles provenant de l'api
+    const [articles, setArticles] = useState([]);
 
     //Variables de stockage de la FAQ provenant de l'api
     const [faqs, setFaqs] = useState([]);
