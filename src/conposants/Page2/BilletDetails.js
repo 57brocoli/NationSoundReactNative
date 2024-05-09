@@ -2,7 +2,7 @@ import {View, Text, Image, StyleSheet, Dimensions} from 'react-native';
 import React from 'react';
 import {TITLE} from '../../asset/constantes/Constantes';
 
-const BilletDetails = ({props, billet}) => {
+const BilletDetails = ({billet}) => {
     return (
         <View style={styles.container}>
             <View>
@@ -17,9 +17,7 @@ const BilletDetails = ({props, billet}) => {
             <View style={styles.headerDescription}>
                 <Text style={TITLE}>{billet.name}</Text>
                 <View style={styles.description}>
-                    <Text style={styles.text}>
-                        Prix du billet : {billet.price} &euro;
-                    </Text>
+                    <Text style={styles.text}>Prix du billet : {billet.price} &euro;</Text>
                     <View style={styles.separateur} />
                     <Text style={styles.text}>{billet.description}</Text>
                 </View>
@@ -27,10 +25,10 @@ const BilletDetails = ({props, billet}) => {
         </View>
     );
 };
-const height = Dimensions.get('window').height;
+const height = Dimensions.get('window').height - 346;
 const styles = StyleSheet.create({
     container: {
-        minHeight: height - 70 - 313,
+        minHeight: height,
     },
     imgArtiste: {
         width: '105%',

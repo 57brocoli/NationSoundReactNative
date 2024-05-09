@@ -14,7 +14,7 @@ const Apropos = ({views}) => {
             <ScrollView>
                 {views
                     ? views
-                          .filter(view => view.name === 'a-propos')
+                          .filter(view => view.name === 'apropos')
                           .map((view, index) => {
                               return (
                                   <View key={index}>

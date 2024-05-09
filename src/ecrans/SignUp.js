@@ -5,7 +5,7 @@ import React, {useRef, useState} from 'react';
 import {COLORS} from '../asset/constantes/Couleurs';
 import auth from '@react-native-firebase/auth';
 import bcrypt from 'bcryptjs';
-import RNGoogleRecaptcha from 'react-native-google-recaptcha';
+import RNGoogleRecaptcha, {GoogleRecaptchaSize} from 'react-native-google-recaptcha';
 import {
     ChampEmail,
     ChampName,
@@ -60,7 +60,7 @@ const SignUp = props => {
             validity();
         }
     };
-    const validity = () => {
+    const validity = async () => {
         setEmailEmpty(false);
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(email)) {
@@ -74,8 +74,12 @@ const SignUp = props => {
                     showAlertPasswordNotSame();
                 } else {
                     // setPasswordSame(true);
-                    alert('cest bon');
-                    // recaptchaRef.current.open();
+                    try {
+                        const token = await recaptchaRef.current.getToken();
+                        console.log('Recaptcha Token:', token);
+                    } catch (e) {
+                        console.error('Recaptcha Error:', e);
+                    }
                 }
             } else {
                 showAlertPasswordInvalide();
@@ -186,7 +190,8 @@ const SignUp = props => {
 
                 <RNGoogleRecaptcha
                     ref={recaptchaRef}
-                    siteKey={'6LcHJqApAAAAAJM--M7PlMe663YUMk_f-uXFs7s5'}
+                    size={GoogleRecaptchaSize.INVISIBLE}
+                    siteKey={'6LeR8MYpAAAAAHqT4Y3Fwvb6MR3a63V9PZOZX9ti'}
                     baseUrl={'https://pixelevent.site'}
                     lang="fr"
                     onVerify={onSingUp}

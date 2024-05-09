@@ -1,5 +1,10 @@
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Button} from 'react-native';
 import React, {useRef} from 'react';
+import GoogleRecaptcha, {
+    GoogleRecaptchaSize,
+    GoogleRecaptchaToken,
+    GoogleRecaptchaRefAttributes,
+} from 'react-native-google-recaptcha';
 
 const Test = props => {
     const scrollViewRef = useRef(null);
@@ -12,10 +17,37 @@ const Test = props => {
             });
         }
     };
+    const recaptchaRef = useRef(GoogleRecaptchaRefAttributes);
+
+    const handleSend = () => {
+        recaptchaRef.current?.open();
+    };
+    const handleSend2 = async () => {
+        try {
+            const token = await recaptchaRef.current.getToken();
+
+            console.log('Recaptcha Token:', token);
+        } catch (e) {
+            console.error('Recaptcha Error:', e);
+        }
+    };
+
+    const handleVerify = () => {
+        console.log('Recaptcha Token:');
+    };
 
     return (
         <View style={{flex: 1}}>
             <ScrollView ref={scrollViewRef}>
+                <Button title="Send" onPress={handleSend2} />
+                <GoogleRecaptcha
+                    ref={recaptchaRef}
+                    baseUrl="https://pixelevent.site"
+                    size={GoogleRecaptchaSize.INVISIBLE}
+                    onVerify={handleVerify}
+                    siteKey="6LeR8MYpAAAAAHqT4Y3Fwvb6MR3a63V9PZOZX9ti"
+                    lang="fr"
+                />
                 <View style={{padding: 20}}>
                     <Text>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut amet voluptatibus cumque illo velit

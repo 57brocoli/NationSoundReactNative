@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -16,13 +16,16 @@ import Login from './src/ecrans/Login';
 import SingUp from './src/ecrans/SignUp';
 import Map from './src/ecrans/Map';
 import Test from './src/ecrans/Test';
+import axios from 'axios';
+import NotificationDetails from './src/Conposants/Notification/NotificationDetails';
+import Notification from './src/ecrans/Notification';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Tabs = createBottomTabNavigator();
 
 // Definition de toutes les routes
-function MaTableNavigation(props) {
+function MaTableNavigation() {
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -40,16 +43,8 @@ function MaTableNavigation(props) {
             <Stack.Screen name="Page1" component={Page1} options={{headerShown: false}} />
             <Stack.Screen name="Page2" component={Page2} options={{headerShown: false}} />
             <Stack.Screen name="Test" component={Test} options={{headerShown: false}} />
-            {/* <Stack.Screen
-                name="Notification"
-                component={Notification}
-                options={{headerShown: false}}
-            />
-            <Stack.Screen
-                name="NotificationDetails"
-                component={NotificationDetails}
-                options={{headerShown: false}}
-            /> */}
+            <Stack.Screen name="Notification" component={Notification} options={{headerShown: false}} />
+            <Stack.Screen name="NotificationDetails" component={NotificationDetails} options={{headerShown: false}} />
             <Stack.Screen name="Map" component={Map} />
         </Stack.Navigator>
     );
@@ -57,12 +52,40 @@ function MaTableNavigation(props) {
 
 // Definition de la bottom tab
 function TabNavigation() {
+    const [notifications, setNotifications] = useState([]);
+    const [activeNotificationsCount, setActiveNotificationsCount] = useState(0);
+
+    const fetchNotifications = () => {
+        axios
+            .get('https://pixelevent.site/api/notifications')
+            .then(res => {
+                setNotifications(res.data['hydra:member']);
+                const activeNotifications = res.data['hydra:member'].filter(
+                    notification => notification.actived === true,
+                );
+                setActiveNotificationsCount(activeNotifications.length);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des notifications : ', error);
+            });
+    };
+    useEffect(() => {
+        // Exécuter la requête initiale
+        fetchNotifications();
+        // Mettre en place un intervalle pour exécuter la requête toutes les 30 secondes
+        const intervalId = setInterval(() => {
+            fetchNotifications();
+        }, 30000);
+        // Nettoyer l'intervalle lors du démontage du composant
+        return () => clearInterval(intervalId);
+    }, []);
+
     return (
         <Tabs.Navigator
             initialRouteName="Accueil"
             screenOptions={{
                 headerShown: 'false',
-                tabBarStyle: {backgroundColor: COLORS.mauveFonce, height: 55},
+                tabBarStyle: {backgroundColor: COLORS.mauveFonce, height: 55, borderTopColor: COLORS.mauveFonce},
                 tabBarShowLabel: false,
                 tabBarInactiveTintColor: 'white',
                 tabBarActiveTintColor: COLORS.orange,
@@ -71,6 +94,7 @@ function TabNavigation() {
                 name="notification"
                 component={Notifications}
                 options={{
+                    tabBarBadge: activeNotificationsCount > 0 ? activeNotificationsCount : null,
                     headerShown: false,
                     tabBarIcon: ({color}) => <MaterialCommunityIcons name="bell" color={color} size={26} />,
                 }}

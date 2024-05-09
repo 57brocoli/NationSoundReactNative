@@ -25,11 +25,6 @@ function Programme({programme, props}) {
 
     const [artisteFiltre, setArtisteFiltre] = useState(null);
 
-    // if (programme) {
-    //     var test = programme;
-    // }
-
-    // console.log(test[0].episode[1].lieu.id);
     return (
         <View>
             {programme && (

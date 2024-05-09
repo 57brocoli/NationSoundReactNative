@@ -26,11 +26,31 @@ const Accueil = props => {
     //variable pour stocker la page et les Lieux
     const [views, setViews] = useState([]);
     const [lieux, setLieux] = useState([]);
+
     useEffect(() => {
         //on recupère le contenu de la page
         axios.get('https://pixelevent.site/api/views').then(res => setViews(res.data['hydra:member']));
         axios.get('https://pixelevent.site/api/lieus').then(res => setLieux(res.data['hydra:member']));
+
+        // Exécuter la requête initiale
+        fetchNotifications();
+        // Mettre en place un intervalle pour exécuter la requête toutes les 30 secondes
+        const intervalId = setInterval(() => {
+            fetchNotifications();
+        }, 30000);
+        // Nettoyer l'intervalle lors du démontage du composant
+        return () => clearInterval(intervalId);
     }, []);
+
+    const [notifications, setNotifications] = useState([]);
+    const [activeNotificationsCount, setActiveNotificationsCount] = useState(0);
+    const fetchNotifications = () => {
+        axios.get('https://pixelevent.site/api/notifications').then(res => {
+            setNotifications(res.data['hydra:member']);
+            const activeNotifications = res.data['hydra:member'].filter(n => n.actived === true);
+            setActiveNotificationsCount(activeNotifications.length);
+        });
+    };
 
     if (views) {
         var accueilExtractArray = views.filter(view => view.name === 'accueil');
@@ -51,6 +71,17 @@ const Accueil = props => {
                         <ImageBackground
                             source={{uri: `${image.uri}${data.headerImage.name}`}}
                             style={styles.background}>
+                            {activeNotificationsCount > 0 && (
+                                <View style={styles.notifContainer}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            props.navigation.navigate('notification');
+                                        }}
+                                        style={styles.notif}>
+                                        <Text style={styles.notif}>Vous avez une nouvelle notification</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
                             <Text style={styles.logo}>Nation Sound</Text>
                             {/* Section billet*/}
                             <TouchableOpacity
@@ -208,12 +239,25 @@ const styles = StyleSheet.create({
     LinearGradient: {
         paddingTop: 10,
     },
+    notifContainer: {
+        marginTop: 200,
+        position: 'absolute',
+        alignSelf: 'center',
+        width: '95%',
+    },
+    notif: {
+        marginVertical: 10,
+        backgroundColor: COLORS.orange,
+        color: 'white',
+        textAlign: 'center',
+        borderRadius: 10,
+    },
     logo: {
         fontFamily: 'RaphLanokFuture-PvDx',
-        fontSize: 70,
+        fontSize: 68,
         color: 'white',
         marginTop: 90,
-        marginHorizontal: 5,
+        textAlign: 'center',
     },
     bouttonBillet: {
         alignItems: 'center',

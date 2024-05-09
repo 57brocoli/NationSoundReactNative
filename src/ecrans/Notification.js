@@ -1,15 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import {
-    View,
-    Text,
-    Animated,
-    TouchableOpacity,
-    Image,
-    StyleSheet,
-    ScrollView,
-    Alert,
-} from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, RefreshControl} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import messaging from '@react-native-firebase/messaging';
 //import des composant exterieurs
@@ -17,12 +8,9 @@ import Footer from '../Conposants/Footer';
 //import des variables de style prédéfinis
 import {CENTER, TITLE} from '../asset/constantes/Constantes';
 import {COLORS} from '../asset/constantes/Couleurs';
-import {STYLESHEADER} from '../asset/constantes/StylesHeader';
-import {STYLESMENU} from '../asset/constantes/StyleMenu';
-//import des icons
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-//import de Firebase
-import auth from '@react-native-firebase/auth';
+//import de la bare de navigation
+import NavBar from '../Conposants/NavBar';
+import axios from 'axios';
 
 const Notification = props => {
     async function requestUserPermission() {
@@ -50,18 +38,12 @@ const Notification = props => {
             .getInitialNotification()
             .then(async remoteMessage => {
                 if (remoteMessage) {
-                    console.log(
-                        'Notification caused app to open from quit state:',
-                        remoteMessage.notification,
-                    );
+                    console.log('Notification caused app to open from quit state:', remoteMessage.notification);
                 }
             });
         //lorsque l'on click sur la notification en arriere plan
         messaging().onNotificationOpenedApp(async remoteMessage => {
-            console.log(
-                'Notification caused app to open from background state:',
-                remoteMessage.notification,
-            );
+            console.log('Notification caused app to open from background state:', remoteMessage.notification);
         });
         // notification lorsque l'appli est en arrier plan
         messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -70,10 +52,7 @@ const Notification = props => {
         });
 
         const unsubscribe = messaging().onMessage(async remoteMessage => {
-            Alert.alert(
-                remoteMessage.notification.title,
-                remoteMessage.notification.body.slice(0, 52),
-            );
+            Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body.slice(0, 52));
             // modifyLevel(remoteMessage);
             setNotificationsListe(remoteMessage.notification);
             // console.log(remoteMessage.notification);
@@ -84,206 +63,50 @@ const Notification = props => {
     // Variable pour stocker la notifications
     const [notificationsListe, setNotificationsListe] = useState();
 
-    //Variable pour afficher/masquer le menu
-    const [showMenu, setShowMenu] = useState(false);
-    //Varible d'animation lors de l'affichage/masquage de menu
-    const slideMenu = useRef(new Animated.Value(0)).current;
-    const scralView = useRef(new Animated.Value(1)).current;
-    const filtre = useRef(new Animated.Value(1)).current;
-
-    //Variable du header
-    const Header = () => {
-        return (
-            <View style={STYLESHEADER.header}>
-                <View style={STYLESHEADER.nav}>
-                    <TouchableOpacity
-                        onPress={() => props.navigation.navigate('Accueil1')}>
-                        <Image
-                            source={require('../asset/img/logo.jpg')}
-                            style={STYLESHEADER.iconNav}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setShowMenu(!showMenu);
-                            Animated.timing(slideMenu, {
-                                toValue: showMenu ? 260 : 0,
-                                duration: 300,
-                                useNativeDriver: true,
-                            }).start();
-                            Animated.timing(scralView, {
-                                toValue: showMenu ? 1 : 0.95,
-                                duration: 300,
-                                useNativeDriver: true,
-                            }).start();
-                            Animated.timing(filtre, {
-                                toValue: showMenu ? 1 : 0.5,
-                                duration: 300,
-                                useNativeDriver: true,
-                            }).start();
-                        }}>
-                        <MaterialCommunityIcons
-                            name={showMenu ? 'close' : 'menu'}
-                            color={'white'}
-                            size={50}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
+    // fonction pour récupérer les notifications
+    const [notifications, setNotifications] = useState([]);
+    const fetchNotifications = () => {
+        axios
+            .get('https://pixelevent.site/api/notifications')
+            .then(res => {
+                setNotifications(res.data['hydra:member'].filter(notification => notification.actived === true));
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des notifications : ', error);
+            });
     };
-    //Variable pour le menu
-    const Menu = () => {
-        // variable pour se deconnecter
-        const onSingOut = () => {
-            auth()
-                .signOut()
-                .then(() => {
-                    console.log('User signed out!');
-                    props.navigation.navigate('LogIn');
-                });
-        };
 
-        return (
-            <Animated.View
-                style={{
-                    flexGrow: 1,
-                    backgroundColor: COLORS.mauveClaire,
-                    position: 'absolute',
-                    height: 623,
-                    top: 70,
-                    right: 0,
-                    transform: [{translateX: slideMenu}],
-                }}>
-                <LinearGradient
-                    colors={[COLORS.mauveClaire, COLORS.mauveFonce]}
-                    style={{paddingHorizontal: 15, paddingVertical: 10}}>
-                    <View style={STYLESMENU.containerMenu}>
-                        {/* container de la photo de Profile */}
-                        <TouchableOpacity
-                            style={STYLESMENU.containerUserIcon}
-                            onPress={() => props.navigation.navigate('Profil')}>
-                            <Image
-                                source={require('../asset/img/userIcon.png')}
-                                style={STYLESMENU.userIcon}
-                            />
-                            <Text style={STYLESMENU.lienVersProfil}>
-                                Voir Profile
-                            </Text>
-                        </TouchableOpacity>
-                        {/* fin container de la photo de Profile */}
+    useEffect(() => {
+        // Exécuter la requête initiale
+        fetchNotifications();
+        // Mettre en place un intervalle pour exécuter la requête toutes les 30 secondes
+        const intervalId = setInterval(() => {
+            fetchNotifications();
+        }, 30000);
+        // Nettoyer l'intervalle lors du démontage du composant
+        return () => clearInterval(intervalId);
+    }, []);
 
-                        {/* container du nom de l'utilisateur */}
-                        {auth() ? (
-                            <Text style={STYLESMENU.nameUser}>
-                                {auth().currentUser.displayName}
-                            </Text>
-                        ) : (
-                            ''
-                        )}
-                        {/* fin container du nom de l'utilisateur */}
-
-                        {/* container des liens de navigation*/}
-                        <View style={STYLESMENU.containerLink}>
-                            <TouchableOpacity
-                                style={STYLESMENU.lienNav}
-                                onPress={() =>
-                                    props.navigation.navigate('Accueil1')
-                                }>
-                                <MaterialCommunityIcons
-                                    name="home"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>Accueil</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={STYLESMENU.lienNav}
-                                onPress={() =>
-                                    props.navigation.navigate('Billetterie')
-                                }>
-                                <MaterialCommunityIcons
-                                    name="ticket"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>
-                                    Billetterie
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={STYLESMENU.lienNav}
-                                onPress={() =>
-                                    props.navigation.navigate('Programme')
-                                }>
-                                <MaterialCommunityIcons
-                                    name="clipboard-list"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>
-                                    Programme
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={STYLESMENU.lienNav}
-                                onPress={() =>
-                                    props.navigation.navigate('Information')
-                                }>
-                                <MaterialCommunityIcons
-                                    name="information"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>
-                                    Information
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={STYLESMENU.lienNav}
-                                onPress={() =>
-                                    props.navigation.navigate('Map')
-                                }>
-                                <MaterialCommunityIcons
-                                    name="map"
-                                    color={COLORS.mauveClaire}
-                                    size={30}
-                                />
-                                <Text style={STYLESMENU.textLink}>Map</Text>
-                            </TouchableOpacity>
-                        </View>
-                        {/* fin container des liens de navigation*/}
-
-                        {/*container se deconnecter*/}
-                        <TouchableOpacity
-                            style={STYLESMENU.containerLinkDeconnexion}
-                            onPress={() => onSingOut()}>
-                            <MaterialCommunityIcons
-                                name="logout"
-                                color={'white'}
-                                size={30}
-                            />
-                            <Text style={STYLESMENU.textDeconnexion}>
-                                Déconnexion
-                            </Text>
-                        </TouchableOpacity>
-                        {/*container se deconnecter*/}
-                    </View>
-                </LinearGradient>
-            </Animated.View>
-        );
-    };
+    //fonction pour rafrechir la view
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        axios.get('https://pixelevent.site/api/notifications').then(res => setNotifications(res.data['hydra:member']));
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
         <View>
-            <Header />
-            <ScrollView>
+            <NavBar props={props} />
+            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <LinearGradient
                     colors={['#f1793c', '#6c24dd', '#5dd29b']}
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 0.91}}
                     style={styles.containerNotification}>
-                    <Animated.View
+                    {/* <Animated.View
                         style={{
                             opacity: filtre,
                             transform: [{scale: scralView}],
@@ -296,46 +119,63 @@ const Notification = props => {
                                 <TouchableOpacity
                                     style={styles.notification}
                                     onPress={() =>
-                                        props.navigation.navigate(
-                                            'NotificationDetails',
-                                            {
-                                                notificationTitle:
-                                                    notificationsListe.title,
-                                                notificationBody:
-                                                    notificationsListe.body,
-                                                notificationImg:
-                                                    notificationsListe.android
-                                                        .imageUrl,
-                                            },
-                                        )
+                                        props.navigation.navigate('NotificationDetails', {
+                                            notificationTitle: notificationsListe.title,
+                                            notificationBody: notificationsListe.body,
+                                            notificationImg: notificationsListe.android.imageUrl,
+                                        })
                                     }>
-                                    <Text style={styles.notificationTitle}>
-                                        {notificationsListe.title}
-                                    </Text>
-                                    <Text style={styles.notificationBody}>
-                                        {notificationsListe.body}
-                                    </Text>
+                                    <Text style={styles.notificationTitle}>{notificationsListe.title}</Text>
+                                    <Text style={styles.notificationBody}>{notificationsListe.body}</Text>
                                 </TouchableOpacity>
                             ) : (
                                 <View style={styles.NoNotification}>
                                     <Text style={styles.NoNotificationText}>
-                                        Vous n'avez aucune notification pour le
-                                        moment
+                                        Vous n'avez aucune notification pour le moment
                                     </Text>
                                 </View>
                             )}
                         </View>
-                    </Animated.View>
+                    </Animated.View> */}
+                    <ScrollView style={styles.container}>
+                        <View style={CENTER}>
+                            <Text style={TITLE}>Notification</Text>
+                        </View>
+                        {notifications.length > 0 ? (
+                            notifications.map(notif => {
+                                return (
+                                    <TouchableOpacity
+                                        key={notif.id}
+                                        style={styles.notification}
+                                        onPress={() =>
+                                            props.navigation.navigate('NotificationDetails', {
+                                                notificationTitle: notif.title,
+                                                notificationBody: notif.content,
+                                                notificationId: notif.id,
+                                            })
+                                        }>
+                                        <Text style={styles.notificationTitle}>{notif.title}</Text>
+                                        <Text style={styles.notificationBody}>{notif.content}</Text>
+                                    </TouchableOpacity>
+                                );
+                            })
+                        ) : (
+                            <View style={styles.NoNotification}>
+                                <Text style={styles.NoNotificationText}>
+                                    Vous n'avez aucune notification pour le moment
+                                </Text>
+                            </View>
+                        )}
+                    </ScrollView>
                 </LinearGradient>
                 <Footer />
             </ScrollView>
-            <Menu />
         </View>
     );
 };
 const styles = StyleSheet.create({
     containerNotification: {
-        height: 460,
+        minHeight: 460,
     },
     container: {
         marginTop: 70,

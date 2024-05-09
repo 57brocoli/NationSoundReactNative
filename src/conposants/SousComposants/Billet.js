@@ -17,9 +17,7 @@ const Billet = ({billet, props}) => {
     };
 
     return (
-        <ImageBackground
-            source={{uri: `${img.uri}${billet.featuredImage}`}}
-            style={styles.billetImg}>
+        <ImageBackground source={{uri: `${img.uri}${billet.featuredImage}`}} style={styles.billetImg}>
             <View style={styles.containerBilletsinfos}>
                 <TouchableOpacity
                     onPress={() =>
@@ -28,9 +26,7 @@ const Billet = ({billet, props}) => {
                         })
                     }>
                     <Text style={styles.billetText}>{billet.name}</Text>
-                    <Text style={styles.billetText}>
-                        prix : {billet.price} &euro;
-                    </Text>
+                    <Text style={styles.billetText}>prix : {billet.price} &euro;</Text>
                     <Text style={styles.billetTextDetail}>Voir detail</Text>
                 </TouchableOpacity>
                 <View>
@@ -51,9 +47,7 @@ const Billet = ({billet, props}) => {
                     </View>
                     {total > 0 ? (
                         <View style={styles.totalBox}>
-                            <Text style={styles.totalBillet}>
-                                Total : {total} &euro;
-                            </Text>
+                            <Text style={styles.totalBillet}>Total : {total} &euro;</Text>
                         </View>
                     ) : (
                         ''

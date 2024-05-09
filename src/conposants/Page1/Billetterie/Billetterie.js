@@ -18,26 +18,6 @@ const Billetterie = ({billets, props}) => {
                     );
                 })
             )}
-            {/* {panier > 0 ? (
-        <View style={styles.panier}>
-          <Text style={styles.countPanier}>
-            {panier} billets {panier > 1 ? 'selectionnées' : 'selectionné'}
-          </Text>
-          <View style={styles.containerTotal}>
-            <Text style={styles.totalPanier}>Total:</Text>
-            <Text style={styles.totalPanier}>xxx €</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.buttonPanier}
-            onPress={() => {
-              alert(msg);
-            }}>
-            <Text style={styles.textButtonPanier}>Passer à la caisse</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        ''
-      )} */}
         </View>
     );
 };

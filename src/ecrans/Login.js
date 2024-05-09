@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS} from '../asset/constantes/Couleurs';
 import auth from '@react-native-firebase/auth';
-import RNGoogleRecaptcha from 'react-native-google-recaptcha';
+import RNGoogleRecaptcha, {GoogleRecaptchaSize} from 'react-native-google-recaptcha';
 
 const Login = props => {
     const [email, setEmail] = useState('');
@@ -15,7 +15,7 @@ const Login = props => {
 
     // Fonction pour tester et valider le formulaire
     const recaptchaRef = useRef(null);
-    const verify = () => {
+    const verify = async () => {
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (!email) {
             alert('Veuillez entrer une adresse e-mail.');
@@ -23,7 +23,12 @@ const Login = props => {
             alert('Veuillez entrer votre mot de passe.');
         } else if (email && password && reg.test(email)) {
             setCheckValidEmail(false);
-            recaptchaRef.current.open();
+            try {
+                const token = await recaptchaRef.current.getToken();
+                console.log('Recaptcha Token:', token);
+            } catch (e) {
+                console.error('Recaptcha Error:', e);
+            }
         } else {
             setCheckValidEmail(true);
             Alert.alert('Erreur', "L'adresse mail n'est pas valide", [
@@ -125,7 +130,8 @@ const Login = props => {
             </TouchableOpacity>
             <RNGoogleRecaptcha
                 ref={recaptchaRef}
-                siteKey={'6LcHJqApAAAAAJM--M7PlMe663YUMk_f-uXFs7s5'}
+                size={GoogleRecaptchaSize.INVISIBLE}
+                siteKey={'6LeR8MYpAAAAAHqT4Y3Fwvb6MR3a63V9PZOZX9ti'}
                 baseUrl={'https://pixelevent.site'}
                 lang="fr"
                 onVerify={OnLoginPress}

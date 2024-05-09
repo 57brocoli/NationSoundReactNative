@@ -37,6 +37,7 @@ const Profil = props => {
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.buttonRetour} onPress={() => props.navigation.navigate('Accueil1')}>
                         <MaterialCommunityIcons name="chevron-left" size={40} color={'white'} />
+                        <Text style={styles.textButtonRetour}>Accueil</Text>
                     </TouchableOpacity>
                     <View style={styles.imgContainer}>
                         <Image source={require('../asset/img/userIcon.png')} style={styles.imgUser} />
@@ -96,10 +97,14 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: COLORS.mauveClaire,
         width: 120,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: COLORS.mauveFonce,
+        borderBottomRightRadius: 5,
     },
     textButtonRetour: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
     },
     imgContainer: {
         flexDirection: 'row',

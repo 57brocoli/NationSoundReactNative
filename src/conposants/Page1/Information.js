@@ -1,13 +1,5 @@
 import React, {useState} from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    StyleSheet,
-    ScrollView,
-    ActivityIndicator,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 //import des variables de style prédéfinis
 import {FONTS} from '../../asset/constantes/Fonts';
 import {CENTER, TITLE} from '../../asset/constantes/Constantes';
@@ -15,7 +7,6 @@ import {COLORS} from '../../asset/constantes/Couleurs';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loader from '../../Conposants/SousComposants/Loader';
-//import d'axios pour recupérer les données
 
 const Information = ({articles, faqs, props}) => {
     // const {width} = useWindowDimensions();
@@ -61,85 +52,45 @@ const Information = ({articles, faqs, props}) => {
                                 <Text style={TITLE}>Actualitées</Text>
                             </View>
                             {nombreArticle !== 3 ? (
-                                <TouchableOpacity
-                                    onPress={() => revenir()}
-                                    style={styles.filtre}>
-                                    <Text style={styles.colorBlack}>
-                                        Revenir
-                                    </Text>
-                                    <MaterialCommunityIcons
-                                        name="chevron-up"
-                                        color={'black'}
-                                        size={25}
-                                    />
+                                <TouchableOpacity onPress={() => revenir()} style={styles.filtre}>
+                                    <Text style={styles.colorBlack}>Revenir</Text>
+                                    <MaterialCommunityIcons name="chevron-up" color={'black'} size={25} />
                                 </TouchableOpacity>
                             ) : (
-                                <TouchableOpacity
-                                    onPress={() => tousAfficher()}
-                                    style={styles.filtre}>
-                                    <Text style={styles.colorBlack}>
-                                        Tous afficher
-                                    </Text>
-                                    <MaterialCommunityIcons
-                                        name="chevron-down"
-                                        color={'black'}
-                                        size={25}
-                                    />
+                                <TouchableOpacity onPress={() => tousAfficher()} style={styles.filtre}>
+                                    <Text style={styles.colorBlack}>Tous afficher</Text>
+                                    <MaterialCommunityIcons name="chevron-down" color={'black'} size={25} />
                                 </TouchableOpacity>
                             )}
-                            {articles
-                                .slice(0, nombreArticle)
-                                .map((article, index) => {
-                                    return (
-                                        <TouchableOpacity
-                                            style={styles.card}
-                                            key={index}
-                                            // onPress={() =>
-                                            //   props.navigation.navigate('Article', {
-                                            //     id: article.id,
-                                            //     title: article.title,
-                                            //     intro: article.introduction,
-                                            //     content: article.content,
-                                            //     featuredImage: article.featuredImage,
-                                            //     images: article.images,
-                                            //   })
-                                            onPress={() =>
-                                                props.navigation.navigate(
-                                                    'Page2',
-                                                    {
-                                                        article: article,
-                                                    },
-                                                )
-                                            }>
-                                            {/* Image à gauche */}
-                                            {!articles ? (
-                                                <ActivityIndicator
-                                                    size="large"
-                                                    color="#00ff00"
-                                                />
-                                            ) : (
-                                                <Image
-                                                    style={styles.cardImg}
-                                                    source={{
-                                                        uri: `${image.uri}${article.featuredImage}`,
-                                                    }}
-                                                />
-                                            )}
-                                            {/* Text à droite */}
-                                            <View
-                                                style={
-                                                    styles.cardContainerText
-                                                }>
-                                                <Text style={styles.cardTitle}>
-                                                    {article.title}
-                                                </Text>
-                                                <Text style={styles.into}>
-                                                    {article.introduction}
-                                                </Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    );
-                                })}
+                            {articles.slice(0, nombreArticle).map((article, index) => {
+                                return (
+                                    <TouchableOpacity
+                                        style={styles.card}
+                                        key={index}
+                                        onPress={() =>
+                                            props.navigation.navigate('Page2', {
+                                                article: article,
+                                            })
+                                        }>
+                                        {/* Image à gauche */}
+                                        {!articles ? (
+                                            <ActivityIndicator size="large" color="#00ff00" />
+                                        ) : (
+                                            <Image
+                                                style={styles.cardImg}
+                                                source={{
+                                                    uri: `${image.uri}${article.featuredImage}`,
+                                                }}
+                                            />
+                                        )}
+                                        {/* Text à droite */}
+                                        <View style={styles.cardContainerText}>
+                                            <Text style={styles.cardTitle}>{article.title}</Text>
+                                            <Text style={styles.into}>{article.introduction}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                );
+                            })}
                         </View>
                     ) : (
                         <Loader />
@@ -154,19 +105,10 @@ const Information = ({articles, faqs, props}) => {
                         <View>
                             {faqs[0] ? (
                                 <View style={styles.marginVertical}>
-                                    <TouchableOpacity
-                                        onPress={() => showReponse1()}
-                                        style={styles.containerQuestion}>
-                                        <Text style={styles.question}>
-                                            {faqs[0].question}
-                                        </Text>
+                                    <TouchableOpacity onPress={() => showReponse1()} style={styles.containerQuestion}>
+                                        <Text style={styles.question}>{faqs[0].question}</Text>
                                     </TouchableOpacity>
-                                    <View
-                                        style={
-                                            question1
-                                                ? styles.reponseShow
-                                                : styles.reponseHide
-                                        }>
+                                    <View style={question1 ? styles.reponseShow : styles.reponseHide}>
                                         <Text>{faqs[0].answer}</Text>
                                     </View>
                                 </View>
@@ -175,40 +117,22 @@ const Information = ({articles, faqs, props}) => {
                             )}
                             {faqs[1] ? (
                                 <View style={styles.marginVertical}>
-                                    <TouchableOpacity
-                                        onPress={() => showReponse2()}
-                                        style={styles.containerQuestion}>
-                                        <Text style={styles.question}>
-                                            {faqs[1].question}
-                                        </Text>
+                                    <TouchableOpacity onPress={() => showReponse2()} style={styles.containerQuestion}>
+                                        <Text style={styles.question}>{faqs[1].question}</Text>
                                     </TouchableOpacity>
-                                    <View
-                                        style={
-                                            question2
-                                                ? styles.reponseShow
-                                                : styles.reponseHide
-                                        }>
+                                    <ScrollView style={question2 ? styles.reponseShow : styles.reponseHide}>
                                         <Text>{faqs[1].answer}</Text>
-                                    </View>
+                                    </ScrollView>
                                 </View>
                             ) : (
                                 ''
                             )}
                             {faqs[2] ? (
                                 <View style={styles.marginVertical}>
-                                    <TouchableOpacity
-                                        onPress={() => showReponse3()}
-                                        style={styles.containerQuestion}>
-                                        <Text style={styles.question}>
-                                            {faqs[2].question}
-                                        </Text>
+                                    <TouchableOpacity onPress={() => showReponse3()} style={styles.containerQuestion}>
+                                        <Text style={styles.question}>{faqs[2].question}</Text>
                                     </TouchableOpacity>
-                                    <View
-                                        style={
-                                            question3
-                                                ? styles.reponseShow
-                                                : styles.reponseHide
-                                        }>
+                                    <View style={question3 ? styles.reponseShow : styles.reponseHide}>
                                         <Text>{faqs[2].answer}</Text>
                                     </View>
                                 </View>
@@ -217,19 +141,10 @@ const Information = ({articles, faqs, props}) => {
                             )}
                             {faqs[3] ? (
                                 <View style={styles.marginVertical}>
-                                    <TouchableOpacity
-                                        onPress={() => showReponse4()}
-                                        style={styles.containerQuestion}>
-                                        <Text style={styles.question}>
-                                            {faqs[3].question}
-                                        </Text>
+                                    <TouchableOpacity onPress={() => showReponse4()} style={styles.containerQuestion}>
+                                        <Text style={styles.question}>{faqs[3].question}</Text>
                                     </TouchableOpacity>
-                                    <View
-                                        style={
-                                            question4
-                                                ? styles.reponseShow
-                                                : styles.reponseHide
-                                        }>
+                                    <View style={question4 ? styles.reponseShow : styles.reponseHide}>
                                         <Text>{faqs[3].answer}</Text>
                                     </View>
                                 </View>
@@ -322,16 +237,45 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 10,
     },
+
+    //style card
+    card: {
+        backgroundColor: COLORS.mauveFonce,
+        marginVertical: 10,
+        borderRadius: 10,
+        flexDirection: 'row',
+    },
+    cardImg: {
+        width: 120,
+        height: 130,
+        borderTopLeftRadius: 10,
+        borderBottomLeftRadius: 10,
+    },
+    cardContainerText: {
+        padding: 10,
+        flex: 1,
+    },
+    cardTitle: {
+        color: COLORS.jaune,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    into: {
+        color: 'white',
+        overflow: 'hidden',
+        textAlign: 'justify',
+        height: 85,
+    },
+    // Style FAQ
     marginVertical: {
         marginVertical: 5,
     },
-    // Style FAQ
     containerFAQ: {
         marginHorizontal: 15,
         marginBottom: 25,
     },
     containerQuestion: {
-        width: 382,
         height: 50,
         zIndex: 1,
         backgroundColor: 'white',
@@ -350,43 +294,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
-        borderRadius: 0,
-        height: 50,
+        marginHorizontal: 5,
+        borderWidth: 0.5,
         color: 'black',
         paddingTop: 0,
         paddingHorizontal: 15,
+        paddingVertical: 10,
     },
     reponseHide: {
         top: -50,
         display: 'none',
-    },
-    //style card
-    card: {
-        backgroundColor: COLORS.mauveFonce,
-        marginVertical: 10,
-        borderRadius: 10,
-        flexDirection: 'row',
-    },
-    cardImg: {
-        width: 120,
-        height: 130,
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
-    },
-    cardContainerText: {
-        padding: 10,
-    },
-    cardTitle: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    into: {
-        color: 'white',
-        overflow: 'hidden',
-        textAlign: 'justify',
-        height: 85,
-        width: 230,
     },
 });
 export default Information;
