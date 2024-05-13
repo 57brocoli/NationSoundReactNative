@@ -14,23 +14,42 @@ import {Dimensions} from 'react-native';
 import NavBar from '../Conposants/NavBar';
 import Apropos from '../Conposants/Page1/Apropos';
 import Sponsor from '../Conposants/Page1/Sponsor';
+import PageSection from '../Conposants/SousComposants/PageSection';
 
 const Page1 = props => {
     //Variable pour recupéré les props passer dans la route
     const {pageBilletterie, pageProgramme, pageInformation, pageSponsor, pageApropos} = props.route.params;
 
     useEffect(() => {
-        axios.get('https://pixelevent.site/api/views').then(res => setAllsView(res.data['hydra:member']));
+        axios
+            .get('https://pixelevent.site/api/views')
+            .then(res => setAllsView(res.data['hydra:member']))
+            .catch(Error => console.log('erreur : ', Error));
 
-        axios.get('https://pixelevent.site/api/billets').then(res => setBillets(res.data['hydra:member']));
+        axios
+            .get('https://pixelevent.site/api/billets')
+            .then(res => setBillets(res.data['hydra:member']))
+            .catch(Error => console.log('erreur : ', Error));
 
-        axios.get('https://pixelevent.site/api/articles').then(res => setArticles(res.data['hydra:member']));
+        axios
+            .get('https://pixelevent.site/api/articles')
+            .then(res => setArticles(res.data['hydra:member']))
+            .catch(Error => console.log('erreur : ', Error));
 
-        axios.get('https://pixelevent.site/api/days').then(res => setProgramme(res.data['hydra:member']));
+        axios
+            .get('https://pixelevent.site/api/days')
+            .then(res => setProgramme(res.data['hydra:member']))
+            .catch(Error => console.log('erreur : ', Error));
 
-        axios.get('https://pixelevent.site/api/f_a_qs').then(res => setFaqs(res.data['hydra:member']));
+        axios
+            .get('https://pixelevent.site/api/f_a_qs')
+            .then(res => setFaqs(res.data['hydra:member']))
+            .catch(Error => console.log('erreur : ', Error));
 
-        axios.get('https://pixelevent.site/api/sponsors').then(res => setSponsors(res.data['hydra:member']));
+        axios
+            .get('https://pixelevent.site/api/sponsors')
+            .then(res => setSponsors(res.data['hydra:member']))
+            .catch(Error => console.log('erreur : ', Error));
     }, []);
 
     //variable pour stocker les billets
@@ -84,7 +103,8 @@ const Page1 = props => {
                                 {pageBilletterie && (
                                     <View>
                                         <HeaderPage data={billet} folder={imgView.uri} />
-                                        <Billetterie billets={billets} props={props} />
+                                        <Billetterie billets={billets} props={props} data={billet} />
+                                        <PageSection data={billet} />
                                     </View>
                                 )}
                                 {pageProgramme && (
@@ -96,7 +116,7 @@ const Page1 = props => {
                                 {pageInformation && (
                                     <View>
                                         <HeaderPage data={info} folder={imgView.uri} />
-                                        <Information articles={articles} faqs={faqs} props={props} />
+                                        <Information articles={articles.reverse()} faqs={faqs} props={props} />
                                     </View>
                                 )}
                                 {pageSponsor && (

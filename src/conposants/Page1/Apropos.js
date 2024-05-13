@@ -1,5 +1,5 @@
-import {View, Text, StyleSheet, FlatList, Image, Dimensions, TouchableOpacity, ScrollView} from 'react-native';
-import React, {useRef} from 'react';
+import {View, Text, StyleSheet, FlatList, Image, Dimensions, ScrollView} from 'react-native';
+import React from 'react';
 import {PARAGRAPH, TITLE} from '../../asset/constantes/Constantes';
 import RequesteForm from '../../Conposants/SousComposants/RequesteForm';
 
@@ -10,7 +10,7 @@ const Apropos = ({views}) => {
     };
 
     return (
-        <View style={{flex: 1}}>
+        <View style={styles.flex}>
             <ScrollView>
                 {views
                     ? views
@@ -58,6 +58,9 @@ const Apropos = ({views}) => {
 };
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
+    flex: {
+        flex: 1,
+    },
     container: {
         margin: 15,
     },

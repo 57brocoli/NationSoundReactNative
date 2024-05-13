@@ -9,8 +9,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Loader from '../../Conposants/SousComposants/Loader';
 
 const Information = ({articles, faqs, props}) => {
-    // const {width} = useWindowDimensions();
-
     //Fonctions pour filtrées les articles
     const [nombreArticle, setNombreArticle] = useState(3);
     const tousAfficher = () => {
@@ -153,66 +151,8 @@ const Information = ({articles, faqs, props}) => {
                             )}
                         </View>
                     ) : (
-                        // faqs.map((faq, id) => {
-                        //     return (
-                        //       <View style={styles.marginVertical} key={id}>
-                        //         <TouchableOpacity
-                        //           onPress={() => showReponse()}
-                        //           style={styles.containerQuestion}>
-                        //           <Text>{faq.id}</Text>
-                        //           <Text style={styles.question}>{faq.question}</Text>
-                        //         </TouchableOpacity>
-                        //         <View
-                        //           class="2"
-                        //           style={
-                        //             question1 ? styles.reponseShow : styles.reponseHide
-                        //           }>
-                        //           <Text>{faq.answer}</Text>
-                        //         </View>
-                        //       </View>
-                        //     );
-                        //   })
-                        ''
+                        <Loader />
                     )}
-                    {/* <View style={styles.marginVertical}>
-            <TouchableOpacity
-              onPress={() => showReponse1()}
-              style={styles.containerQuestion}>
-              <Text style={styles.question}>Comment reserver un billet ?</Text>
-            </TouchableOpacity>
-            <View style={question1 ? styles.reponseShow : styles.reponseHide}>
-              <Text>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Molestias, saepe?
-              </Text>
-            </View>
-          </View>
-          <View style={styles.marginVertical}>
-            <TouchableOpacity
-              onPress={() => showReponse2()}
-              style={styles.containerQuestion}>
-              <Text style={styles.question}>Comment crée un compte ?</Text>
-            </TouchableOpacity>
-            <View style={question2 ? styles.reponseShow : styles.reponseHide}>
-              <Text>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Molestias, saepe?
-              </Text>
-            </View>
-          </View>
-          <View style={styles.marginVertical}>
-            <TouchableOpacity
-              onPress={() => showReponse3()}
-              style={styles.containerQuestion}>
-              <Text style={styles.question}>Accesibilité</Text>
-            </TouchableOpacity>
-            <View style={question3 ? styles.reponseShow : styles.reponseHide}>
-              <Text>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Molestias, saepe?
-              </Text>
-            </View>
-          </View> */}
                 </View>
             </ScrollView>
         </>
