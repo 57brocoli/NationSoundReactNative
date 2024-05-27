@@ -32,7 +32,7 @@ const ArticleDetails = ({props, article}) => {
                 authorMobile: user,
                 relatedArticle: '/api/articles/' + article.id,
                 created_at: 'CURRENT_TIMESTAMP',
-                createdAt: '2023-10-23T11:34:24.704Z',
+                // createdAt: '2023-10-23T11:34:24.704Z',
             }),
         });
         setCommentaire('');

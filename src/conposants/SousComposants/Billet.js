@@ -1,8 +1,9 @@
-import {View, Text, ImageBackground, StyleSheet} from 'react-native';
+import {View, Text, ImageBackground, StyleSheet, Linking} from 'react-native';
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Billet = ({billet, props}) => {
+    //fonction pour ajouter un compteur de billets
     const [countBillets, setCountBillets] = useState(0);
     const total = countBillets * billet.price;
 
@@ -12,8 +13,16 @@ const Billet = ({billet, props}) => {
     const lessCountBillets = () => {
         countBillets > 0 && setCountBillets(countBillets - 1);
     };
+
+    //nom du chemin pour récupérer l'image du billet
     const img = {
         uri: 'https://pixelevent.site/assets/uploads/billet/',
+    };
+
+    //Fonction pour rediriger l'utilisateur vers le site LiveEvent
+    const openURL = () => {
+        const url = 'https://pixelevent.site/';
+        Linking.openURL(url).catch(err => console.error('impossible de charger la page', err));
     };
 
     return (
@@ -52,9 +61,9 @@ const Billet = ({billet, props}) => {
                     ) : (
                         ''
                     )}
-                    <View style={styles.boxHyperlink}>
+                    <TouchableOpacity style={styles.boxHyperlink} onPress={openURL}>
                         <Text style={styles.hyperlink}>Acheter</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ImageBackground>
