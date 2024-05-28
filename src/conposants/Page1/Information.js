@@ -9,6 +9,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Loader from '../../Conposants/SousComposants/Loader';
 
 const Information = ({articles, faqs, props}) => {
+    if (articles) {
+        var articleRevers = [...articles].reverse();
+    }
+
     //Fonctions pour filtrées les articles
     const [nombreArticle, setNombreArticle] = useState(3);
     const tousAfficher = () => {
@@ -44,10 +48,10 @@ const Information = ({articles, faqs, props}) => {
         <>
             <ScrollView>
                 <View style={styles.containerInfos}>
-                    {articles ? (
+                    {articleRevers ? (
                         <View>
                             <View style={CENTER}>
-                                <Text style={TITLE}>Actualitées</Text>
+                                <Text style={TITLE}>Actualités</Text>
                             </View>
                             {nombreArticle !== 3 ? (
                                 <TouchableOpacity onPress={() => revenir()} style={styles.filtre}>
@@ -56,11 +60,11 @@ const Information = ({articles, faqs, props}) => {
                                 </TouchableOpacity>
                             ) : (
                                 <TouchableOpacity onPress={() => tousAfficher()} style={styles.filtre}>
-                                    <Text style={styles.colorBlack}>Tous afficher</Text>
+                                    <Text style={styles.colorBlack}>Tout afficher</Text>
                                     <MaterialCommunityIcons name="chevron-down" color={'black'} size={25} />
                                 </TouchableOpacity>
                             )}
-                            {articles.slice(0, nombreArticle).map((article, index) => {
+                            {articleRevers.slice(0, nombreArticle).map((article, index) => {
                                 return (
                                     <TouchableOpacity
                                         style={styles.card}
@@ -71,7 +75,7 @@ const Information = ({articles, faqs, props}) => {
                                             })
                                         }>
                                         {/* Image à gauche */}
-                                        {!articles ? (
+                                        {!articleRevers ? (
                                             <ActivityIndicator size="large" color="#00ff00" />
                                         ) : (
                                             <Image

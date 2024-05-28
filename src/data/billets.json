@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Billet en local A",
+        "description": "description du billet",
+        "price": "30",
+        "featuredImage": "ticket-657c4d46b6a4b.jpg"
+    },
+    {
+        "id": 1,
+        "name": "Billet en local B",
+        "description": "description du billet",
+        "price": "100",
+        "featuredImage": "ticket-657c4d46b6a4b.jpg"
+    }
+]

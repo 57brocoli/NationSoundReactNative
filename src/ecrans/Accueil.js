@@ -128,7 +128,7 @@ const Accueil = props => {
                                                         }}
                                                     />
                                                     <View style={CENTER}>
-                                                        {section.title === 'Nos remerciement' && (
+                                                        {section.title === 'Nos remerciements' && (
                                                             <Pressable
                                                                 style={styles.button}
                                                                 onPress={() =>
@@ -139,7 +139,7 @@ const Accueil = props => {
                                                                 <Text style={styles.textButton}>Sponsor</Text>
                                                             </Pressable>
                                                         )}
-                                                        {section.title === 'Hotel' && hotels ? (
+                                                        {section.title === 'Hôtel' && hotels ? (
                                                             <FlatList
                                                                 horizontal={true}
                                                                 showsHorizontalScrollIndicator={true}

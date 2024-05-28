@@ -1,6 +1,7 @@
 import {View, Text, ImageBackground, StyleSheet} from 'react-native';
 import React from 'react';
 import {Image} from 'react-native';
+import Loader from '../SousComposants/Loader';
 
 const Sponsor = ({sponsors}) => {
     const imgSponsor = {
@@ -11,28 +12,32 @@ const Sponsor = ({sponsors}) => {
     };
     return (
         <View>
-            {sponsors
-                .filter(sponsor => sponsor.event.name === 'Nation Sound')
-                .map((sponsor, index) => {
-                    return (
-                        <ImageBackground
-                            key={index}
-                            source={{
-                                uri: `${imgSponsorDiapo.uri}${sponsor.imageSponsors[0].name}`,
-                            }}
-                            style={styles.image}>
-                            <View style={styles.sectionSponsor}>
-                                <Text style={styles.text}>{sponsor.name}</Text>
-                                <Image
-                                    source={{
-                                        uri: `${imgSponsor.uri}${sponsor.logo}`,
-                                    }}
-                                    style={styles.logo}
-                                />
-                            </View>
-                        </ImageBackground>
-                    );
-                })}
+            {sponsors ? (
+                sponsors
+                    .filter(sponsor => sponsor.event.name === 'Nation Sound')
+                    .map((sponsor, index) => {
+                        return (
+                            <ImageBackground
+                                key={index}
+                                source={{
+                                    uri: `${imgSponsorDiapo.uri}${sponsor.imageSponsors[0].name}`,
+                                }}
+                                style={styles.image}>
+                                <View style={styles.sectionSponsor}>
+                                    <Text style={styles.text}>{sponsor.name}</Text>
+                                    <Image
+                                        source={{
+                                            uri: `${imgSponsor.uri}${sponsor.logo}`,
+                                        }}
+                                        style={styles.logo}
+                                    />
+                                </View>
+                            </ImageBackground>
+                        );
+                    })
+            ) : (
+                <Loader />
+            )}
         </View>
     );
 };

@@ -15,57 +15,45 @@ import Sponsor from '../Conposants/Page1/Sponsor';
 import PageSection from '../Conposants/SousComposants/PageSection';
 //import d'axios pour recupérer les données
 import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+    fetchArticle,
+    fetchBillets,
+    fetchFaq,
+    fetchHeader,
+    fetchProgramme,
+    fetchSponsors,
+} from '../../redux/reducers/sectionContenuReducer';
 
 const Page1 = props => {
     //Variable pour recupéré les props passer dans la route
     const {pageBilletterie, pageProgramme, pageInformation, pageSponsor, pageApropos} = props.route.params;
 
+    //Importation de tous les sections depuis le reducer
+    const dispatch = useDispatch();
+    const billets = useSelector(state => state.billets.billets);
+    const programme = useSelector(state => state.programme.programme[0]);
+    const articles = useSelector(state => state.articles.articles[0]);
+    const faq = useSelector(state => state.faq.faq[0]);
+    const sponsors = useSelector(state => state.sponsors.sponsors[0]);
+    const views = useSelector(state => state.views.views[0]);
+
+    useEffect(() => {
+        dispatch(fetchBillets());
+        dispatch(fetchProgramme());
+        dispatch(fetchArticle());
+        dispatch(fetchFaq());
+        dispatch(fetchSponsors());
+        dispatch(fetchHeader());
+    }, [dispatch]);
+
+    // console.log(views);
     useEffect(() => {
         axios
             .get('https://pixelevent.site/api/views')
             .then(res => setAllsView(res.data['hydra:member']))
             .catch(Error => console.log('erreur : ', Error));
-
-        axios
-            .get('https://pixelevent.site/api/billets')
-            .then(res => setBillets(res.data['hydra:member']))
-            .catch(Error => console.log('erreur : ', Error));
-
-        axios
-            .get('https://pixelevent.site/api/articles')
-            .then(res => setArticles(res.data['hydra:member']))
-            .catch(Error => console.log('erreur : ', Error));
-
-        axios
-            .get('https://pixelevent.site/api/days')
-            .then(res => setProgramme(res.data['hydra:member']))
-            .catch(Error => console.log('erreur : ', Error));
-
-        axios
-            .get('https://pixelevent.site/api/f_a_qs')
-            .then(res => setFaqs(res.data['hydra:member']))
-            .catch(Error => console.log('erreur : ', Error));
-
-        axios
-            .get('https://pixelevent.site/api/sponsors')
-            .then(res => setSponsors(res.data['hydra:member']))
-            .catch(Error => console.log('erreur : ', Error));
     }, []);
-
-    //variable pour stocker les billets
-    const [billets, setBillets] = useState([]);
-
-    //variable pour stocker le programme
-    const [programme, setProgramme] = useState([]);
-
-    //Variables de stockage du contenu des articles provenant de l'api
-    const [articles, setArticles] = useState([]);
-
-    //Variables de stockage de la FAQ provenant de l'api
-    const [faqs, setFaqs] = useState([]);
-
-    //Variable de stockage des sponsors
-    const [sponsors, setSponsors] = useState([]);
 
     //Variables de stockage du contenu de la page et des articles provenant de l'api
     const [Allsview, setAllsView] = useState([]);
@@ -75,8 +63,10 @@ const Page1 = props => {
         uri: 'https://pixelevent.site/assets/uploads/figure/',
     };
 
+    console.log(views);
+
     // Variable pour récupéré le header de chaque pages
-    if (Allsview) {
+    if (views) {
         var billet = Allsview.find(x => x.name === 'billetterie');
 
         var prog = Allsview.find(x => x.name === 'programme');
@@ -98,13 +88,12 @@ const Page1 = props => {
                     end={{x: 1, y: 1}}
                     style={styles.screen}>
                     <View>
-                        {Allsview && (
+                        {views && (
                             <View>
                                 {pageBilletterie && (
                                     <View>
                                         <HeaderPage data={billet} folder={imgView.uri} />
-                                        <Billetterie billets={billets} props={props} data={billet} />
-                                        <PageSection data={billet} />
+                                        <Billetterie billets={billets} props={props} />
                                     </View>
                                 )}
                                 {pageProgramme && (
@@ -116,7 +105,7 @@ const Page1 = props => {
                                 {pageInformation && (
                                     <View>
                                         <HeaderPage data={info} folder={imgView.uri} />
-                                        <Information articles={articles.reverse()} faqs={faqs} props={props} />
+                                        <Information articles={articles} faqs={faq} props={props} />
                                     </View>
                                 )}
                                 {pageSponsor && (

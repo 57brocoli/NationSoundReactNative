@@ -19,6 +19,8 @@ import Test from './src/ecrans/Test';
 import axios from 'axios';
 import NotificationDetails from './src/Conposants/Notification/NotificationDetails';
 import Notification from './src/ecrans/Notification';
+import {Provider} from 'react-redux';
+import store from './redux/store';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -132,9 +134,11 @@ function MainStackScreen() {
 }
 const App = () => {
     return (
-        <NavigationContainer>
-            <MainStackScreen />
-        </NavigationContainer>
+        <Provider store={store}>
+            <NavigationContainer>
+                <MainStackScreen />
+            </NavigationContainer>
+        </Provider>
     );
 };
 const styles = StyleSheet.create({

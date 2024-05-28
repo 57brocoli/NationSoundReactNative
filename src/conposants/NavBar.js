@@ -99,7 +99,7 @@ const NavBar = ({props}) => {
                                 <View style={styles.contenair}>
                                     {/* container du nom de l'utilisateur */}
                                     <Text style={styles.nameUser}>{auth().currentUser.displayName}</Text>
-                                    <Text style={styles.lienVersProfil}>Voir Profile</Text>
+                                    <Text style={styles.lienVersProfil}>Voir Profil</Text>
                                 </View>
                             </TouchableOpacity>
                             <View style={styles.containerLink}>
