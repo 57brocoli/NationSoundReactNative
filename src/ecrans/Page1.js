@@ -1,5 +1,7 @@
+// importation react
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+// importation bibliotheque
 import LinearGradient from 'react-native-linear-gradient';
 //import des composant exterieurs
 import Footer from '../Conposants/Footer';
@@ -7,14 +9,12 @@ import HeaderPage from '../Conposants/Page1/HeaderPage';
 import Billetterie from '../Conposants/Page1/Billetterie/Billetterie';
 import Programme from '../Conposants/Page1/Programme/Programme';
 import Information from '../Conposants/Page1/Information';
-//import d'axios pour recupérer les données
-import axios from 'axios';
-//import de moment pour formater la date
-import {Dimensions} from 'react-native';
 import NavBar from '../Conposants/NavBar';
 import Apropos from '../Conposants/Page1/Apropos';
 import Sponsor from '../Conposants/Page1/Sponsor';
 import PageSection from '../Conposants/SousComposants/PageSection';
+//import d'axios pour recupérer les données
+import axios from 'axios';
 
 const Page1 = props => {
     //Variable pour recupéré les props passer dans la route
