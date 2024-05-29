@@ -68,6 +68,7 @@ const Journe = ({day, props}) => {
                                                   scene={scene}
                                                   artisteFiltre={artisteFiltre}
                                                   props={props}
+                                                  day={day}
                                               />
                                           </View>
                                       );

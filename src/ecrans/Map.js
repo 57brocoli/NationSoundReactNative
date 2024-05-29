@@ -1,13 +1,4 @@
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    PermissionsAndroid,
-    TouchableOpacity,
-    Animated,
-    FlatList,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, PermissionsAndroid, TouchableOpacity, Animated, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 //import de Maps
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -29,7 +20,7 @@ const Map = props => {
     const [selectedRadio, setSelectedRadio] = useState();
     // var pour les label des input de type radio
     const radios = [
-        {id: 1, title: 'Entrer', icon: 'door'},
+        {id: 1, title: 'Entrée', icon: 'door'},
         {id: 2, title: 'Scene', icon: 'music-note'},
         {id: 3, title: 'Toilette', icon: 'toilet'},
         {id: 4, title: 'Bars', icon: 'beer'},
@@ -41,16 +32,13 @@ const Map = props => {
     const [location, setLocation] = useState();
     const requestLocationPermission = async () => {
         try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                    title: 'Geolocation Permission',
-                    message: 'Can we access your location?',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
-                },
-            );
+            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+                title: 'Geolocation Permission',
+                message: 'Can we access your location?',
+                buttonNeutral: 'Ask Me Later',
+                buttonNegative: 'Cancel',
+                buttonPositive: 'OK',
+            });
             console.log('granted', granted);
             if (granted === 'granted') {
                 console.log('You can use Geolocation');
@@ -79,9 +67,7 @@ const Map = props => {
 
     /////////////////////////////////////////////////////variable pour recupéré les donées de l'api//////////////////////////////////
     useEffect(() => {
-        axios
-            .get('https://pixelevent.site/api/lieus')
-            .then(res => setListeMarker(res.data['hydra:member']));
+        axios.get('https://pixelevent.site/api/lieus').then(res => setListeMarker(res.data['hydra:member']));
     }, []);
     const [listeMarker, setListeMarker] = useState();
     // const {width} = useWindowDimensions();
@@ -106,23 +92,17 @@ const Map = props => {
                 {listeMarker
                     ? listeMarker
                           // filtre uniquement marqueur en fonction du filtre choisit
-                          .filter(marker =>
-                              marker.category.includes(selectedRadio),
-                          )
+                          .filter(marker => marker.category.includes(selectedRadio))
                           .map((marker, index) => {
                               return (
                                   <Marker
                                       key={index}
                                       coordinate={{
                                           latitude: parseFloat(marker.GPSPtLat),
-                                          longitude: parseFloat(
-                                              marker.GPSPtLng,
-                                          ),
+                                          longitude: parseFloat(marker.GPSPtLng),
                                       }}
                                       title={marker.name}
-                                      onPress={() =>
-                                          console.log(selectedRadio)
-                                      }>
+                                      onPress={() => console.log(selectedRadio)}>
                                       <Image
                                           source={{
                                               uri: `${image.uri}${marker.featuredImage}`,
@@ -134,14 +114,8 @@ const Map = props => {
                           })
                     : ''}
                 {/*************************************** Varible pour afficher l'entrer du festival' *********************************/}
-                <Marker
-                    title={'Nation sound'}
-                    description={'Entrer'}
-                    coordinate={entrer}>
-                    <Image
-                        source={require('../asset/img/logo.jpg')}
-                        style={styles.imageMarker}
-                    />
+                <Marker title={'Nation sound'} description={'Entrée'} coordinate={entrer}>
+                    <Image source={require('../asset/img/logo.jpg')} style={styles.imageMarker} />
                 </Marker>
 
                 {/* ***********************************Marqueur de l'utilisateur ***************************************************/}
@@ -152,11 +126,7 @@ const Map = props => {
                             latitude: location.coords.latitude,
                             longitude: location.coords.longitude,
                         }}>
-                        <MaterialCommunityIcons
-                            name="map-marker-account"
-                            color={COLORS.orange}
-                            size={35}
-                        />
+                        <MaterialCommunityIcons name="map-marker-account" color={COLORS.orange} size={35} />
                     </Marker>
                 ) : (
                     ''
@@ -177,28 +147,16 @@ const Map = props => {
                                     onPress={() => {
                                         setSelectedRadio(item.title);
                                     }}>
-                                    <MaterialCommunityIcons
-                                        name={item.icon}
-                                        color={'indigo'}
-                                        size={20}
-                                    />
-                                    <Text style={styles.radioText}>
-                                        {item.title}
-                                    </Text>
+                                    <MaterialCommunityIcons name={item.icon} color={'indigo'} size={20} />
+                                    <Text style={styles.radioText}>{item.title}</Text>
                                 </TouchableOpacity>
                             </View>
                         );
                     }}
                 />
                 {selectedRadio && (
-                    <TouchableOpacity
-                        style={styles.radioRéinitialiser}
-                        onPress={() => setSelectedRadio()}>
-                        <MaterialCommunityIcons
-                            name="reload"
-                            color={'indigo'}
-                            size={20}
-                        />
+                    <TouchableOpacity style={styles.radioRéinitialiser} onPress={() => setSelectedRadio()}>
+                        <MaterialCommunityIcons name="reload" color={'indigo'} size={20} />
                         <Text style={styles.radioText}>Réinitialiser</Text>
                     </TouchableOpacity>
                 )}
@@ -213,9 +171,7 @@ const Map = props => {
                 style={styles.cardsView}>
                 {listeMarker
                     ? listeMarker
-                          .filter(marker =>
-                              marker.category.includes(selectedRadio),
-                          )
+                          .filter(marker => marker.category.includes(selectedRadio))
                           .map((marker, index) => {
                               return (
                                   <TouchableOpacity
@@ -232,13 +188,9 @@ const Map = props => {
                                               uri: `${image.uri}${marker.featuredImage}`,
                                           }}
                                       />
-                                      <Text style={styles.content}>
-                                          {marker.name}
-                                      </Text>
+                                      <Text style={styles.content}>{marker.name}</Text>
                                       <View style={styles.buttonCard}>
-                                          <Text style={styles.buttonCardText}>
-                                              Clicker pour plus de details
-                                          </Text>
+                                          <Text style={styles.buttonCardText}>Clicker pour plus de details</Text>
                                       </View>
                                   </TouchableOpacity>
                               );
