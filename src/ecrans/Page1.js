@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Footer from '../Conposants/Footer';
 import Billetterie from '../Conposants/Page1/Billetterie/Billetterie';
 import Programme from '../Conposants/Page1/Programme/Programme';
-import Information from '../Conposants/Page1/Information';
+import Information from '../Conposants/Page1/Actualite/Actualite';
 import NavBar from '../Conposants/NavBar';
 import Apropos from '../Conposants/Page1/Apropos';
 import Sponsor from '../Conposants/Page1/Sponsor';

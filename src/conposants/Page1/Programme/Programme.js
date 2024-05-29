@@ -16,7 +16,7 @@ function Programme({props}) {
     const programme = useSelector(state => state.programme.programme[0]);
     const views = useSelector(state => state.views.views);
     useEffect(() => {
-        dispatch(fetchProgramme);
+        dispatch(fetchProgramme());
         dispatch(fetchHeader());
     }, [dispatch]);
 

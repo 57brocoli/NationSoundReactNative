@@ -15,11 +15,10 @@ const Billetterie = ({props}) => {
         dispatch(fetchBillets());
         dispatch(fetchHeader());
     }, [dispatch]);
-
     if (views) {
         var billetterie = views.find(x => x.name === 'billetterie');
     }
-    console.log(billets);
+
     return (
         <View>
             <HeaderPage data={billetterie} />
