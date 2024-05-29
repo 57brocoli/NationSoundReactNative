@@ -4,14 +4,17 @@ import {COLORS} from '../../asset/constantes/Couleurs';
 import Loader from '../SousComposants/Loader';
 import {TEXT} from '../../asset/constantes/Constantes';
 
-const Header = ({folder, data}) => {
+const Header = ({data}) => {
+    const imgView = {
+        uri: 'https://pixelevent.site/assets/uploads/figure/',
+    };
     return (
         <View>
-            {!folder || !data ? (
+            {!imgView.uri || !data ? (
                 <Loader />
             ) : (
                 <View>
-                    <ImageBackground source={{uri: `${folder}${data.headerImage.name}`}} style={styles.background}>
+                    <ImageBackground source={{uri: `${imgView.uri}${data.headerImage.name}`}} style={styles.background}>
                         <View>
                             <Text style={styles.logo}>{data.name}</Text>
                         </View>

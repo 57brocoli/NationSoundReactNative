@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 //import des variables de style prédéfinis
 import {FONTS} from '../../asset/constantes/Fonts';
@@ -7,10 +7,28 @@ import {COLORS} from '../../asset/constantes/Couleurs';
 //import des icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loader from '../../Conposants/SousComposants/Loader';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchArticle, fetchFaq, fetchHeader} from '../../../redux/reducers/sectionContenuReducer';
+import HeaderPage from '../../Conposants/Page1/HeaderPage';
 
-const Information = ({articles, faqs, props}) => {
+const Information = ({props}) => {
+    //Importation du reducer
+    const dispatch = useDispatch();
+    const articles = useSelector(state => state.articles.articles[0]);
+    const faqs = useSelector(state => state.faq.faq[0]);
+    const views = useSelector(state => state.views.views);
+    useEffect(() => {
+        dispatch(fetchArticle());
+        dispatch(fetchFaq());
+        dispatch(fetchHeader());
+    }, [dispatch]);
+    //On inverse l'odre des articles du tableau pour avoir le dernier publié en avant
     if (articles) {
         var articleRevers = [...articles].reverse();
+    }
+    //On récupère les données de la page actualité
+    if (views) {
+        var info = views.find(x => x.name === 'actualite');
     }
 
     //Fonctions pour filtrées les articles
@@ -47,6 +65,7 @@ const Information = ({articles, faqs, props}) => {
     return (
         <>
             <ScrollView>
+                <HeaderPage data={info} />
                 <View style={styles.containerInfos}>
                     {articleRevers ? (
                         <View>

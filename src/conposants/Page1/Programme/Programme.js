@@ -6,8 +6,24 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
 import ProgrammeListeArtiste from './SousComposants/ProgrammeListeArtiste';
 import ProgrammeFiltre from './SousComposants/ProgrammeFiltre';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchHeader, fetchProgramme} from '../../../../redux/reducers/sectionContenuReducer';
+import HeaderPage from '../../../Conposants/Page1/HeaderPage';
 
-function Programme({programme, props}) {
+function Programme({props}) {
+    // Importation du reducer
+    const dispatch = useDispatch();
+    const programme = useSelector(state => state.programme.programme[0]);
+    const views = useSelector(state => state.views.views);
+    useEffect(() => {
+        dispatch(fetchProgramme);
+        dispatch(fetchHeader());
+    }, [dispatch]);
+
+    if (views) {
+        var prog = views.find(x => x.name === 'programme');
+    }
+
     const [scenes, setScenes] = useState([]);
     const [artistes, setArtistes] = useState([]);
     useEffect(() => {
@@ -27,6 +43,7 @@ function Programme({programme, props}) {
 
     return (
         <View>
+            <HeaderPage data={prog} />
             {programme && (
                 <>
                     <View>

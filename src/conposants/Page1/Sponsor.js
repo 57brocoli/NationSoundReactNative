@@ -1,17 +1,35 @@
 import {View, Text, ImageBackground, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image} from 'react-native';
 import Loader from '../SousComposants/Loader';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchHeader, fetchSponsors} from '../../../redux/reducers/sectionContenuReducer';
+import HeaderPage from '../../Conposants/Page1/HeaderPage';
 
-const Sponsor = ({sponsors}) => {
+const Sponsor = ({}) => {
+    //importation du reducer
+    const dispatch = useDispatch();
+    const sponsors = useSelector(state => state.sponsors.sponsors[0]);
+    const views = useSelector(state => state.views.views);
+    useEffect(() => {
+        dispatch(fetchSponsors());
+        dispatch(fetchHeader());
+    }, [dispatch]);
+    if (views) {
+        var spons = views.find(x => x.name === 'sponsor');
+    }
+
+    //Chemin vers les images
     const imgSponsor = {
         uri: 'https://pixelevent.site/assets/uploads/sponsors/',
     };
     const imgSponsorDiapo = {
         uri: 'https://pixelevent.site/assets/uploads/sponsors/diapo/',
     };
+
     return (
         <View>
+            <HeaderPage data={spons} />
             {sponsors ? (
                 sponsors
                     .filter(sponsor => sponsor.event.name === 'Nation Sound')
