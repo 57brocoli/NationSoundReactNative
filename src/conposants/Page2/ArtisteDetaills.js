@@ -13,7 +13,6 @@ const ArtisteDetaills = ({artisteDetaills, lieu}) => {
         var day = artisteDetaills.day;
         var episode = artisteDetaills.episode;
     }
-
     return (
         <>
             <Image

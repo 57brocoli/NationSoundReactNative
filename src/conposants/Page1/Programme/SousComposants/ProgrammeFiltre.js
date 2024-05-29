@@ -77,9 +77,7 @@ const ProgrammeFiltre = ({
                                     style={styles.padding}
                                     onPress={() => {
                                         setArtisteFiltre(artiste);
-                                        setOpenArtisteFiltre(
-                                            !openArtisteFiltre,
-                                        );
+                                        setOpenArtisteFiltre(!openArtisteFiltre);
                                     }}>
                                     <Text>{artiste}</Text>
                                 </TouchableOpacity>
@@ -109,6 +107,7 @@ const styles = StyleSheet.create({
         right: 70,
         top: 20,
         width: 80,
+        borderRadius: 5,
     },
     filterArtisteBox: {
         position: 'absolute',
@@ -116,13 +115,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         right: 10,
         top: 20,
-        width: 80,
+        width: 130,
+        borderRadius: 5,
     },
     height: {
         height: 180,
     },
     padding: {
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 15,
     },
 });
 export default ProgrammeFiltre;
