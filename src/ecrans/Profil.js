@@ -50,7 +50,10 @@ const Profil = props => {
 
                 {/* section notification/billets */}
                 <View>
-                    <TouchableOpacity style={styles.touche} onPress={() => props.navigation.navigate('Test')}>
+                    <TouchableOpacity
+                        style={styles.touche}
+                        //  onPress={() => props.navigation.navigate('Test')}
+                    >
                         <MaterialCommunityIcons name="ticket" size={40} color={'white'} />
                         <Text style={styles.textTouche}>Mes billets</Text>
                     </TouchableOpacity>

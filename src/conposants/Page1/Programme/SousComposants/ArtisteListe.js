@@ -45,7 +45,7 @@ const ArtisteListe = ({episodes, scene, artisteFiltre, props, day}) => {
 const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 15,
         color: 'white',
         fontWeight: 'bold',
     },
