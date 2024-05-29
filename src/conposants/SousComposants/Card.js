@@ -33,9 +33,6 @@ const Card = ({props, data1, data2, hotel}) => {
                     <View style={styles.containerTitle}>
                         <Text style={styles.title}>{data2.artiste.name}</Text>
                     </View>
-                    {/* <Text numberOfLines={7} style={styles.containerText}>
-                        {data2.artiste.description}
-                    </Text> */}
                 </TouchableOpacity>
             )}
 
@@ -58,9 +55,6 @@ const Card = ({props, data1, data2, hotel}) => {
                     <View style={styles.containerTitle}>
                         <Text style={styles.title}>{hotel.name}</Text>
                     </View>
-                    <Text numberOfLines={5} style={styles.containerText}>
-                        {hotel.description}
-                    </Text>
                 </TouchableOpacity>
             )}
         </View>
@@ -69,6 +63,7 @@ const Card = ({props, data1, data2, hotel}) => {
 const styles = StyleSheet.create({
     card: {
         width: 150,
+        height: 170,
         margin: 10,
         borderRadius: 10,
         backgroundColor: COLORS.mauveFonce,
