@@ -3,7 +3,7 @@ Ce ReadMe est destiné au jury de la DREET.
 
 -> Présentation : 
 Vous trouverez ici le code source de l'application mobile "NationSound". Projet développé lors de ma formation Developpeur web et web mobile.
-Ce projet à été développer avec React Native. Pour le moment il reste à l'etat de "Projet non déployer".
+Ce projet à été développer avec la bibliotheque React Native. Pour le moment il reste à l'etat de "Projet non déployer".
 Il s'agit d'interfaces utilisateurs pour un public désireux de connaitre l'evenement (Programme, artistes, actualitées...).
 Il existe une version web de ce projet que vous pourrez visiter à cette adresse : https://nationsound.pixelevent.site/
 
